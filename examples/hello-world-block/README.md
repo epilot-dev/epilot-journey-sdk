@@ -1,6 +1,6 @@
-# Hello World BLock
+# Hello World Block
 
-This is a very simple block that displays Hello World, it is built using React and [Direflow](https://direflow.io/)
+This is a very simple block that displays Hello World, it is built using React and [React to Web Component](https://github.com/bitovi/react-to-web-component)
 
 ```
 npm install
