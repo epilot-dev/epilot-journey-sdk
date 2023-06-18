@@ -1,0 +1,10 @@
+{
+  "name": "epilot-journey-sdk",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "author": "Mohannad Mamo",
+  "license": "MIT",
+  "dependencies": {
+    "@material-ui/core": "4.*"
+  }
+}
