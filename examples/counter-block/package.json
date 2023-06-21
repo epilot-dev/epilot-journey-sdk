@@ -1,8 +1,8 @@
 {
-  "name": "hello-world-block",
+  "name": "counter-block",
   "version": "1.0.0",
   "author": "Mohannad Mamo",
-  "description": "This is a very simple block that displays Hello World, it is built using React",
+  "description": "This is a very simple block that includes interaction with the wrapper journey, it is built using React",
   "main": "src/index.tsx",
   "scripts": {
     "start": "react-scripts start",
