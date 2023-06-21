@@ -1,10 +1,20 @@
 {
-  "name": "epilot-journey-sdk",
+  "name": "@epilot/epilot-journey-sdk",
   "version": "1.0.0",
   "main": "index.ts",
   "author": "Mohannad Mamo",
   "license": "MIT",
-  "dependencies": {
+  "scripts": {
+    "build": "tsup src/index.ts --dts",
+    "release": "standard-version",
+    "postrelease": "git push && git push --tags"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@material-ui/core": "4.*",
+    "tsup": "^7.0.0"
+  },
+  "peerDependencies": {
     "@material-ui/core": "4.*"
   }
 }
