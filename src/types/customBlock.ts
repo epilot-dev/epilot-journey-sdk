@@ -14,7 +14,7 @@ export type ControlledCustomBlockProps<T> = {
   /**
    * the value of the custom block
    */
-  value: T
+  value?: T
 
   /**
    * any errors that the block might have. ex. value is required
