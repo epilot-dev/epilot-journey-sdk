@@ -3,7 +3,7 @@
 This is a very simple block that displays Hello World, it is built using React and [React to Web Component](https://github.com/bitovi/react-to-web-component)
 
 ```
-npm install
+npm install --force
 npm start
 ```
 
