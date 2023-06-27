@@ -14,6 +14,15 @@ Be aware that some of the features are still experimental.
   </p>
 </details>
 
+## TODO
+1. adding more examples:
+    - 2 way communication between the block and the journey
+    - example about being required and using errors
+    - using the epilot theme to make your app look native
+    - using a new feature called "read-only journey data" where the custom block will see the data of other blocks but read-only
+    - using args
+2. improve the docs
+3. improve the configurator side
 ## Custom Block for epilot Journeys
 > This feature is an experimental one. Therefore to have it available to your organisation, please contact epilot to enable it.
 
