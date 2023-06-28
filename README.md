@@ -29,7 +29,9 @@ Be aware that some of the features are still experimental.
 This document is intended to be a guide for configuring users to configure Custom Blocks in the epilot Journey Builder.
 
 Apart from this document, examples are available in the [examples](./examples) folder. They include how to develop a web component and how to use it in the Journey Builder.
-* [Simple Hello World](./examples/hello-world-block)
+* [Hello World](./examples/hello-world-block): this is a simple block that displaying a static message.
+* [Counter](./examples/counter-block): this is a more complex block that takes data from the journey, manupilate it and sends its data back to the journey.
+* [Theming](./examples/theming): another simple example, it shows how to take advantage of the theme object that the journey passes to the block.
 
 ### What are "Custom" blocks?
 epilot through the 360 tool Journey Builder providers numerous amounts of block which are easy to be used and provides a UI method to configure them. Despite that, the business case could be too special or too complex for a generic solution and a custom solution might be needed.
