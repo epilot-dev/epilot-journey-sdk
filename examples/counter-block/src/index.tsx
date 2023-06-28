@@ -6,7 +6,7 @@ const CounterAPP = r2wc(App, {
         // the r2wc lib will parse the string value for us
         value: 'json',
         setValue: 'function',
-        errors: 'boolean',
+        errors: 'string',
         required: 'boolean',
         // the r2wc lib will parse the string value for us
         theme: 'json'

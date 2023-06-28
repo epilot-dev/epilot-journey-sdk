@@ -16,9 +16,9 @@ Be aware that some of the features are still experimental.
 
 ## TODO
 1. adding more examples:
-    - 2 way communication between the block and the journey
-    - example about being required and using errors
-    - using the epilot theme to make your app look native
+    - ✅ 2 way communication between the block and the journey
+    - ✅ example about being required and using errors
+    - ✅ using the epilot theme to make your app look native
     - using a new feature called "read-only journey data" where the custom block will see the data of other blocks but read-only
     - using args
 2. improve the docs
@@ -32,6 +32,7 @@ Apart from this document, examples are available in the [examples](./examples) f
 * [Hello World](./examples/hello-world-block): this is a simple block that displaying a static message.
 * [Counter](./examples/counter-block): this is a more complex block that takes data from the journey, manupilate it and sends its data back to the journey.
 * [Theming](./examples/theming): another simple example, it shows how to take advantage of the theme object that the journey passes to the block.
+* [Required and Errors](./examples/required-errors-block): another simple example, it shows how the journey will communicate to the block that its data is required. And also shows how when the user is trying to skip filling the data, the journey will instricut the block to show an error message.
 
 ### What are "Custom" blocks?
 epilot through the 360 tool Journey Builder providers numerous amounts of block which are easy to be used and provides a UI method to configure them. Despite that, the business case could be too special or too complex for a generic solution and a custom solution might be needed.
