@@ -1,0 +1,40 @@
+{
+  "name": "required-errors-block",
+  "version": "1.0.0",
+  "author": "Mohannad Mamo",
+  "description": "This is a very simple block that includes interaction with the wrapper journey, it is built using React",
+  "main": "src/index.tsx",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@epilot/epilot-journey-sdk": "^1.0.2",
+    "@r2wc/react-to-web-component": "2.0.2",
+    "loader-utils": "3.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "@material-ui/core": "4.*",
+    "@types/react": "^18.2.12",
+    "@types/react-dom": "^18.2.5",
+    "typescript": "4.4.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
