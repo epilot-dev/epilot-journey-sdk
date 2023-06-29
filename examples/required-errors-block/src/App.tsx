@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { ControlledCustomBlockProps } from '@epilot/epilot-journey-sdk/src/types'
+import { ControlledCustomBlockProps } from '@epilot/epilot-journey-sdk'
 
 type BlockValueType = {
     something: string

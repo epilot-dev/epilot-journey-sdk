@@ -1,7 +1,6 @@
 {
   "name": "@epilot/epilot-journey-sdk",
-  "version": "1.0.2",
-  "main": "index.ts",
+  "version": "1.0.4",
   "author": "Mohannad Mamo",
   "license": "MIT",
   "scripts": {
@@ -18,5 +17,21 @@
   },
   "peerDependencies": {
     "@material-ui/core": "4.*"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist/**"
+  ],
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "dts": false,
+    "format": [
+      "cjs",
+      "esm"
+    ],
+    "clean": true,
+    "external": []
   }
 }

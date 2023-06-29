@@ -16,7 +16,7 @@ Be aware that some of the features are still experimental.
 
 ## TODO
 1. adding more examples:
-    - ✅ 2 way communication between the block and the journey
+    - ✅ 2 ways communication between the block and the journey
     - ✅ example about being required and using errors
     - ✅ using the epilot theme to make your app look native
     - using a new feature called "read-only journey data" where the custom block will see the data of other blocks but read-only
