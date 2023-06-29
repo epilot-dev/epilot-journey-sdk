@@ -12,7 +12,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@epilot/epilot-journey-sdk": "^1.0.2",
+    "@epilot/epilot-journey-sdk": "^1.0.4",
     "@r2wc/react-to-web-component": "2.0.2",
     "loader-utils": "3.2.1",
     "react": "^18.2.0",

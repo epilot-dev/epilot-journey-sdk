@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { CustomBlockProps } from '@epilot/epilot-journey-sdk/src/types'
+import { CustomBlockProps } from '@epilot/epilot-journey-sdk'
 
 type ThemingProps = CustomBlockProps
 
