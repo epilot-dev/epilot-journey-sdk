@@ -1,4 +1,5 @@
 # epilot Journey SDK
+[![npm version](https://badge.fury.io/js/@epilot%2Fepilot-journey-sdk.svg)](https://www.npmjs.com/package/@epilot/epilot-journey-sdk)
 
 epilot Journey SDK is a tool that allows developers to create Custom Blocks for the epilot Journey Builder.
 
