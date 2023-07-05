@@ -70,7 +70,7 @@ In the block configurator, the configuring user can pass the data as key & value
 <img src="./doc_assets/adding-args.png" width="300px" />
 
 ## Coming Soon
-1. [*] adding more examples:
+1. [ ] adding more examples:
     - [x] 2 ways communication between the block and the journey
     - [x] example about being required and using errors
     - [x] using the epilot theme to make your app look native
