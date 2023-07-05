@@ -16,5 +16,3 @@ Configure your custom block in the Journey Builder for local development:
 <img src="./custom-block-config.png" width="300px" />
 
 Point Bundle URL to `http://localhost:3000/static/js/bundle.js` and use the Tag name `required-errors-block` as configured in `./src/index.tsx`
-
-## How does it work?
