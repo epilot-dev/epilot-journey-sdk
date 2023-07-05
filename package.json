@@ -1,8 +1,11 @@
 {
   "name": "@epilot/epilot-journey-sdk",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "author": "Mohannad Mamo",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup src/index.ts --dts",
     "release": "standard-version && npm publish",
