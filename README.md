@@ -54,13 +54,13 @@ type ControlledCustomBlockProps<T> = {
 As a configuring user, please head to the [Journey Builder](https://portal.epilot.cloud/app/entity/journey), and open the Journey.
 In the desired step, add a new custom block (as in the following GIF).
 
-<img src="./doc_assets/adding-custom-block.gif" width="300px" />
+<img src="https://github.com/epilot-dev/epilot-journey-sdk/blob/main/doc_assets/adding-custom-block.gif?raw=true" width="300px" />
 
 ### How to configure the Custom Block?
 
 Since the Custom Block is going to be implemented as a web component. You must set the tag name and point to the bundle URL. The URL can be a local URL during development or a deployed bundle.
 
-<img src="./doc_assets/config-custom-block.png" width="300px" />
+<img src="https://github.com/epilot-dev/epilot-journey-sdk/blob/main/doc_assets/config-custom-block.png?raw=true" width="300px" />
 
 **Tip:** make sure to use an SSL secure bundle for production.
 
@@ -68,7 +68,7 @@ Since the Custom Block is going to be implemented as a web component. You must s
 It is mainly used in some cases, when the implementation of the block might need variables to be used that the configuration user would like to control (such as an API token, a subscription id, extra URLs... etc.)
 In the block configurator, the configuring user can pass the data as key & value pairs in the UI. This is done by clicking on the button "Add an Option"
 
-<img src="./doc_assets/adding-args.png" width="300px" />
+<img src="https://github.com/epilot-dev/epilot-journey-sdk/blob/main/doc_assets/adding-args.png?raw=true" width="300px" />
 
 ## Coming Soon
 1. [ ] adding more examples:
