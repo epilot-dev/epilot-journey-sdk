@@ -1,11 +1,9 @@
 import r2wc from "@r2wc/react-to-web-component";
-import App from "./App";
+import { CounterAPP } from "./App";
 
-const CounterAPP = r2wc(App, {
+const CounterAPPWeb = r2wc(CounterAPP, {
     props: {
-        // the r2wc lib will parse the string value for us
-        value: 'json',
-        setValue: 'function',
+        value: 'string',
         errors: 'string',
         required: 'boolean',
         // the r2wc lib will parse the string value for us
@@ -13,4 +11,4 @@ const CounterAPP = r2wc(App, {
     }
 })
 
-customElements.define("counter-block", CounterAPP)
+customElements.define("counter-block", CounterAPPWeb);
