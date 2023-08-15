@@ -17,7 +17,7 @@ Be aware that some of the features are still experimental.
 
 ## Topics in this SDK
 
-* [Custom Block for epilot Journeys](custom-block.md)
+* [Custom Block for epilot Journeys](custom-block.md): How to build your own blocks.
 
-* [Journey Embed Script](embed-script.md)
+* [Journey Embed Script](embed-script.md): How to embed epilot Journey with advanced options such as data injection.
 
