@@ -6,7 +6,7 @@ epilot provides a script that can be used to embed epilot Journeys with more adv
 ### Basic
 The Journey configuring user can generate a snipet of the embed script simply by using the embed configurator in the JB.
 
-<img src="https://github.com/epilot-dev/epilot-journey-sdk/blob/main/doc_assets/embed-configurator.png?raw=true" width="300px" />
+<img src="https://raw.githubusercontent.com/epilot-dev/epilot-journey-sdk/data-injection/doc_assets/embed-configurator.png" width="600px" />
 
 Read more about the basic usage of the embed script in [epilot's doc "Embedding Journeys"](https://docs.epilot.io/docs/journeys/embedding)
 
