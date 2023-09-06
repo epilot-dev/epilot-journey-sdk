@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Injection into a Journey</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eee;
+            padding-top: 40px;
+            margin: 0;
+        }
+
+
+        header {
+            background: #ddd;
+            height: 50px;
+            position: fixed;
+            top: 60px;
+            transition: top 0.2s ease-in-out;
+            width: 100%;
+            text-align: center;
+        }
+
+        header li {
+            list-style: none;
+            display: inline-block;
+        }
+
+        header a {
+            color: #222;
+            text-decoration: none;
+            padding: 0 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-up {
+            top: -50px;
+        }
+
+        main {
+            margin-top: 160px;
+        }
+
+        footer {
+            background: #ddd;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+        }
+
+        .newsticker {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: auto;
+            z-index: 10;
+            width: 100%;
+            height: 60px;
+            background-color: #dbfe02;
+        }
+    </style>
+    <style>
+        .product-card {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .product-card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .product-card p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .product-card ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .product-card ul li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .product-card ul li:before {
+            content: "•";
+            margin-right: 5px;
+            color: #666;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dinero.js/1.0.4/dinero.min.js"></script>
+</head>
+
+<body>
+    <div class="newsticker">
+        <div class="container__maxwidth">
+            <div id="ticker">
+                <div style="position:relative;width:100%;height:40px;overflow:hidden;" onmouseover="cps=0">
+                    <div id="mq" style="text-align: center;">
+                        <p id="tx">Content - Newsticker</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="nav-down">
+        <ul>
+            <li><a href="">menu item</a></li>
+            <li><a href="">menu item</a></li>
+            <li><a href="">menu item</a></li>
+        </ul>
+    </header>
+    <main>
+        <h1>Website Content here</h1>
+
+        <label for="numberInput">Enter your consumption to see products:</label>
+        <input type="number" id="numberInput">
+        <button id="saveButton">Show Products</button>
+
+        <script>
+            var journeyId = '52863af0-3b5d-11ee-a1b8-0b75dea7c098'
+            var products = []
+            var saveButton = document.getElementById("saveButton");
+            saveButton.addEventListener("click", function () {
+                var numberInput = document.getElementById("numberInput");
+                var inputValue = +numberInput.value;
+
+                // fetching the products
+                fetch(`https://journey-config.dev.sls.epilot.io/v1/journey/products/${journeyId}?orgId=739224`).catch(
+                    function (error) {
+                        alert(error);
+                    }
+                ).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    products = data;
+                    console.log(products)
+                    var productsDiv = document.getElementById("products");
+                    productsDiv.innerHTML = "";
+
+                    products.forEach(function (product) {
+                        // get the price of the product based on if it exists in the price_options of a product
+
+                        const productPrice = product.price
+
+                        var productDiv = document.createElement("div");
+                        productDiv.innerHTML = `
+                        <div class="product-card">
+    <img src="${product?.product_images?.[0]?.public_url}" alt="Product Image">
+    <h3>${product.name}</h3>
+    <p>Price: ${displayPrice(productPrice, inputValue)}</p>
+    <h4>Features:</h4>
+    <ul>${product?.feature?.map(ff => '<li>' + ff.feature + '</li>')}
+    </ul>
+    <div style="width:100%;text-align:left"><button id="productCard-${product._id}" data-productId="${product._id}" data-priceId="${productPrice._id}"
+                style="background:#039BE5FF;border:none;cursor:pointer;border-radius:4px;padding:14px 48px;color:#fff">Inhalt
+                anzeigen</button></div>
+  </div>`;
+                        productsDiv.appendChild(productDiv);
+                    });
+
+
+                    // Attaching the callback function to the button
+                    var buttons = document.querySelectorAll('[id^=productCard-]');
+                    buttons.forEach(bb => {
+                        bb.addEventListener("click", handleClick);
+                    })
+                })
+            });
+
+            function displayPrice(price, variableInput) {
+                if (price.type === "recurring") {
+                    if (price.variable_price && typeof variableInput === 'number') {
+                        const pp = Dinero({ precision: 2, amount: price.unit_amount, currency: price.unit_amount_currency })
+                        return pp.multiply(variableInput).toFormat() + ' ' + price.billing_period
+                    }
+                    return Dinero({ precision: 2, amount: price.unit_amount, currency: price.unit_amount_currency }).toFormat() + ' ' + price.billing_period
+                }
+                return 'unknown price type'
+            }
+        </script>
+        <div id="products"></div>
+        <script>
+            // Your callback function
+            function handleClick(event) {
+                const button = event.target;
+                const productId = button.getAttribute("data-productId");
+                const priceId = button.getAttribute("data-priceId");
+                const product = products.find(p => p._id === productId);
+                const price = product.price
+                const numberInput = document.getElementById("numberInput");
+                const inputValue = numberInput.value;
+
+                const payloadToJourney = {
+                    journeyId: journeyId, mode: "full-screen", scrollToTop: true, topBar: true, lang: "de",
+                    dataInjectionOptions: {
+                        initialStepIndex: 2,
+                        initialState: [{
+                            consumption: {
+                                numberInput: inputValue,
+                                numberUnit: "kwh",
+                                frequencyUnit: "monthly"
+                            },
+                            shouldallow: true
+                        }, {
+                            Products: {
+                                product: {
+                                    selectedProductId: productId,
+                                    selectedPriceId: priceId,
+                                    selectionMetadata: {
+                                        selectedProduct: product,
+                                        selectedPrice: price,
+                                        blockConfiguration: {
+                                            "isRequired": true,
+                                            "showQuantity": false,
+                                            "blockPath": "2/Products/ProductSelectionControl"
+                                        }
+                                    }
+                                },
+                                quantity: 1
+                            }
+                        }]
+                    }
+                }
+
+                __epilot.init([payloadToJourney])
+                console.log('button clicked ' + productId)
+                __epilot.enterFullScreen(journeyId, payloadToJourney);
+
+            }
+
+        </script>
+        <script data-ep-init="false" src="https://embed.journey.dev.epilot.io/bundle.js"></script>
+
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script>
+        // Hide header on scroll down
+        var didScroll;
+        var lastScrollTop = 0;
+        var delta = 5;
+        var navbarHeight = $('header').outerHeight();
+
+        $(window).scroll(function (event) {
+            didScroll = true;
+        });
+
+        setInterval(function () {
+            if (didScroll) {
+                hasScrolled();
+                didScroll = false;
+            }
+        }, 250);
+
+        function hasScrolled() {
+            var st = $(this).scrollTop();
+
+            // Make scroll more than delta
+            if (Math.abs(lastScrollTop - st) <= delta)
+                return;
+
+            // If scrolled down and past the navbar, add class .nav-up.
+            if (st > lastScrollTop && st > navbarHeight) {
+                // Scroll Down
+                $('header').removeClass('nav-down').addClass('nav-up');
+            } else {
+                // Scroll Up
+                if (st + $(window).height() < $(document).height()) {
+                    $('header').removeClass('nav-up').addClass('nav-down');
+                }
+            }
+
+            lastScrollTop = st;
+        }
+    </script>
+</body>
+
+</html>

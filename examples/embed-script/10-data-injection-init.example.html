@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Injection into a Journey</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eee;
+            padding-top: 40px;
+            margin: 0;
+        }
+
+
+        header {
+            background: #ddd;
+            height: 50px;
+            position: fixed;
+            top: 60px;
+            transition: top 0.2s ease-in-out;
+            width: 100%;
+            text-align: center;
+        }
+
+        header li {
+            list-style: none;
+            display: inline-block;
+        }
+
+        header a {
+            color: #222;
+            text-decoration: none;
+            padding: 0 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-up {
+            top: -50px;
+        }
+
+        main {
+            margin-top: 160px;
+        }
+
+        footer {
+            background: #ddd;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+        }
+
+        .newsticker {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: auto;
+            z-index: 10;
+            width: 100%;
+            height: 60px;
+            background-color: #dbfe02;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="newsticker">
+        <div class="container__maxwidth">
+            <div id="ticker">
+                <div style="position:relative;width:100%;height:40px;overflow:hidden;" onmouseover="cps=0">
+                    <div id="mq" style="text-align: center;">
+                        <p id="tx">Content - Newsticker</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="nav-down">
+        <ul>
+            <li><a href="">menu item</a></li>
+            <li><a href="">menu item</a></li>
+            <li><a href="">menu item</a></li>
+        </ul>
+    </header>
+    <main>
+        <h1>Website Content here</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.</p>
+
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.</p>
+
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.</p>
+
+        <div id="epilot-journey-598211f0-0c44-11ee-a9d2-3f6b034d7ddf" style="width:100%;text-align:left"></div>
+        <script data-ep-init="false" src="https://embed.journey.dev.epilot.io/bundle.js"></script>
+        <script>
+            const payload = {
+                journeyId: "598211f0-0c44-11ee-a9d2-3f6b034d7ddf",
+                mode: 'inline',
+                scrollToTop: false,
+                topBar: true,
+                dataInjectionOptions: {
+                    initialStepIndex: 1,
+                    blocksDisplaySettings: [{
+                        blockName: "single",
+                        stepIndex: 1
+                    }, {
+                        blockName: "nameeee",
+                        stepIndex: 1
+                    }, {
+                        blockName: "Contact Info",
+                        stepIndex: 1,
+                        blockFields: [
+                            'lastName'
+                        ]
+                    }, {
+                        blockName: "Address",
+                        stepIndex: 1,
+                        blockFields: [
+                            'zipCity'
+                        ]
+                    }],
+                    initialState: [{
+                        "Products": {
+                            "product": {
+                                "selectedProductId": "4f92b831-6465-4929-9dd3-3d64b5a33514",
+                                "selectedPriceId": "48e1792e-79a5-49be-92dc-e50c7ddbf96c",
+                                "selectionMetadata": {
+                                    "selectedProduct": {
+                                        "_id": "4f92b831-6465-4929-9dd3-3d64b5a33514",
+                                        "type": "product",
+                                        "name": "JUICE CHARGER Wallbox",
+                                        "active": true,
+                                        "code": "EL-JCME11",
+                                        "categories": [
+                                            "House Connection"
+                                        ],
+                                        "feature": [
+                                            {
+                                                "_tags": [],
+                                                "feature": "Test new feature"
+                                            },
+                                            {
+                                                "_tags": [],
+                                                "feature": "Zugangskontrolle über RFID-Karten"
+                                            },
+                                            {
+                                                "_tags": [],
+                                                "feature": "Bis zu 11 kW Ladeleistung (5x schneller laden)"
+                                            },
+                                            {
+                                                "_tags": [],
+                                                "feature": "Die kompakte, schicke Wallbox für jedes Budget"
+                                            },
+                                            {
+                                                "_tags": [],
+                                                "feature": "Kompatibel mit verschiedenen Backendsystemen über OCPP 1.6"
+                                            }
+                                        ],
+                                        "_schema": "product",
+                                        "_org": "739224",
+                                        "_created_at": "2021-11-10T09:48:16.834Z",
+                                        "_updated_at": "2023-05-23T13:19:03.197Z",
+                                        "_title": "JUICE CHARGER Wallbox",
+                                        "price_options": [
+                                            {
+                                                "_id": "48e1792e-79a5-49be-92dc-e50c7ddbf96c",
+                                                "unit_amount": 12055,
+                                                "type": "one_time",
+                                                "active": true,
+                                                "sales_tax": "standard",
+                                                "tax_behavior": "inclusive",
+                                                "description": "Winter Sale",
+                                                "tiers_mode": "Standard",
+                                                "_schema": "price",
+                                                "_org": "739224",
+                                                "_created_at": "2021-11-10T10:57:02.049Z",
+                                                "_updated_at": "2023-05-23T13:19:03.310Z",
+                                                "_title": "Winter Sale",
+                                                "unit_amount_decimal": "120.55",
+                                                "unit_amount_currency": "EUR",
+                                                "price_display_in_journeys": "show_as_on_request",
+                                                "pricing_model": "per_unit",
+                                                "tax": [
+                                                    {
+                                                        "type": "Custom",
+                                                        "rate": 19,
+                                                        "behavior": "inclusive",
+                                                        "active": true,
+                                                        "region": "DE",
+                                                        "_schema": "tax",
+                                                        "_title": "GST",
+                                                        "description": "GST",
+                                                        "_id": "79cac814-18c8-4047-ae45-1d0828598a18",
+                                                        "_org": "739224",
+                                                        "_created_at": "2022-04-26T08:41:38.696Z",
+                                                        "_updated_at": "2022-12-06T15:28:16.765Z"
+                                                    }
+                                                ],
+                                                "billing_period": "weekly",
+                                                "billing_duration_unit": "months",
+                                                "notice_time_unit": "months",
+                                                "termination_time_unit": "months",
+                                                "renewal_duration_unit": "months",
+                                                "_acl_sync": "2023-05-23T13:19:02.637Z",
+                                                "_owners": [
+                                                    {
+                                                        "org_id": "739224"
+                                                    }
+                                                ],
+                                                "is_tax_inclusive": true,
+                                                "_acl": {
+                                                    "view": [
+                                                        "org_911215"
+                                                    ],
+                                                    "edit": [
+                                                        "org_911215"
+                                                    ],
+                                                    "delete": [
+                                                        "org_911215"
+                                                    ]
+                                                },
+                                                "$relation": {
+                                                    "entity_id": "48e1792e-79a5-49be-92dc-e50c7ddbf96c",
+                                                    "_schema": "price",
+                                                    "_tags": []
+                                                }
+                                            },
+                                            {
+                                                "_id": "4db12bb3-1773-409e-9f97-a2d8f5482142",
+                                                "unit_amount": 12055,
+                                                "type": "recurring",
+                                                "billing_period": "monthly",
+                                                "billing_duration_amount": "1",
+                                                "billing_duration_unit": "years",
+                                                "notice_time_amount": "3",
+                                                "notice_time_unit": "months",
+                                                "termination_time_amount": "1",
+                                                "termination_time_unit": "months",
+                                                "renewal_duration_amount": "1",
+                                                "renewal_duration_unit": "years",
+                                                "active": true,
+                                                "sales_tax": "standard",
+                                                "tax_behavior": "exclusive",
+                                                "description": "Winter Lease",
+                                                "tiers_mode": "Standard",
+                                                "_schema": "price",
+                                                "_org": "739224",
+                                                "_created_at": "2021-11-10T11:58:24.322Z",
+                                                "_updated_at": "2023-01-06T17:11:45.833Z",
+                                                "_title": "Winter Lease",
+                                                "unit_amount_decimal": "120.55456634",
+                                                "unit_amount_currency": "EUR",
+                                                "price_display_in_journeys": "show_price",
+                                                "is_tax_inclusive": false,
+                                                "pricing_model": "per_unit",
+                                                "_owners": [
+                                                    {
+                                                        "org_id": "739224"
+                                                    }
+                                                ],
+                                                "_acl": {
+                                                    "view": [],
+                                                    "edit": [],
+                                                    "delete": []
+                                                },
+                                                "tax": null,
+                                                "$relation": {
+                                                    "entity_id": "4db12bb3-1773-409e-9f97-a2d8f5482142",
+                                                    "_schema": "price",
+                                                    "_tags": []
+                                                }
+                                            }
+                                        ],
+                                        "_tags": [
+                                            "product review demo"
+                                        ],
+                                        "cross_sellable_products": [
+                                            {
+                                                "_id": "a05d2c5e-2e55-4d7e-aa42-3aa4d659b9ad",
+                                                "_title": "Hello Suresh",
+                                                "product_images": [],
+                                                "_schema": "product",
+                                                "_org": "739224",
+                                                "_created_at": "2022-02-17T17:58:46.018Z",
+                                                "_updated_at": "2022-12-06T11:50:42.345Z",
+                                                "product_downloads": [],
+                                                "name": "Hello Suresh",
+                                                "_tags": [
+                                                    "Song",
+                                                    "Playing",
+                                                    "On",
+                                                    "Radio"
+                                                ],
+                                                "_files": [],
+                                                "active": true,
+                                                "type": "one_time",
+                                                "description": "Price 1",
+                                                "unit_amount": 1000,
+                                                "unit_amount_decimal": "10",
+                                                "unit_amount_currency": "EUR",
+                                                "tax": [
+                                                    {
+                                                        "type": "VAT",
+                                                        "behavior": "Exclusive",
+                                                        "active": true,
+                                                        "region": "DE",
+                                                        "_schema": "tax",
+                                                        "_title": "Without Behaviour",
+                                                        "description": "Without Behaviour",
+                                                        "rate": 6,
+                                                        "_id": "18bbbc2e-2c37-4f91-924a-07ae60d830e4",
+                                                        "_org": "739224",
+                                                        "_created_at": "2022-02-07T14:49:08.831Z",
+                                                        "_updated_at": "2022-12-06T15:28:15.809Z"
+                                                    }
+                                                ],
+                                                "tax_behavior": "exclusive",
+                                                "sales_tax": "standard",
+                                                "price_display_in_journeys": "show_price",
+                                                "price_options": [],
+                                                "$relation": {
+                                                    "entity_id": "a05d2c5e-2e55-4d7e-aa42-3aa4d659b9ad",
+                                                    "_tags": []
+                                                }
+                                            }
+                                        ],
+                                        "product_images": [
+                                            {
+                                                "_id": "67fe87a5-7ac4-49c3-a967-85e77edb598c",
+                                                "filename": "peter-griffin-family-guy.webp",
+                                                "access_control": "public-read",
+                                                "size_bytes": 103264,
+                                                "mime_type": "image/webp",
+                                                "readable_size": "100.84 KB",
+                                                "type": "image",
+                                                "public_url": "https://epilot-dev-user-content.s3.eu-central-1.amazonaws.com/739224/35eb1abd-28cd-450e-ab6f-476f78df30f4/peter-griffin-family-guy.webp",
+                                                "versions": [
+                                                    {
+                                                        "s3ref": {
+                                                            "bucket": "epilot-dev-user-content",
+                                                            "key": "739224/35eb1abd-28cd-450e-ab6f-476f78df30f4/peter-griffin-family-guy.webp"
+                                                        },
+                                                        "filename": "peter-griffin-family-guy.webp",
+                                                        "access_control": "public-read",
+                                                        "size_bytes": 103264,
+                                                        "mime_type": "image/webp",
+                                                        "readable_size": "100.84 KB",
+                                                        "type": "image",
+                                                        "public_url": "https://epilot-dev-user-content.s3.eu-central-1.amazonaws.com/739224/35eb1abd-28cd-450e-ab6f-476f78df30f4/peter-griffin-family-guy.webp"
+                                                    }
+                                                ],
+                                                "_schema": "file",
+                                                "_org": "739224",
+                                                "_created_at": "2022-04-01T13:19:47.001Z",
+                                                "_updated_at": "2022-04-01T13:19:47.001Z",
+                                                "_title": "peter-griffin-family-guy.webp",
+                                                "$relation": {
+                                                    "entity_id": "67fe87a5-7ac4-49c3-a967-85e77edb598c",
+                                                    "_tags": []
+                                                }
+                                            }
+                                        ],
+                                        "_acl_sync": "2023-05-23T13:19:02.636Z",
+                                        "_owners": [
+                                            {
+                                                "org_id": "739224"
+                                            }
+                                        ],
+                                        "_acl": {
+                                            "view": [
+                                                "org_911215"
+                                            ],
+                                            "edit": [
+                                                "org_911215"
+                                            ],
+                                            "delete": [
+                                                "org_911215"
+                                            ]
+                                        },
+                                        "_relations": [
+                                            {
+                                                "entity_id": "cf86d11b-07e6-45e7-802d-f2d88793b212",
+                                                "_acl": {
+                                                    "view": [
+                                                        "org_911215"
+                                                    ],
+                                                    "edit": [
+                                                        "org_911215"
+                                                    ],
+                                                    "delete": []
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "6547b12e-5d38-4876-815e-f0e7fc06a046",
+                                                "_acl": {
+                                                    "view": [
+                                                        "org_911215"
+                                                    ],
+                                                    "edit": [
+                                                        "org_911215"
+                                                    ],
+                                                    "delete": [
+                                                        "org_911215"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "13c536a4-2ca5-4340-82c6-3ddb5394e704",
+                                                "_acl": {}
+                                            },
+                                            {
+                                                "entity_id": "95b963a6-6a85-4054-ad6b-9563c800db0d",
+                                                "_acl": {}
+                                            },
+                                            {
+                                                "entity_id": "1abb2c8b-aefc-4c47-b868-348b6aa18a08",
+                                                "_acl": {}
+                                            },
+                                            {
+                                                "entity_id": "48e1792e-79a5-49be-92dc-e50c7ddbf96c",
+                                                "_acl": {
+                                                    "view": [
+                                                        "org_911215"
+                                                    ],
+                                                    "edit": [
+                                                        "org_911215"
+                                                    ],
+                                                    "delete": [
+                                                        "org_911215"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "f5c37b21-fe01-48dc-bb63-00c4d177751d",
+                                                "_acl": {}
+                                            },
+                                            {
+                                                "entity_id": "7bb485cf-e463-4e1b-a6c6-cb61f6306fde",
+                                                "_acl": {}
+                                            },
+                                            {
+                                                "entity_id": "ab3cd224-3f64-48c2-9bf6-96425119e3c1",
+                                                "_acl": {}
+                                            },
+                                            {
+                                                "entity_id": "3975e5fa-4144-4a11-84b2-a9cbb0ec34d6",
+                                                "_acl": {
+                                                    "view": [],
+                                                    "edit": [],
+                                                    "delete": []
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "4db12bb3-1773-409e-9f97-a2d8f5482142",
+                                                "_acl": {
+                                                    "view": [],
+                                                    "edit": [],
+                                                    "delete": []
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "44127fb4-6eff-46fe-93b0-7e6134c781ea"
+                                            },
+                                            {
+                                                "entity_id": "d1dd0b68-37b7-44f7-898e-74f76bd1f170"
+                                            },
+                                            {
+                                                "entity_id": "a4b9d66b-6058-407e-84d3-45a6513b7351"
+                                            },
+                                            {
+                                                "entity_id": "e6917242-a0cc-4c39-8c7c-2119b98b419b"
+                                            },
+                                            {
+                                                "entity_id": "cabc29c0-5181-41dd-ba6e-06b4ce08902f"
+                                            },
+                                            {
+                                                "entity_id": "3ee95936-a678-468d-8c82-020a86192ce3"
+                                            },
+                                            {
+                                                "entity_id": "13de6a85-ca74-4f28-955e-dddf5e464277"
+                                            },
+                                            {
+                                                "entity_id": "5ca47ee1-9a22-45d7-938b-db63ebcf0b3a"
+                                            },
+                                            {
+                                                "entity_id": "20e885d2-dc69-4877-9b3b-76f44f9cfb10"
+                                            },
+                                            {
+                                                "entity_id": "573125d3-ae08-4b8c-82e9-dee8dff114b6"
+                                            },
+                                            {
+                                                "entity_id": "cbc17a30-f583-461b-8eee-b292f0ee9d90"
+                                            },
+                                            {
+                                                "entity_id": "c0c5bf45-1d42-480b-9f54-e18cc8a4aa63"
+                                            },
+                                            {
+                                                "entity_id": "c17feef5-c470-47b1-9d00-95ddf7344b83"
+                                            },
+                                            {
+                                                "entity_id": "96b94f5b-f99b-452d-93a8-f6f1303a74c4"
+                                            },
+                                            {
+                                                "entity_id": "4baf1595-a258-4656-8781-408ddc025220"
+                                            },
+                                            {
+                                                "entity_id": "e7db7275-b8f3-4540-bf9a-a54ec9bfc9fe"
+                                            },
+                                            {
+                                                "entity_id": "a6570385-0337-4e83-8384-a732707fa50d"
+                                            },
+                                            {
+                                                "entity_id": "21327fbd-5f39-459c-8a1e-c187faf0ddd8"
+                                            },
+                                            {
+                                                "entity_id": "0ef2014d-1a6a-43c3-ae67-19e48867fc55"
+                                            },
+                                            {
+                                                "entity_id": "1389e33e-5669-405f-95e7-72903c9744ba"
+                                            },
+                                            {
+                                                "entity_id": "c2410956-97ac-4ea7-8388-bd8cf8a2425e"
+                                            },
+                                            {
+                                                "entity_id": "051c99f9-2118-422a-9279-84a5e89d8a75"
+                                            },
+                                            {
+                                                "entity_id": "47ad0ae4-bfd6-4ff9-82ad-97ce0b20537a"
+                                            },
+                                            {
+                                                "entity_id": "aca6dcda-44c2-43e8-a971-465312bf0575"
+                                            },
+                                            {
+                                                "entity_id": "4f16e881-d0a8-4795-88d1-94d0a973bf20"
+                                            },
+                                            {
+                                                "entity_id": "04960614-0c15-41dc-8100-d38d5b12b9a7"
+                                            },
+                                            {
+                                                "entity_id": "e684b684-1c04-4476-af33-840077c09bf5"
+                                            },
+                                            {
+                                                "entity_id": "f2b26c64-c4e4-4799-827a-6a79d3406bbe"
+                                            },
+                                            {
+                                                "entity_id": "52e119f6-74a9-4e82-bd37-644288715aef"
+                                            },
+                                            {
+                                                "entity_id": "37565a09-bfb0-4ec7-b49f-a47793277199"
+                                            },
+                                            {
+                                                "entity_id": "dca8e71e-6bf5-49b9-8570-f749ececca5d"
+                                            },
+                                            {
+                                                "entity_id": "44910050-94b5-4380-b303-bd2a838df789"
+                                            },
+                                            {
+                                                "entity_id": "4a8e6638-77c1-4347-99bb-68c6c46be586"
+                                            },
+                                            {
+                                                "entity_id": "1ca15dec-1c14-4516-b0c6-2ad08944e65f"
+                                            },
+                                            {
+                                                "entity_id": "1c16f413-8490-4690-af6e-9b4dafaf37c2"
+                                            },
+                                            {
+                                                "entity_id": "154f73cf-330a-4fe3-90f1-b5a86936877a"
+                                            },
+                                            {
+                                                "entity_id": "1972055d-d2a6-43db-b1b4-78e5c785d53e"
+                                            },
+                                            {
+                                                "entity_id": "fc48c5a9-ae84-4f4f-8fa2-b48dd52c6307"
+                                            },
+                                            {
+                                                "entity_id": "4a025423-c0b3-4640-be3c-590cf2b4e820"
+                                            }
+                                        ]
+                                    },
+                                    "selectedPrice": {
+                                        "_id": "48e1792e-79a5-49be-92dc-e50c7ddbf96c",
+                                        "unit_amount": 12055,
+                                        "type": "one_time",
+                                        "active": true,
+                                        "sales_tax": "standard",
+                                        "tax_behavior": "inclusive",
+                                        "description": "Winter Sale",
+                                        "tiers_mode": "Standard",
+                                        "_schema": "price",
+                                        "_org": "739224",
+                                        "_created_at": "2021-11-10T10:57:02.049Z",
+                                        "_updated_at": "2023-05-23T13:19:03.310Z",
+                                        "_title": "Winter Sale",
+                                        "unit_amount_decimal": "120.55",
+                                        "unit_amount_currency": "EUR",
+                                        "price_display_in_journeys": "show_as_on_request",
+                                        "pricing_model": "per_unit",
+                                        "tax": [
+                                            {
+                                                "_id": "79cac814-18c8-4047-ae45-1d0828598a18",
+                                                "type": "Custom",
+                                                "rate": 19,
+                                                "behavior": "inclusive",
+                                                "active": true,
+                                                "region": "DE",
+                                                "_schema": "tax",
+                                                "_title": "GST",
+                                                "description": "GST",
+                                                "_org": "739224",
+                                                "_created_at": "2022-04-26T08:41:38.696Z",
+                                                "_updated_at": "2022-12-06T15:28:16.765Z",
+                                                "$relation": {
+                                                    "entity_id": "79cac814-18c8-4047-ae45-1d0828598a18"
+                                                }
+                                            }
+                                        ],
+                                        "billing_period": "weekly",
+                                        "billing_duration_unit": "months",
+                                        "notice_time_unit": "months",
+                                        "termination_time_unit": "months",
+                                        "renewal_duration_unit": "months",
+                                        "_acl_sync": "2023-05-23T13:19:02.637Z",
+                                        "_owners": [
+                                            {
+                                                "org_id": "739224"
+                                            }
+                                        ],
+                                        "is_tax_inclusive": true,
+                                        "_acl": {
+                                            "view": [
+                                                "org_911215"
+                                            ],
+                                            "edit": [
+                                                "org_911215"
+                                            ],
+                                            "delete": [
+                                                "org_911215"
+                                            ]
+                                        },
+                                        "_relations": [
+                                            {
+                                                "entity_id": "6547b12e-5d38-4876-815e-f0e7fc06a046",
+                                                "_acl": {
+                                                    "view": [
+                                                        "org_911215"
+                                                    ],
+                                                    "edit": [
+                                                        "org_911215"
+                                                    ],
+                                                    "delete": [
+                                                        "org_911215"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "4f92b831-6465-4929-9dd3-3d64b5a33514",
+                                                "_acl": {
+                                                    "view": [
+                                                        "org_911215"
+                                                    ],
+                                                    "edit": [
+                                                        "org_911215"
+                                                    ],
+                                                    "delete": [
+                                                        "org_911215"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "e10a2a89-07e6-440b-9d67-fbb0ec036138",
+                                                "_acl": {}
+                                            },
+                                            {
+                                                "entity_id": "3975e5fa-4144-4a11-84b2-a9cbb0ec34d6",
+                                                "_acl": {
+                                                    "view": [],
+                                                    "edit": [],
+                                                    "delete": []
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "2488b366-19c5-4c5e-96a5-cbec488fd529",
+                                                "_acl": {
+                                                    "view": [],
+                                                    "edit": [],
+                                                    "delete": []
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "fc308f7d-ab9e-4563-8f94-66dd66dcf137",
+                                                "_acl": {
+                                                    "view": [],
+                                                    "edit": [],
+                                                    "delete": []
+                                                }
+                                            },
+                                            {
+                                                "entity_id": "00be432e-8afe-474c-a051-b729a92e6bae"
+                                            },
+                                            {
+                                                "entity_id": "03b46d92-33a4-4e25-bbf8-cc39bcf6cba6"
+                                            },
+                                            {
+                                                "entity_id": "44127fb4-6eff-46fe-93b0-7e6134c781ea"
+                                            },
+                                            {
+                                                "entity_id": "a5734afb-4ecf-4db8-9d05-bf2f43d17849"
+                                            },
+                                            {
+                                                "entity_id": "b8e0f1f4-1061-49b0-9886-4a3b01ede3e0"
+                                            },
+                                            {
+                                                "entity_id": "515e1aa9-9e6c-468a-92b3-041e5fc9fad3"
+                                            },
+                                            {
+                                                "entity_id": "fa86ee5f-ebfa-41c9-a952-b6d9e7a557dd"
+                                            },
+                                            {
+                                                "entity_id": "5ca47ee1-9a22-45d7-938b-db63ebcf0b3a"
+                                            },
+                                            {
+                                                "entity_id": "da6f1160-df65-47cc-b15c-aa8824f5ffff"
+                                            },
+                                            {
+                                                "entity_id": "d60abc72-3dfa-4d65-ae8b-a4ffb0baaa64"
+                                            },
+                                            {
+                                                "entity_id": "1cde4547-2771-4004-ac96-4f0cb2a0bebf"
+                                            },
+                                            {
+                                                "entity_id": "c0c5bf45-1d42-480b-9f54-e18cc8a4aa63"
+                                            },
+                                            {
+                                                "entity_id": "d548dc9f-a859-4eae-8f40-fca75b43e0dd"
+                                            },
+                                            {
+                                                "entity_id": "c17feef5-c470-47b1-9d00-95ddf7344b83"
+                                            },
+                                            {
+                                                "entity_id": "96b94f5b-f99b-452d-93a8-f6f1303a74c4"
+                                            },
+                                            {
+                                                "entity_id": "4baf1595-a258-4656-8781-408ddc025220"
+                                            },
+                                            {
+                                                "entity_id": "e7db7275-b8f3-4540-bf9a-a54ec9bfc9fe"
+                                            },
+                                            {
+                                                "entity_id": "0114a00b-e8bb-4b6f-8596-89b6175680d2"
+                                            },
+                                            {
+                                                "entity_id": "21327fbd-5f39-459c-8a1e-c187faf0ddd8"
+                                            },
+                                            {
+                                                "entity_id": "0ef2014d-1a6a-43c3-ae67-19e48867fc55"
+                                            },
+                                            {
+                                                "entity_id": "d01c76a9-6142-4a78-afa9-d8f61b2bfb35"
+                                            },
+                                            {
+                                                "entity_id": "1389e33e-5669-405f-95e7-72903c9744ba"
+                                            },
+                                            {
+                                                "entity_id": "c2410956-97ac-4ea7-8388-bd8cf8a2425e"
+                                            },
+                                            {
+                                                "entity_id": "1310a2cb-81e4-497d-ae44-219ab6b8a4f7"
+                                            },
+                                            {
+                                                "entity_id": "a2831fd1-1c35-4da9-b781-fb50fca6301b"
+                                            },
+                                            {
+                                                "entity_id": "cb4408f3-dfb2-41f4-ba6b-1798cc502e30"
+                                            },
+                                            {
+                                                "entity_id": "d893ee26-24c9-4b65-a19d-d2919d807f06"
+                                            },
+                                            {
+                                                "entity_id": "a950878f-27dd-46bc-9740-153148ae9123"
+                                            },
+                                            {
+                                                "entity_id": "5a7782c3-7d0d-4f58-9af4-d2f788660ffd"
+                                            },
+                                            {
+                                                "entity_id": "4753facb-a3f4-4047-9bdc-744c717651e2"
+                                            },
+                                            {
+                                                "entity_id": "de2595a9-4756-4c27-afaa-6ca60155e89f"
+                                            },
+                                            {
+                                                "entity_id": "11c2b577-b400-4fef-94f0-0f60ae67c090"
+                                            },
+                                            {
+                                                "entity_id": "f28e9730-c9e5-4671-976e-c7b458453091"
+                                            },
+                                            {
+                                                "entity_id": "40eeaa35-2173-43d0-92e4-21e5f78204a5"
+                                            },
+                                            {
+                                                "entity_id": "04d66afc-4b6f-4f0b-bb78-405657987526"
+                                            },
+                                            {
+                                                "entity_id": "051c99f9-2118-422a-9279-84a5e89d8a75"
+                                            },
+                                            {
+                                                "entity_id": "47ad0ae4-bfd6-4ff9-82ad-97ce0b20537a"
+                                            },
+                                            {
+                                                "entity_id": "efdeae48-70e4-4b7c-9ba8-7de2901a3131"
+                                            },
+                                            {
+                                                "entity_id": "f72eb01c-1bca-4709-9873-02e7c027e5f0"
+                                            },
+                                            {
+                                                "entity_id": "fd51edad-193c-4f23-b8fd-98ffba59d422"
+                                            },
+                                            {
+                                                "entity_id": "d062e42e-e577-4b60-ae8a-f53751b83b76"
+                                            },
+                                            {
+                                                "entity_id": "1b51f156-70e8-416b-9425-145b95292742"
+                                            },
+                                            {
+                                                "entity_id": "9b33b045-ae2c-40d2-8dce-57c7c9417dbc"
+                                            },
+                                            {
+                                                "entity_id": "cd885a19-a652-445e-93c9-03d13c39e33a"
+                                            }
+                                        ],
+                                        "blockMappingData": {}
+                                    },
+                                    "blockConfiguration": {
+                                        "isRequired": true,
+                                        "showQuantity": false,
+                                        "blockPath": "1/Products/ProductSelectionControl"
+                                    }
+                                }
+                            },
+                            "quantity": 1
+                        }
+                    },
+                    {
+                        "Address": {
+                            "countryCode": "DE",
+                            "city": "Köln",
+                            "zipCode": "50670"
+                        },
+                        "Contact Info": {
+                            "lastName": "some last name",
+                        }
+                    }]
+                }
+            }
+            __epilot.init([payload])
+        </script>
+
+
+        <h2>Some Content below Journey</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.</p>
+
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.</p>
+
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sequi error necessitatibus earum
+            blanditiis
+            saepe voluptates ratione ex, perspiciatis suscipit aut eos ipsam adipisci. Modi magnam corporis facilis
+            molestiae soluta.</p>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script>
+        // Hide header on scroll down
+        var didScroll;
+        var lastScrollTop = 0;
+        var delta = 5;
+        var navbarHeight = $('header').outerHeight();
+
+        $(window).scroll(function (event) {
+            didScroll = true;
+        });
+
+        setInterval(function () {
+            if (didScroll) {
+                hasScrolled();
+                didScroll = false;
+            }
+        }, 250);
+
+        function hasScrolled() {
+            var st = $(this).scrollTop();
+
+            // Make scroll more than delta
+            if (Math.abs(lastScrollTop - st) <= delta)
+                return;
+
+            // If scrolled down and past the navbar, add class .nav-up.
+            if (st > lastScrollTop && st > navbarHeight) {
+                // Scroll Down
+                $('header').removeClass('nav-down').addClass('nav-up');
+            } else {
+                // Scroll Up
+                if (st + $(window).height() < $(document).height()) {
+                    $('header').removeClass('nav-up').addClass('nav-down');
+                }
+            }
+
+            lastScrollTop = st;
+        }
+    </script>
+</body>
+
+</html>
