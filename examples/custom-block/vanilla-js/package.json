@@ -1,0 +1,24 @@
+{
+  "name": "vanilla-js",
+  "version": "1.0.0",
+  "author": "Mohannad Mamo",
+  "description": "This is a vanilla js web component",
+  "scripts": {
+    "start": "npx nodemon --exec \"npx http-server -c-1 -p 8080\""
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
