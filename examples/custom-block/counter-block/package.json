@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@epilot/epilot-journey-sdk": "^1.0.6",
-    "@r2wc/react-to-web-component": "2.0.2",
+    "@r2wc/react-to-web-component": "2.0.3",
     "loader-utils": "3.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

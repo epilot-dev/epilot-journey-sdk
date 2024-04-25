@@ -17,3 +17,4 @@ Configure your custom block in the Journey Builder for local development:
 
 Point Bundle URL to `http://localhost:3000/static/js/bundle.js` and use the Tag name `counter-block` as configured in `./src/index.tsx`
 
+In the Args section, add the following key-value pairs: person, anyname
