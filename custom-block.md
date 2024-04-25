@@ -10,6 +10,7 @@ Apart from this document, examples are available in the [examples](./examples/cu
 * [Counter](./examples/custom-block/counter-block/README.md): this is a more complex block that takes data from the journey, manupilate it and sends its data back to the journey. It also gets static data from the journey passed as arguments.
 * [Theming](./examples/custom-block/theming/README.md): another simple example, it shows how to take advantage of the theme object that the journey passes to the block.
 * [Required and Errors](./examples/custom-block/required-errors-block/README.md): another simple example, it shows how the journey will communicate to the block that its data is required. And also shows how when the user is trying to skip filling the data, the journey will instricut the block to show an error message.
+* [Vanilla JS](./examples/custom-block/vanilla-js/README.md): is an example constructed with vanilla js, without any libraries. This example ismaking use of all the features that the SDK provides.
 
 ## What are Custom blocks?
 epilot through the 360 tool Journey Builder providers numerous amounts of block which are easy to be used and provides a UI method to configure them. Despite that, the business case could be too special or too complex for a generic solution and a custom solution might be needed.
