@@ -7,7 +7,7 @@ This document is intended to be a guide for configuring users to configure Custo
 
 Apart from this document, examples are available in the [examples](./examples/custom-block) folder. They include how to develop a web component and how to use it in the Journey Builder.
 * [Hello World](./examples/custom-block/hello-world-block/README.md): this is a simple block that displaying a static message.
-* [Counter](./examples/custom-block/counter-block/README.md): this is a more complex block that takes data from the journey, manupilate it and sends its data back to the journey.
+* [Counter](./examples/custom-block/counter-block/README.md): this is a more complex block that takes data from the journey, manupilate it and sends its data back to the journey. It also gets static data from the journey passed as arguments.
 * [Theming](./examples/custom-block/theming/README.md): another simple example, it shows how to take advantage of the theme object that the journey passes to the block.
 * [Required and Errors](./examples/custom-block/required-errors-block/README.md): another simple example, it shows how the journey will communicate to the block that its data is required. And also shows how when the user is trying to skip filling the data, the journey will instricut the block to show an error message.
 
