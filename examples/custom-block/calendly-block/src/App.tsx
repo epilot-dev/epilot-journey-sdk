@@ -10,13 +10,13 @@ export type AppProps = {
 
 function App(props: AppProps) {
   const { theme, args, setValue, value } = props.container
-  const { token } = args && JSON.parse(args)
+  const { token, url } = args && JSON.parse(args)
 
   if (value) {
     return JSON.stringify(value)
   }
   return (
-    <CalendlyBlock url="https://calendly.com/mohand-9992/30-minute-meeting-clone" onChange={event => setValue(event)} theme={theme} token={token} />
+    <CalendlyBlock url={url} onChange={event => setValue(event)} theme={theme} token={token} />
   )
 }
 
