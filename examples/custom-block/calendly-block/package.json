@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev2": "npm run build -- --watch",
+    "dev": "npm run build -- --watch & npx http-server ./dist",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

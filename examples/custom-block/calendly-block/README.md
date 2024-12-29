@@ -1,50 +1,38 @@
-# React + TypeScript + Vite
+# Calendly epilot journey block
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This block is developed using Vite + React + TypeScript.
 
-Currently, two official plugins are available:
+The goal of the block is to enable the epilot journey visitor to schedule a meeting in a provided calendly link.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to use
 
-## Expanding the ESLint configuration
+<img src="https://github.com/epilot-dev/epilot-journey-sdk/blob/main/examples/custom-block/calendly-block/docs/assets/configurator.png?raw=true" width="300px" />
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+In any epilot journey, add a new **Custom API & SDK Block** to any step.
 
-- Configure the top-level `parserOptions` property like this:
+For the **Tag Name** use `calendly-block`. It could be changed in the `main.tsx` file.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+In the block configuration, set the **Bundle URL** to the URL of the deployed block. (When running the bundle locally `http://127.0.0.1:8080/assets/index.js` can be used).
+
+This block requires 2 arguments to be passed to it to work:
+1. `url`: The URL of the calendly link. This url is found on each event calender. The events could be [found here](https://calendly.com/event_types/user/me). If you have existing Events, then for each one a button called `Copy link` is available.
+
+<img src="https://github.com/epilot-dev/epilot-journey-sdk/blob/main/examples/custom-block/calendly-block/docs/assets/calendly_events.png?raw=true" width="300px" />
+
+2. `token`: The Calendly API personal access token. More info about how to make such API key is available [here](https://developer.calendly.com/how-to-authenticate-with-personal-access-tokens).
+
+
+
+## Development
+To run the block locally, run the following commands:
+```bash
+npm install
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+This would keep biulding the block for any changes made to the source code. Additonally it would serve the bundle using a simple http server.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+> Note: running the project with the command Vite will start a development server but it will show an empty page as the block is missing configuration and the journey is not capable of loading a single bundle.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Deployment for Production
+Coming soon...
