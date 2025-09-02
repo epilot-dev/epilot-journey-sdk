@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Load + Injection Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f9f9f9;
+        margin: 0;
+        padding: 2rem;
+        color: #222;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      #products {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+      .product-card {
+        background: #fafafa;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        padding: 1.5rem;
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: box-shadow 0.2s;
+      }
+      .product-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      }
+      .product-card img {
+        width: 100%;
+        max-width: 220px;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        object-fit: cover;
+        background: #eee;
+      }
+      .product-card h3 {
+        margin: 0.5rem 0 0.5rem 0;
+        font-size: 1.2rem;
+        text-align: center;
+      }
+      .product-card p {
+        margin: 0.5rem 0;
+        font-weight: bold;
+        color: #413ff5;
+      }
+      .product-card h4 {
+        margin: 1rem 0 0.5rem 0;
+        font-size: 1rem;
+        color: #555;
+      }
+      .product-card ul {
+        list-style: disc inside;
+        padding: 0;
+        margin: 0 0 1rem 0;
+        text-align: left;
+        width: 100%;
+      }
+      .product-card button {
+        background: #413ff5;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        padding: 12px 32px;
+        color: #fff;
+        font-size: 1rem;
+        margin-top: 1rem;
+        width: 100%;
+        transition: background 0.2s;
+      }
+      .product-card button:hover {
+        background: #413ff5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Verbrauch</h1>
+      <p>
+        In diesem Beispiel können Sie Ihren Verbrauch eingeben und passende Produkte anzeigen lassen (Journey API). Nach Auswahl eines Produkts wird der Verbrauch und die Produktauswahl direkt in das Journey-Formular übernommen und im Vollbildmodus angezeigt.
+      </p>
+      <form id="consumption-form">
+        <label for="numberInput">Geben Sie Ihren Verbrauch ein:</label>
+        <input required type="number" id="numberInput" />
+        <button type="submit" id="submitButton">Zeige Produkte</button>
+      </form>
+
+      <div id="products"></div>
+    </div>
+
+    <script>
+      const journeyId = "567c66b0-8742-11f0-b8ed-81330483566e";
+      let products = [];
+      const consumptionForm = document.getElementById("consumption-form");
+
+      consumptionForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const numberInput = document.getElementById("numberInput");
+        const consumptionValue = Number(numberInput.value);
+
+        fetch(`https://journey-config.sls.epilot.io/v1/journey/products/${journeyId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              // Use this endpoint by generating an API token within epilot using a role which has 1 permission: "Show Journeys"
+              "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjRaRnpITVkyVjJyMXRjcW15bEJUaVozSkRSR3pKVW5JeG5Rcm9rQVNGOUEifQ.eyJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJhdWQiOiJlcGlsb3QiLCJ0b2tlbl9pZCI6ImFwaV9LXzRCNEc0Q0dSS2VicDgyRkpUT3IiLCJ0b2tlbl9uYW1lIjoiSm91cm5leSBQcm9kdWN0cyIsIm9yZ19pZCI6IjE2MjQ2MDIxIiwidXNlcl9pZCI6ImFwaV9LXzRCNEc0Q0dSS2VicDgyRkpUT3IiLCJ0b2tlbl90eXBlIjoiYXBpIiwiY3VzdG9tOml2eV9vcmdfaWQiOiIxNjI0NjAyMSIsImN1c3RvbTppdnlfdXNlcl9pZCI6ImFwaV9LXzRCNEc0Q0dSS2VicDgyRkpUT3IiLCJhc3N1bWVfcm9sZXMiOlsiMTYyNDYwMjE6am91cm5leV9wcm9kdWN0cyJdLCJpc3MiOiJodHRwczovL2FjY2Vzcy10b2tlbi5zbHMuZXBpbG90LmlvL3YxL2FjY2Vzcy10b2tlbnMiLCJpYXQiOjE3NTY3Mzk3NTZ9.JYuQBVW088PJUQggDqKiRMAHd2qo8fqCjGxqaXAoo0-5RsSa8VIxAW34_BVruHeNSdeh0479Tgnt9vROZwoRJ7a_TBmIWxShXXSK4gSJPT4wTmJg8N60g1N6SxyEiXMk9mQtKU-CWp61kNpAPaMSyReCVqsNdJEAMwnmooYE9IzvDMjWFyhiSGZP5HHQs4WL9_giA4SFYEV-7-7xBk60zwlv_V_3z9yTk0d3frxtn7mblKPAufWBJfbQw1yiPAMJ7MVbI4DwU_TK7WY6tcQdm5vTx8FAE-vufhsVeWjs2NWiAvOSnIc37Rb2njg6xYuMp-GUnPHsTQAT6j51xRzG3A",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            products = data;
+            const productsContainer = document.getElementById("products");
+            productsContainer.innerHTML = "";
+
+            // render products in html container
+            products.forEach((product) => {
+              const productPrice = product.price;
+              const productCard = document.createElement("div");
+              productCard.innerHTML = `
+                            <div class="product-card">
+                                <img src="${product?.product_images?.[0]?.public_url}" alt="Product Image">
+                                <h3>${product.name}</h3>
+                                <h4>Features:</h4>
+                                <ul>${product?.feature?.map((feature) => `<li>${feature.feature}</li>`).join("")}</ul>
+                                <div style="width:100%;text-align:left">
+                                    <button id="productCard-${product._id}" data-product-id="${product._id}" data-price-id="${productPrice._id}">Inhalt anzeigen</button>
+                                </div>
+                            </div>
+                        `;
+              productsContainer.appendChild(productCard);
+            });
+
+            const productButtons = document.querySelectorAll("[id^=productCard-]");
+            // attach a click event listener to each button which takes care of injecting + opening the journey
+            productButtons.forEach((button) => {
+              button.addEventListener("click", handleProductClick);
+            });
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      });
+
+      /**
+       * Handle product card click events
+       * We get the product ID and price ID from the button's data attributes
+       * and then inject that data via the __epilot.init() function
+       */
+      function handleProductClick(event) {
+        const button = event.target;
+        const productId = button.getAttribute("data-product-id");
+        const priceId = button.getAttribute("data-price-id");
+        const product = products.find((p) => p._id === productId);
+        const price = product.price;
+        const numberInput = document.getElementById("numberInput");
+        const inputValue = numberInput.value;
+
+        const payloadToJourney = {
+          journeyId: journeyId,
+          mode: "full-screen",
+          scrollToTop: true,
+          topBar: true,
+          lang: "de",
+          dataInjectionOptions: {
+            // skip journeys consumption step
+            initialStepIndex: 1,
+            initialState: [
+              {
+                // prefill consumption input
+                Verbrauch: {
+                  numberInput: inputValue,
+                  numberUnit: "kwh",
+                },
+              },
+              {
+                // prefill + preselect product selection
+                Produktauswahl: {
+                  product: {
+                    selectedProductId: productId,
+                    selectedPriceId: priceId,
+                    selectionMetadata: {
+                      selectedProduct: { _id: product._id, name: product.name },
+                      selectedPrice: { _id: price._id, amount: price.amount },
+                    },
+                  },
+                  quantity: 1,
+                },
+              },
+            ],
+          },
+        };
+
+        __epilot.init([payloadToJourney]);
+        __epilot.enterFullScreen(journeyId, payloadToJourney);
+      }
+    </script>
+    <script data-ep-init="false" src="https://embed.journey.epilot.io/bundle.js"></script>
+  </body>
+</html>

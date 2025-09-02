@@ -1,20 +1,27 @@
 # Embed Script Examples
-This directory includes 2 examples about data injection into epilot Journeys
 
-**10-data-injection-init**
-This example shows how to:
-* Show the epilot Journey inline in a webpage
-* Start the journey from step 2 (index 1) 
-* Have the Journey loaded with disabled fields
-* Have a product already added to the shopping cart
+This directory contains examples for embedding and injecting data into epilot Journeys using HTML and JavaScript.
 
-**11-data-injection-fullscreen**
-This example is trying to demo how one can develop a custom landing page that will load products they are configured a journey, load their data, display it in custom cards.
+## data-injection-inline.html
+Shows how to embed an epilot Journey inline on a webpage, with pre-filled data and some fields set to read-only.
 
-Then clicking on a product card the Journey will open in full screen mode, it will start from a step that represents the start of the checkout process. In addition to that, it will have product already in the shopping cart.
+Features:
+- Loads a Journey in "inline" mode
+- Starts at a specific step (configurable)
+- Injects initial data (e.g., personal info, address)
+- Demonstrates disabling blocks/fields
 
-Hints about this example:
-* One advanced usage is having one of the products with variable pricing.
-* The data passed to the journey is matching the structure of existing blocks!. The embeded journey actually have blocks in step 1 "consumption" and step 2 "products"
-* Dinero library is used to calculate the price of the variable pricing because JS is bad with math. Think about: `parseInt("08"); // 0 if not support ECMAScript 5` or maybe `parseInt(1 / 1999999); // -> 5` ... [More fun here...](https://github.com/denysdovhan/wtfjs)
+## data-injection-products-fullscreen.html
+Demonstrates a custom page that fetches products from a Journey, displays them as cards, and injects the selected product data into the Journey in fullscreen mode.
+
+Features:
+- User enters consumption value
+- Products are fetched and displayed as cards and as part of the website
+- Clicking a product opens the Journey in fullscreen, pre-filling consumption and product selection
+
+## Notes
+- The examples use the official epilot embed script and [API tokens](https://docs.epilot.io/docs/auth/access-tokens). Replace with your own for production.
+- See the HTML comments and code for further customization options
+
+For more details on data injection and embedding, see the [epilot documentation](https://docs.epilot.io/docs/journeys/embedding#journey-data-injection).
 

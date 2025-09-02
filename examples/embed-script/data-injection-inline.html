@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contact Form Journey Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f9f9f9;
+        margin: 0;
+        padding: 2rem;
+        color: #222;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      #epilot-journey-ca39ab90-873c-11f0-860a-3196e5b83cfe {
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Kontaktformular</h1>
+      <p>Dieses Beispiel lädt eine Journey im "Inline" Modus und initialisiert die Journey mit bereits vorausgefüllten Daten.</p>
+      <div id="epilot-journey-ca39ab90-873c-11f0-860a-3196e5b83cfe" style="width: 100%; text-align: left;"></div>
+    </div>
+    <script data-ep-init="false" src="https://embed.journey.epilot.io/bundle.js"></script>
+    <script>
+      const payload = {
+        journeyId: "ca39ab90-873c-11f0-860a-3196e5b83cfe",
+        mode: "inline",
+        scrollToTop: false,
+        topBar: false,
+        dataInjectionOptions: {
+          // The step a journey starts at (index based)
+          initialStepIndex: 0,
+          // Which blocks should be read-only
+          blocksDisplaySettings: [
+            {
+              type: "DISABLED",
+              blockName: "Beispiel: Auswahl",
+              stepIndex: 1,
+            },
+          ],
+          // How to identify what data to inject? https://docs.epilot.io/docs/journeys/embedding#journey-data-injection
+          initialState: [
+            {
+              "Persönliche Informationen": {
+                salutation: "Mr.",
+                firstName: "Max",
+                lastName: "Mustermann",
+                email: "max@mustermann.de",
+                telephone: "",
+                _isValid: true,
+              },
+              Adresse: {
+                countryCode: "DE",
+                city: "Köln",
+                zipCode: "50670",
+                streetName: "Im Mediapark",
+                houseNumber: "8",
+                _isValid: true,
+              },
+            },
+            {
+              "Beispiel: Auswahl": "Option 1",
+            },
+          ],
+        },
+      };
+
+      __epilot.init([payload]);
+    </script>
+  </body>
+</html>
