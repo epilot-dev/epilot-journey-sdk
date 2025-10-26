@@ -27,6 +27,7 @@ The Custom Block wrapper expects the implementation to be a standard web compone
 ```typescript
 type ControlledCustomBlockProps<T> = {
   setValue: React.Dispatch<T>
+  getValue: (blockId: string) => unknown
   value: T
   errors?: string
   required?: boolean
