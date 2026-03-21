@@ -1,2 +1,5 @@
 export * from './types'
 export * from './embed_types'
+export { JourneyClient } from './client/index.js'
+export * from './client/types.js'
+export * from './utils'

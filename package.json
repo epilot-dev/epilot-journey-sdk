@@ -12,7 +12,9 @@
     "prepublishOnly": "yarn build",
     "postrelease": "git push && git push --tags"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@epilot/journey-client": "^0.5.1"
+  },
   "devDependencies": {
     "@material-ui/core": "4.*",
     "standard-version": "^9.5.0",
@@ -35,6 +37,6 @@
       "esm"
     ],
     "clean": true,
-    "external": []
+    "external": ["@epilot/journey-client", "openapi-client-axios"]
   }
 }
