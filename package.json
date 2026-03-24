@@ -18,7 +18,8 @@
   "devDependencies": {
     "@material-ui/core": "4.*",
     "standard-version": "^9.5.0",
-    "tsup": "^7.0.0"
+    "tsup": "^7.0.0",
+    "typescript": "^6.0.2"
   },
   "peerDependencies": {
     "@material-ui/core": "4.*"
@@ -37,6 +38,9 @@
       "esm"
     ],
     "clean": true,
-    "external": ["@epilot/journey-client", "openapi-client-axios"]
+    "external": [
+      "@epilot/journey-client",
+      "openapi-client-axios"
+    ]
   }
 }

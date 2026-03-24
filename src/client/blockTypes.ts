@@ -1,685 +1,528 @@
 /**
- * Block type interfaces inferred from epilot journey implementations.
+ * Complete block type registry for the epilot Journey SDK.
  *
- * These types describe the known block types available in the epilot Journey Builder,
- * their value shapes (what data they produce), and their UI schema options
- * (how they're configured). Use them for type-safe block manipulation.
+ * Block types, value shapes, and settings are sourced from
+ * `journey-logic-commons` in the journey-monorepo. The API wire format
+ * uses v3 control names (e.g., `PersonalInformationControl`), which map
+ * to the v4 internal `BLOCK_TYPE` enum used by the Builder/Renderer apps.
  *
  * @module blockTypes
  */
 
-// ─── Block Type Constants ────────────────────────────────────────
+// ─── Block Type Constants (CONTROL_NAME from journey-logic-commons) ──
 
 /**
- * Known block type identifiers used in epilot journeys.
+ * All known block type identifiers used in the v3 API wire format.
  *
- * These correspond to the `type` field in UI schema elements or to the
- * block category in the Journey Builder. All blocks use `type: 'Control'`
- * in the uischema; the actual block type is determined by the `scope`
- * target's schema type and the `options` configuration.
+ * These correspond to the `type` field in `uischema` elements stored by the
+ * Journey API. Sourced from `CONTROL_NAME` in `journey-logic-commons`.
  *
- * @example
- * ```ts
- * import { BlockType } from '@epilot/epilot-journey-sdk'
- *
- * if (block.options?.blockType === BlockType.PersonalInformation) {
- *   // handle personal info block
- * }
- * ```
+ * Note: Generic `Control` maps to text input, single-choice, or binary
+ * depending on the schema type at the `scope` path.
  */
-export const BlockType = {
+export const ControlName = {
   /** Collects personal info: name, email, phone, birth date, company details */
   PersonalInformation: 'PersonalInformationControl',
-  /** Collects a street address with country, city, zip, street, house number */
-  Address: 'AddressControl',
-  /** Date picker for selecting single dates or date ranges */
-  DatePicker: 'DatePickerControl',
-  /** Binary yes/no toggle (switch or checkbox) */
-  BinaryInput: 'BinaryControl',
-  /** Single-choice selection from a set of options */
-  SingleChoice: 'SingleChoiceControl',
-  /** Free-form text input (single or multi-line) */
-  TextInput: 'TextControl',
-  /** Numeric input with optional min/max/step */
-  NumberInput: 'NumberControl',
-  /** Product selection / product tiles display */
-  Product: 'ProductControl',
-  /** Image display block */
-  Image: 'ImageControl',
-  /** Address-based availability check (e.g., for service coverage) */
-  Availability: 'AvailabilityControl',
-  /** Summary / review block showing collected data */
-  Summary: 'SummaryControl',
-  /** Contact information (similar to PersonalInformation but for contacts) */
+  /** Collects contact-specific fields (salutation, name, email, phone, birthDate) */
   Contact: 'ContactControl',
-  /** Account / company information block */
+  /** Collects business/company account info (email, phone, company, tax ID) */
   Account: 'AccountControl',
-  /** File upload block */
-  FileUpload: 'FileUploadControl',
-  /** Consent / terms acceptance checkbox */
-  Consent: 'ConsentControl',
-  /** IBAN / bank account input */
-  IbanInput: 'IbanControl',
-  /** Custom web component block */
+  /** Collects a street address with autocomplete and map integration */
+  Address: 'AddressControl',
+  /** Generic control — maps to text input, single-choice, or binary based on schema type */
+  Control: 'Control',
+  /** Summary / review block showing collected data from other blocks */
+  Summary: 'SummaryControl',
+  /** PDF document generator from a DocX template */
+  PdfSummary: 'PdfSummaryControl',
+  /** Shopping cart displaying selected products and prices */
+  ShoppingCart: 'ShopCartControl',
+  /** Success / thank-you message shown after submission */
+  ConfirmationMessage: 'ConfirmationMessageControl',
+  /** Navigation bar with next/back buttons and submit actions */
+  ActionBar: 'ActionBarControl',
+  /** Sign-in / sign-up / skip authentication flow */
+  Auth: 'AuthControl',
+  /** Hyperlink list block (secondary action bar) */
+  Hyperlink: 'SecondaryActionBarControl',
+  /** Rich text paragraph (stored as base64) */
+  Paragraph: 'Label',
+  /** Product selection tiles with pricing and features */
+  ProductSelection: 'ProductSelectionControl',
+  /** Product category filter for product blocks */
+  ProductCategory: 'ProductCategoryControl',
+  /** AI/contract-based product recommendations */
+  ProductRecommendations: 'ProductRecommendationsControl',
+  /** Payment method selector (bank transfer / SEPA) */
+  Payment: 'PaymentControl',
+  /** File upload with type restrictions and tagging */
+  FileUpload: 'UploadPanelControl',
+  /** Digital signature pad */
+  DigitalSignature: 'DigitalSignatureControl',
+  /** Date picker for single dates or date ranges with optional time */
+  DatePicker: 'DatePickerControl',
+  /** Cross-sell product selection (deprecated, use ProductSelection) */
+  CrossSellProductSelection: 'CrossSellProductSelectionControl',
+  /** Numeric input with unit, range, format, and suggestions */
+  NumberInput: 'NumberInputControl',
+  /** Device consumption calculator with preset/custom factors */
+  InputCalculator: 'InputCalculatorControl',
+  /** GDPR/terms consent checkboxes with topics */
+  Consents: 'ConsentsControl',
+  /** Address-based availability/coverage check */
+  AvailabilityCheck: 'AvailabilityCheckControl',
+  /** Multiple-choice selection (checkbox, button, or image) */
+  MultiChoice: 'MultichoiceControl',
+  /** Custom web component block (deprecated, use App) */
   CustomBlock: 'CustomBlockControl',
+  /** Boolean control (switch or checkbox) */
+  Boolean: 'BooleanControl',
+  /** Enum/dropdown control */
+  Enum: 'EnumControl',
+  /** Text field control */
+  TextField: 'TextfieldControl',
+  /** Visual grouping container for child blocks */
+  GroupLayout: 'GroupLayout',
+  /** Standard meter reading entry */
+  MeterReading: 'MeterReadingControl',
+  /** Dynamic meter reading with entity-updating capabilities */
+  DynamicMeterReading: 'DynamicMeterReadingControl',
+  /** Launcher that starts other journeys (used in launcher-type journeys) */
+  JourneyLauncher: 'JourneyLauncherControl',
+  /** Previous energy provider lookup with BDEW code */
+  PreviousProvider: 'PreviousProviderControl',
+  /** Thank-you / confirmation control (legacy alias) */
+  ThankYou: 'ThankYouControl',
+  /** Image display block with alt text and responsive width */
+  Image: 'ImageControl',
+  /** Entity search, select, and display block */
+  EntityLookup: 'EntityLookupControl',
+  /** Entity attribute editor (read/write entity fields) */
+  EntityAttribute: 'EntityAttributeControl',
+  /** Solar panel roof planner / PV rooftop navigator */
+  PVRoofPlanner: 'PVRoofPlannerControl',
+  /** Installed app block (replaces CustomBlock) */
+  AppBlock: 'AppBlockControl',
+  /** Contract start date picker */
+  ContractStartDate: 'ContractStartDateControl',
+  /** Entity cards with optional selection */
+  Cards: 'CardsControl',
 } as const
 
-/** Union type of all known block type identifiers */
+export type ControlNameValue = (typeof ControlName)[keyof typeof ControlName]
+
+/**
+ * @deprecated Use `ControlName` instead. Kept for backwards compatibility.
+ */
+export const BlockType = {
+  PersonalInformation: ControlName.PersonalInformation,
+  Address: ControlName.Address,
+  DatePicker: ControlName.DatePicker,
+  BinaryInput: ControlName.Boolean,
+  SingleChoice: ControlName.Control,
+  TextInput: ControlName.Control,
+  NumberInput: ControlName.NumberInput,
+  Product: ControlName.ProductSelection,
+  Image: ControlName.Image,
+  Availability: ControlName.AvailabilityCheck,
+  Summary: ControlName.Summary,
+  Contact: ControlName.Contact,
+  Account: ControlName.Account,
+  FileUpload: ControlName.FileUpload,
+  Consent: ControlName.Consents,
+  IbanInput: ControlName.Payment,
+  CustomBlock: ControlName.CustomBlock,
+} as const
+
+/** @deprecated Use `ControlNameValue` instead */
 export type BlockTypeName = (typeof BlockType)[keyof typeof BlockType]
 
-// ─── Block Value Types ───────────────────────────────────────────
-// These describe the data shape each block produces / accepts.
+// ─── Block Value Types (from journey-logic-commons) ──────────────
 
-/**
- * Value shape for the Personal Information block.
- *
- * Contains identity and contact fields. The `_isValid` flag indicates
- * whether the block's internal validation passed.
- *
- * @example Data injection
- * ```ts
- * const personalInfo: PersonalInformationValue = {
- *   salutation: 'Mr.',
- *   firstName: 'Max',
- *   lastName: 'Mustermann',
- *   email: 'max@example.com',
- *   telephone: '+49 123 456789',
- *   _isValid: true,
- * }
- * ```
- */
 export interface PersonalInformationValue {
-  /** Salutation / title (e.g., 'Mr.', 'Ms.', 'Dr.') */
   salutation?: string
-  /** First name */
+  title?: string
   firstName?: string
-  /** Last name */
   lastName?: string
-  /** Email address */
   email?: string
-  /** Phone number (international format recommended) */
-  telephone?: string
-  /** Date of birth (ISO 8601 date string, e.g., '1990-01-15') */
-  birthDate?: string
-  /** Company name (for business customers) */
+  telephone?: string | null
+  birthDate?: Date | string
+  customerType?: string
   companyName?: string
-  /** Registry court for company registration */
   registryCourt?: string
-  /** Company register number */
   registerNumber?: string
-  /** Internal validation state flag */
-  _isValid?: boolean
 }
 
-/**
- * Value shape for the Address block.
- *
- * @example Data injection
- * ```ts
- * const address: AddressValue = {
- *   countryCode: 'DE',
- *   city: 'Köln',
- *   zipCode: '50670',
- *   streetName: 'Im Mediapark',
- *   houseNumber: '8',
- *   _isValid: true,
- * }
- * ```
- */
+export interface ContactValue {
+  salutation?: string
+  title?: string
+  firstName?: string
+  lastName?: string
+  birthDate?: Date | string
+  email?: string
+  confirmationEmail?: string
+  telephone?: string
+}
+
+export interface AccountValue {
+  email?: string
+  confirmationEmail?: string
+  telephone?: string
+  companyName?: string
+  taxId?: string
+  registryCourt?: string
+  registerNumber?: string
+}
+
 export interface AddressValue {
-  /** ISO 3166-1 alpha-2 country code (e.g., 'DE', 'AT', 'CH') */
   countryCode?: string
-  /** City name */
   city?: string
-  /** Postal / ZIP code */
   zipCode?: string
-  /** Street name */
-  streetName?: string
-  /** House/building number */
-  houseNumber?: string
-  /** Address extension / supplement (apartment, floor, etc.) */
-  extention?: string
-  /** Internal validation state flag */
-  _isValid?: boolean
+  suburb?: string | null
+  streetName?: string | null
+  houseNumber?: string | null
+  extension?: string | null
+  extention?: string | null
+  companyName?: string | null
 }
 
-/**
- * Value shape for the Date Picker block.
- *
- * Supports single date or date range selection.
- *
- * @example Single date
- * ```ts
- * const date: DatePickerValue = { startDate: '2026-04-01' }
- * ```
- *
- * @example Date range
- * ```ts
- * const range: DatePickerValue = {
- *   startDate: '2026-04-01',
- *   endDate: '2026-04-15',
- * }
- * ```
- */
+export type TextInputValue = string | null
+
+export interface NumberInputValue {
+  numberInput?: string | null
+  numberUnit?: string
+  frequencyUnit?: string
+}
+
 export interface DatePickerValue {
-  /** Start date (ISO 8601 date string) */
-  startDate?: string
-  /** End date for range selection (ISO 8601 date string) */
-  endDate?: string
-  /** Internal validation state flag */
-  _isValid?: boolean
+  startDate?: Date | string | null
+  endDate?: Date | string | null
 }
 
-/**
- * Value for the Binary Input block (yes/no toggle).
- *
- * The value is a simple boolean.
- *
- * @example
- * ```ts
- * const consent: BinaryInputValue = true
- * ```
- */
 export type BinaryInputValue = boolean
 
-/**
- * Value for the Single Choice block.
- *
- * The value is the selected option's string identifier.
- *
- * @example
- * ```ts
- * const selection: SingleChoiceValue = 'Option 1'
- * ```
- */
-export type SingleChoiceValue = string
+export type SingleChoiceValue = string | null | undefined
 
-/**
- * Value for the Text Input block.
- *
- * @example
- * ```ts
- * const note: TextInputValue = 'Please call me in the afternoon.'
- * ```
- */
-export type TextInputValue = string
+export type MultipleChoiceValue = string[] | null | undefined
 
-/**
- * Value for the Number Input block.
- *
- * @example
- * ```ts
- * const consumption: NumberInputValue = 3500
- * ```
- */
-export type NumberInputValue = number
+export interface AvailabilityValue {
+  countryCode?: string
+  city?: string
+  zipCode?: string
+  suburb?: string | null
+  streetName?: string | null
+  streetNumber?: string | null
+}
 
-/**
- * Value shape for the Product block.
- *
- * Contains the selected product(s) and associated configuration.
- */
 export interface ProductValue {
-  /** Selected product entity ID(s) */
-  selectedProductIds?: string[]
-  /** Selected product data (full product objects from the API) */
-  selectedProducts?: Record<string, unknown>[]
-  /** Quantity or consumption value associated with product selection */
-  quantity?: number
-  /** Internal validation state flag */
-  _isValid?: boolean
+  /** Selected product tiles (single or array) */
+  [key: string]: unknown
 }
 
-/**
- * Value shape for the Contact block.
- *
- * Similar to PersonalInformation but scoped to contact-specific fields.
- */
-export interface ContactValue {
-  /** Salutation */
-  salutation?: string
-  /** First name */
-  firstName?: string
-  /** Last name */
-  lastName?: string
-  /** Email address */
-  email?: string
-  /** Phone number */
-  telephone?: string
-  /** Internal validation state flag */
-  _isValid?: boolean
+export interface PaymentMethodValue {
+  type: 'payment_invoice' | 'payment_sepa'
+  label?: string | null
+  data?: {
+    fullname?: string
+    iban?: string
+    consent?: boolean
+    bic_number?: string
+    bank_name?: string
+  }
 }
 
-/**
- * Value shape for the Account block.
- *
- * Collects business/company account information.
- */
-export interface AccountValue {
-  /** Company / account name */
-  companyName?: string
-  /** Registry court */
-  registryCourt?: string
-  /** Register number */
-  registerNumber?: string
-  /** Internal validation state flag */
-  _isValid?: boolean
+export interface ConsentsValue {
+  [consentItemId: string]: {
+    agreed: boolean
+    topic: string
+    text: string | null
+    time: Date
+  }
 }
 
-/**
- * Value shape for the File Upload block.
- */
 export interface FileUploadValue {
-  /** Array of uploaded file references */
   files?: Array<{
-    /** Original filename */
     filename?: string
-    /** S3 reference for the uploaded file */
-    s3ref?: {
-      bucket: string
-      key: string
-    }
-    /** MIME type */
+    s3ref?: { bucket: string; key: string }
     contentType?: string
-    /** File size in bytes */
     size?: number
   }>
-  /** Internal validation state flag */
-  _isValid?: boolean
 }
 
-/**
- * Value for the Consent block.
- *
- * Boolean indicating whether the user accepted the terms.
- */
-export type ConsentValue = boolean
-
-/**
- * Value shape for the IBAN Input block.
- */
-export interface IbanInputValue {
-  /** IBAN string (e.g., 'DE89370400440532013000') */
-  iban?: string
-  /** Account holder name */
-  accountHolder?: string
-  /** Internal validation state flag */
-  _isValid?: boolean
+export interface SignatureValue {
+  /** Blob URL of the signature */
+  value?: string
 }
 
-/**
- * Value for the Availability block.
- *
- * Contains address and availability check result.
- */
-export interface AvailabilityValue {
-  /** Address used for the availability check */
-  address?: AddressValue
-  /** Whether service is available at the address */
-  isAvailable?: boolean
-  /** Internal validation state flag */
-  _isValid?: boolean
+export interface PreviousProviderValue {
+  company_name: string
+  bdew_code?: string
+}
+
+export interface MeterReadingValue {
+  maloId?: string
+  meterId?: string
+  meterType?: string
+  readBy?: string
+  readingDate?: Date | string | null
+  readingValue?: number | null
+  reason?: string
+}
+
+export interface InputCalculatorValue {
+  numberInput?: string | null
+  numberUnit?: string
+  frequencyUnit?: string
+  devices?: Array<{
+    name: string | null
+    otherName?: string | null
+    quantity: string
+    unitaryConsumption: string
+    consumption?: string
+  }>
+}
+
+export interface EntityFinderValue {
+  entity: Record<string, unknown> | null
+  slug?: string
+}
+
+export interface EntityAttributeValue {
+  oldValue?: unknown
+  newValue?: unknown
+  entityId?: string
+}
+
+export interface ContractStartDateValue {
+  type?: string
+  startDate: string | null
+  requiresTermination?: boolean
+}
+
+export interface PVRooftopValue {
+  coordinates: string | undefined
+  maxArrayAreaMeters2?: number
+  maxSunshineHoursPerYear?: number
+  solarPanelsUserCount?: number
+  panelLifetimeYears?: number
+  co2Savings?: number
+  maxArrayPanelsCount?: number
+}
+
+export interface CardsValue {
+  selected?: Array<{ entity_id: string; _schema: string }>
+  searchQuery?: string
+  page?: number
 }
 
 // ─── Block Value Type Map ────────────────────────────────────────
 
-/**
- * Maps block type identifiers to their corresponding value types.
- *
- * Use this to get the correct value type for a given block type.
- *
- * @example
- * ```ts
- * import type { BlockValueMap, BlockType } from '@epilot/epilot-journey-sdk'
- *
- * type EmailBlockValue = BlockValueMap[typeof BlockType.PersonalInformation]
- * // => PersonalInformationValue
- * ```
- */
 export interface BlockValueMap {
-  [BlockType.PersonalInformation]: PersonalInformationValue
-  [BlockType.Address]: AddressValue
-  [BlockType.DatePicker]: DatePickerValue
-  [BlockType.BinaryInput]: BinaryInputValue
-  [BlockType.SingleChoice]: SingleChoiceValue
-  [BlockType.TextInput]: TextInputValue
-  [BlockType.NumberInput]: NumberInputValue
-  [BlockType.Product]: ProductValue
-  [BlockType.Contact]: ContactValue
-  [BlockType.Account]: AccountValue
-  [BlockType.FileUpload]: FileUploadValue
-  [BlockType.Consent]: ConsentValue
-  [BlockType.IbanInput]: IbanInputValue
-  [BlockType.Availability]: AvailabilityValue
-  [BlockType.Image]: Record<string, unknown>
-  [BlockType.Summary]: Record<string, unknown>
-  [BlockType.CustomBlock]: Record<string, unknown>
+  [ControlName.PersonalInformation]: PersonalInformationValue
+  [ControlName.Contact]: ContactValue
+  [ControlName.Account]: AccountValue
+  [ControlName.Address]: AddressValue
+  [ControlName.Control]: TextInputValue | SingleChoiceValue | BinaryInputValue
+  [ControlName.NumberInput]: NumberInputValue
+  [ControlName.DatePicker]: DatePickerValue
+  [ControlName.Boolean]: BinaryInputValue
+  [ControlName.MultiChoice]: MultipleChoiceValue
+  [ControlName.ProductSelection]: ProductValue
+  [ControlName.AvailabilityCheck]: AvailabilityValue
+  [ControlName.Payment]: PaymentMethodValue
+  [ControlName.Consents]: ConsentsValue
+  [ControlName.FileUpload]: FileUploadValue
+  [ControlName.DigitalSignature]: SignatureValue
+  [ControlName.MeterReading]: MeterReadingValue
+  [ControlName.InputCalculator]: InputCalculatorValue
+  [ControlName.PreviousProvider]: PreviousProviderValue
+  [ControlName.EntityLookup]: EntityFinderValue
+  [ControlName.EntityAttribute]: EntityAttributeValue
+  [ControlName.ContractStartDate]: ContractStartDateValue
+  [ControlName.PVRoofPlanner]: PVRooftopValue
+  [ControlName.Cards]: CardsValue
+  [ControlName.Image]: never
+  [ControlName.Summary]: never
+  [ControlName.Paragraph]: never
+  [ControlName.ActionBar]: never
+  [ControlName.Hyperlink]: never
+  [ControlName.ConfirmationMessage]: never
+  [ControlName.ShoppingCart]: never
+  [ControlName.PdfSummary]: never
+  [ControlName.GroupLayout]: never
+  [ControlName.Auth]: Record<string, unknown>
+  [ControlName.AppBlock]: Record<string, unknown>
+  [ControlName.CustomBlock]: Record<string, unknown>
 }
 
 // ─── Data Injection Helpers ──────────────────────────────────────
 
-/**
- * Represents a step's block data for use in `DataInjectionOptions.initialState`.
- *
- * Keys are block names (as configured in the Journey Builder), values are
- * the corresponding block value shapes.
- *
- * @example
- * ```ts
- * const step0Data: StepBlockData = {
- *   'Persönliche Informationen': {
- *     salutation: 'Mr.',
- *     firstName: 'Max',
- *     lastName: 'Mustermann',
- *     email: 'max@example.com',
- *     _isValid: true,
- *   } satisfies PersonalInformationValue,
- *   'Adresse': {
- *     countryCode: 'DE',
- *     city: 'Köln',
- *     zipCode: '50670',
- *     streetName: 'Im Mediapark',
- *     houseNumber: '8',
- *     _isValid: true,
- *   } satisfies AddressValue,
- * }
- * ```
- */
-export type StepBlockData = Record<
-  string,
-  | PersonalInformationValue
-  | AddressValue
-  | DatePickerValue
-  | ProductValue
-  | ContactValue
-  | AccountValue
-  | FileUploadValue
-  | IbanInputValue
-  | AvailabilityValue
-  | BinaryInputValue
-  | SingleChoiceValue
-  | TextInputValue
-  | NumberInputValue
-  | ConsentValue
-  | Record<string, unknown>
->
+export type StepBlockData = Record<string, BlockValueMap[keyof BlockValueMap] | Record<string, unknown>>
 
-// ─── Block UI Schema Option Types ────────────────────────────────
-// These describe common configuration options per block type.
+// ─── Block Settings Types (thin typed for top blocks) ────────────
 
-/**
- * Common options shared across most block types.
- *
- * These can be set in the `options` field of a `UISchemaElement`.
- */
 export interface CommonBlockOptions {
-  /** Whether this block is required for form submission */
   required?: boolean
-  /** Whether this block is read-only / disabled */
   disabled?: boolean
-  /** Placeholder text for input blocks */
   placeholder?: string
-  /** Help text displayed below the block */
   helpText?: string
-  /** Custom CSS class names for styling */
   className?: string
+  [key: string]: unknown
 }
 
-/**
- * UI schema options for the Personal Information block.
- *
- * @example
- * ```ts
- * const uischema: UISchemaElement = {
- *   type: 'Control',
- *   scope: '#/properties/personalInfo',
- *   label: 'Personal Information',
- *   options: {
- *     required: true,
- *     fields: ['firstName', 'lastName', 'email'],
- *   } satisfies PersonalInformationBlockOptions,
- * }
- * ```
- */
 export interface PersonalInformationBlockOptions extends CommonBlockOptions {
-  /**
-   * Which fields to display in this block.
-   * Omit to show all fields.
-   */
-  fields?: Array<
-    | 'firstName'
-    | 'lastName'
-    | 'email'
-    | 'telephone'
-    | 'birthDate'
-    | 'companyName'
-    | 'registryCourt'
-    | 'registerNumber'
-    | 'salutation'
-  >
+  customerType?: 'PRIVATE' | 'BUSINESS'
+  purposeLabels?: string[]
+  fields?: {
+    salutation?: { display: boolean; required?: boolean; options?: string[] }
+    title?: { display: boolean; required?: boolean }
+    firstName?: { display: boolean; required?: boolean }
+    lastName?: { display: boolean; required?: boolean }
+    email?: { display: boolean; required?: boolean }
+    telephone?: { display: boolean; required?: boolean }
+    birthDate?: { display: boolean; required?: boolean }
+    companyName?: { display: boolean; required?: boolean }
+    registryCourt?: { display: boolean; required?: boolean }
+    registerNumber?: { display: boolean; required?: boolean }
+  }
 }
 
-/**
- * UI schema options for the Address block.
- *
- * @example
- * ```ts
- * const options: AddressBlockOptions = {
- *   required: true,
- *   fields: ['streetName', 'houseNumber', 'zipCity', 'countryCode'],
- *   enableAutoComplete: true,
- * }
- * ```
- */
+export interface ContactBlockOptions extends CommonBlockOptions {
+  purpose?: string[]
+  fields?: {
+    salutation?: { display: boolean; required?: boolean; options?: string[] }
+    title?: { display: boolean; required?: boolean }
+    firstName?: { display: boolean; required?: boolean }
+    lastName?: { display: boolean; required?: boolean }
+    email?: { display: boolean; required?: boolean }
+    confirmationEmail?: { display: boolean; required?: boolean }
+    telephone?: { display: boolean; required?: boolean }
+    birthDate?: { display: boolean; required?: boolean }
+  }
+}
+
 export interface AddressBlockOptions extends CommonBlockOptions {
-  /**
-   * Which fields to display in this block.
-   * Omit to show all fields.
-   */
-  fields?: Array<
-    | 'countryCode'
-    | 'streetName'
-    | 'houseNumber'
-    | 'extention'
-    | 'zipCity'
-  >
-  /** Whether to enable address auto-complete suggestions */
-  enableAutoComplete?: boolean
-  /** Whether to allow free text input when auto-complete is on */
-  enableFreeText?: boolean
+  fields?: {
+    zipCity?: { display: boolean; required?: boolean }
+    suburb?: { display: boolean; required?: boolean }
+    streetName?: { display: boolean; required?: boolean }
+    houseNumber?: { display: boolean; required?: boolean }
+    extention?: { display: boolean; required?: boolean }
+  }
+  autocomplete?: { enabled: boolean; countryCode?: string; allowFreeText?: boolean }
+  mapIntegration?: { enabled: boolean; repositionAllowed: boolean }
 }
 
-/**
- * UI schema options for the Date Picker block.
- *
- * @example
- * ```ts
- * const options: DatePickerBlockOptions = {
- *   required: true,
- *   isRange: true,
- *   fields: ['startDate', 'endDate'],
- * }
- * ```
- */
-export interface DatePickerBlockOptions extends CommonBlockOptions {
-  /** Whether to show a date range picker (start + end date) */
-  isRange?: boolean
-  /** Which date fields to display */
-  fields?: Array<'startDate' | 'endDate'>
-  /** Minimum selectable date (ISO 8601) */
-  minDate?: string
-  /** Maximum selectable date (ISO 8601) */
-  maxDate?: string
-}
-
-/**
- * UI schema options for the Single Choice block.
- *
- * @example
- * ```ts
- * const options: SingleChoiceBlockOptions = {
- *   choices: [
- *     { label: 'Option A', value: 'a' },
- *     { label: 'Option B', value: 'b' },
- *   ],
- *   displayAs: 'toggle',
- * }
- * ```
- */
-export interface SingleChoiceBlockOptions extends CommonBlockOptions {
-  /** Available choices */
-  choices?: Array<{
-    label: string
-    value: string
-  }>
-  /** How to render choices: radio buttons, dropdown, or toggle group */
-  displayAs?: 'radio' | 'dropdown' | 'toggle'
-}
-
-/**
- * UI schema options for the Number Input block.
- *
- * @example
- * ```ts
- * const options: NumberInputBlockOptions = {
- *   min: 0,
- *   max: 100000,
- *   step: 100,
- *   unit: 'kWh',
- * }
- * ```
- */
-export interface NumberInputBlockOptions extends CommonBlockOptions {
-  /** Minimum allowed value */
-  min?: number
-  /** Maximum allowed value */
-  max?: number
-  /** Step increment for stepper controls */
-  step?: number
-  /** Unit label displayed alongside the input (e.g., 'kWh', 'EUR') */
-  unit?: string
-}
-
-/**
- * UI schema options for the Text Input block.
- */
 export interface TextInputBlockOptions extends CommonBlockOptions {
-  /** Whether to render as a multi-line textarea */
+  label?: string
+  placeholder?: string
   multiline?: boolean
-  /** Maximum number of rows for multiline input */
-  maxRows?: number
-  /** Maximum character length */
-  maxLength?: number
-  /** Input format hint (e.g., 'email', 'tel', 'url') */
-  format?: string
 }
 
-/**
- * UI schema options for the Product block.
- */
+export interface NumberInputBlockOptions extends CommonBlockOptions {
+  unit?: { show: boolean; label: string }
+  format?: { show?: boolean; validate?: boolean; digitsBeforeDecimalPoint?: number; decimalPlaces?: number }
+  range?: { min: number; max: number | 'Infinity' }
+  suggestions?: Array<{ label: string; value: string }>
+}
+
+export interface SingleChoiceBlockOptions extends CommonBlockOptions {
+  label?: string
+  uiType?: 'button' | 'radio' | 'dropdown' | 'image'
+  buttonType?: string
+  imageType?: string
+  choices?: Array<{ label: string; value: string; icon?: string; imageUrl?: string }>
+}
+
+export interface MultipleChoiceBlockOptions extends CommonBlockOptions {
+  uiType?: 'checkbox' | 'button' | 'image'
+  maxSelection?: number | 'Infinity'
+  choices?: Array<{ label: string; value: string; icon?: string; imageUrl?: string }>
+}
+
+export interface DatePickerBlockOptions extends CommonBlockOptions {
+  fields?: {
+    startDate?: { display: boolean; required?: boolean }
+    endDate?: { display: boolean; required?: boolean }
+  }
+  disableDays?: number[]
+  showTime?: boolean
+  timeIntervals?: number
+}
+
 export interface ProductBlockOptions extends CommonBlockOptions {
-  /** Product entity IDs to display */
-  productIds?: string[]
-  /** Whether to show product images */
-  showImages?: boolean
-  /** Whether to show product features/descriptions */
-  showFeatures?: boolean
-  /** Whether to show prices */
-  showPrices?: boolean
+  catalog?: 'epilot' | 'external'
+  productsType?: 'static' | 'cross-selling-all' | 'cross-selling-selected'
+  products?: Array<{ productId: string; priceId: string; isFeatured?: boolean }>
+  selection?: 'one' | 'each-1' | 'each-n'
+  alignment?: 'center' | 'left' | 'evenly-distributed'
+  layout?: Record<string, unknown>
 }
 
-/**
- * UI schema options for the File Upload block.
- */
+export interface ConsentsBlockOptions extends CommonBlockOptions {
+  items?: Record<string, {
+    required: boolean
+    topics: string[]
+    text?: string | null
+    order: number
+  }>
+}
+
 export interface FileUploadBlockOptions extends CommonBlockOptions {
-  /** Accepted MIME types (e.g., 'image/*', 'application/pdf') */
-  accept?: string[]
-  /** Maximum file size in bytes */
-  maxSize?: number
-  /** Maximum number of files */
-  maxFiles?: number
-  /** File purpose tags */
-  filePurposes?: string[]
+  maxQuantity?: number
+  restricted?: boolean
+  supportedTypes?: string[]
+  tags?: string[]
+  zoneLabel?: string
 }
 
-/**
- * UI schema options for the Custom Block.
- *
- * @example
- * ```ts
- * const options: CustomBlockOptions = {
- *   tagName: 'counter-block',
- *   bundleUrl: 'https://cdn.example.com/counter-block/bundle.js',
- *   args: { token: 'abc123', apiUrl: 'https://api.example.com' },
- * }
- * ```
- */
+export interface PaymentBlockOptions extends CommonBlockOptions {
+  preselectedMethod?: 'BankTransfer' | 'SEPA'
+  implementations?: Array<{
+    type: 'BankTransfer' | 'SEPA'
+    label: string | null
+    settings?: { accountNumberValidationURL?: string }
+  }>
+}
+
 export interface CustomBlockOptions extends CommonBlockOptions {
-  /** Web component tag name (e.g., 'counter-block', 'calendly-block') */
   tagName?: string
-  /** URL to the JS bundle containing the web component */
   bundleUrl?: string
-  /** Key-value arguments passed to the custom block's `args` prop */
   args?: Record<string, string>
 }
 
 // ─── Block Options Type Map ──────────────────────────────────────
 
-/**
- * Maps block type identifiers to their corresponding UI schema options.
- *
- * @example
- * ```ts
- * import type { BlockOptionsMap, BlockType } from '@epilot/epilot-journey-sdk'
- *
- * type PersonalInfoOpts = BlockOptionsMap[typeof BlockType.PersonalInformation]
- * // => PersonalInformationBlockOptions
- * ```
- */
 export interface BlockOptionsMap {
-  [BlockType.PersonalInformation]: PersonalInformationBlockOptions
-  [BlockType.Address]: AddressBlockOptions
-  [BlockType.DatePicker]: DatePickerBlockOptions
-  [BlockType.BinaryInput]: CommonBlockOptions
-  [BlockType.SingleChoice]: SingleChoiceBlockOptions
-  [BlockType.TextInput]: TextInputBlockOptions
-  [BlockType.NumberInput]: NumberInputBlockOptions
-  [BlockType.Product]: ProductBlockOptions
-  [BlockType.Image]: CommonBlockOptions
-  [BlockType.Availability]: AddressBlockOptions
-  [BlockType.Summary]: CommonBlockOptions
-  [BlockType.Contact]: PersonalInformationBlockOptions
-  [BlockType.Account]: CommonBlockOptions
-  [BlockType.FileUpload]: FileUploadBlockOptions
-  [BlockType.Consent]: CommonBlockOptions
-  [BlockType.IbanInput]: CommonBlockOptions
-  [BlockType.CustomBlock]: CustomBlockOptions
+  [ControlName.PersonalInformation]: PersonalInformationBlockOptions
+  [ControlName.Contact]: ContactBlockOptions
+  [ControlName.Account]: CommonBlockOptions
+  [ControlName.Address]: AddressBlockOptions
+  [ControlName.Control]: TextInputBlockOptions | SingleChoiceBlockOptions
+  [ControlName.NumberInput]: NumberInputBlockOptions
+  [ControlName.DatePicker]: DatePickerBlockOptions
+  [ControlName.Boolean]: CommonBlockOptions
+  [ControlName.MultiChoice]: MultipleChoiceBlockOptions
+  [ControlName.ProductSelection]: ProductBlockOptions
+  [ControlName.AvailabilityCheck]: AddressBlockOptions
+  [ControlName.Payment]: PaymentBlockOptions
+  [ControlName.Consents]: ConsentsBlockOptions
+  [ControlName.FileUpload]: FileUploadBlockOptions
+  [ControlName.DigitalSignature]: CommonBlockOptions
+  [ControlName.Image]: CommonBlockOptions
+  [ControlName.Summary]: CommonBlockOptions
+  [ControlName.Paragraph]: CommonBlockOptions
+  [ControlName.ActionBar]: CommonBlockOptions
+  [ControlName.Hyperlink]: CommonBlockOptions
+  [ControlName.ConfirmationMessage]: CommonBlockOptions
+  [ControlName.ShoppingCart]: CommonBlockOptions
+  [ControlName.CustomBlock]: CustomBlockOptions
+  [ControlName.AppBlock]: CommonBlockOptions
 }
 
 // ─── Typed Block Helper ──────────────────────────────────────────
 
-/**
- * A fully-typed block element combining the UISchemaElement structure
- * with specific option types for a known block type.
- *
- * @typeParam T - The block type identifier from {@link BlockType}
- *
- * @example
- * ```ts
- * import { BlockType, type TypedBlock } from '@epilot/epilot-journey-sdk'
- *
- * const personalInfoBlock: TypedBlock<typeof BlockType.PersonalInformation> = {
- *   type: 'Control',
- *   scope: '#/properties/personalInfo',
- *   label: 'Your Details',
- *   options: {
- *     required: true,
- *     fields: ['firstName', 'lastName', 'email'],
- *   },
- * }
- * ```
- */
-export type TypedBlock<T extends BlockTypeName> = {
+export type TypedBlock<T extends ControlNameValue> = {
   type: string
   scope?: string
   label?: string
@@ -687,3 +530,55 @@ export type TypedBlock<T extends BlockTypeName> = {
   options?: T extends keyof BlockOptionsMap ? BlockOptionsMap[T] : Record<string, unknown>
   [key: string]: unknown
 }
+
+// ─── Block Catalog (AI-friendly descriptions) ────────────────────
+
+export interface BlockCatalogEntry {
+  controlName: ControlNameValue
+  displayName: string
+  description: string
+  category: 'input' | 'display' | 'composite' | 'navigation' | 'commerce' | 'utility' | 'third-party'
+  hasValue: boolean
+  commonlyUsed: boolean
+}
+
+export const BLOCK_CATALOG: BlockCatalogEntry[] = [
+  { controlName: ControlName.PersonalInformation, displayName: 'Personal Information', description: 'Collects name, email, phone, birth date, and optional company details. Supports private/business/user-defined modes.', category: 'composite', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.Contact, displayName: 'Contact', description: 'Collects contact fields: salutation, name, email, confirmation email, phone, birth date.', category: 'composite', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.Account, displayName: 'Account', description: 'Collects business account info: email, phone, company name, tax ID, registry court, register number.', category: 'composite', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.Address, displayName: 'Address', description: 'Collects a street address with optional autocomplete, map integration, and unlisted address support.', category: 'composite', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.Control, displayName: 'Text / Choice / Binary', description: 'Generic control that renders as text input, single-choice, or binary toggle based on the JSON schema type at the scope path.', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.TextField, displayName: 'Text Input', description: 'Free-form text input with optional label, placeholder, and multiline support.', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.NumberInput, displayName: 'Number Input', description: 'Numeric input with optional unit, format, range constraints, and pre-set suggestions.', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.DatePicker, displayName: 'Date Picker', description: 'Date or date range picker with optional time selection and day restrictions.', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.Boolean, displayName: 'Binary / Toggle', description: 'Yes/no toggle rendered as a switch or checkbox.', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.MultiChoice, displayName: 'Multiple Choice', description: 'Multi-select from a set of choices rendered as checkboxes, buttons, or image cards.', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.Consents, displayName: 'Consents', description: 'GDPR/terms consent checkboxes with configurable topics (GTC, data privacy, marketing, etc.).', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.FileUpload, displayName: 'File Upload', description: 'File upload with type restrictions, max quantity, and tagging support.', category: 'input', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.DigitalSignature, displayName: 'Digital Signature', description: 'Digital signature pad for capturing signatures.', category: 'input', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.Payment, displayName: 'Payment Method', description: 'Payment method selector supporting bank transfer and SEPA with IBAN validation.', category: 'commerce', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.ProductSelection, displayName: 'Product Selection', description: 'Product tiles with pricing, features, and selection (single/multi). Supports epilot and external catalogs.', category: 'commerce', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.ProductCategory, displayName: 'Product Categories', description: 'Filters products by category on linked product selection blocks.', category: 'commerce', hasValue: false, commonlyUsed: false },
+  { controlName: ControlName.ProductRecommendations, displayName: 'Product Recommendations', description: 'Shows product recommendations based on contract or recommendation entity IDs.', category: 'commerce', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.ShoppingCart, displayName: 'Shopping Cart', description: 'Displays selected products with prices, components, and optional promotions.', category: 'commerce', hasValue: false, commonlyUsed: true },
+  { controlName: ControlName.AvailabilityCheck, displayName: 'Availability Check', description: 'Address-based service coverage check with postal code or file-based validation.', category: 'composite', hasValue: true, commonlyUsed: true },
+  { controlName: ControlName.InputCalculator, displayName: 'Input Calculator', description: 'Device consumption calculator with preset factors (gas, power, water) or custom mappings.', category: 'input', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.MeterReading, displayName: 'Meter Reading', description: 'Meter reading entry with counter type selection (one/two-tariff, bidirectional).', category: 'input', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.PreviousProvider, displayName: 'Previous Provider', description: 'Energy provider lookup with BDEW code resolution. Can restrict to suggestions only.', category: 'input', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.ContractStartDate, displayName: 'Contract Start Date', description: 'Contract start date picker with termination requirement flag.', category: 'input', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.EntityLookup, displayName: 'Entity Finder', description: 'Search and select epilot entities by slug with configurable attributes display.', category: 'composite', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.EntityAttribute, displayName: 'Entity Attribute', description: 'Read/write a specific entity attribute. Supports entity-based, auth-based, and context-based modes.', category: 'composite', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.Cards, displayName: 'Cards', description: 'Entity cards with configurable content, table, and single/multi/no selection modes.', category: 'composite', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.Auth, displayName: 'Authentication', description: 'Sign-in/sign-up/skip authentication block for portal users.', category: 'utility', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.Paragraph, displayName: 'Paragraph', description: 'Rich text content block (stored as base64-encoded HTML).', category: 'display', hasValue: false, commonlyUsed: true },
+  { controlName: ControlName.Image, displayName: 'Image', description: 'Image display with alt text, responsive width (100%/50%/30%), and aspect ratio preservation.', category: 'display', hasValue: false, commonlyUsed: true },
+  { controlName: ControlName.Hyperlink, displayName: 'Hyperlinks', description: 'List of clickable hyperlinks with optional labels.', category: 'display', hasValue: false, commonlyUsed: false },
+  { controlName: ControlName.Summary, displayName: 'Summary', description: 'Review block showing collected data from referenced blocks with optional title overrides.', category: 'display', hasValue: false, commonlyUsed: true },
+  { controlName: ControlName.ActionBar, displayName: 'Action Bar', description: 'Navigation bar with configurable next/back buttons and submit-and-navigate actions.', category: 'navigation', hasValue: false, commonlyUsed: true },
+  { controlName: ControlName.ConfirmationMessage, displayName: 'Success Message', description: 'Success/thank-you message with configurable title, body, and CTA button.', category: 'navigation', hasValue: false, commonlyUsed: true },
+  { controlName: ControlName.PVRoofPlanner, displayName: 'PV Rooftop Planner', description: 'Solar panel roof planner with coordinates, array area, sunshine hours, and CO2 savings.', category: 'composite', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.AppBlock, displayName: 'App Block', description: 'Installed app rendered inside the journey. Configured with appId, componentId, and args.', category: 'third-party', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.CustomBlock, displayName: 'Custom Block (Legacy)', description: 'Custom web component block. Deprecated — use App Block instead.', category: 'third-party', hasValue: true, commonlyUsed: false },
+  { controlName: ControlName.GroupLayout, displayName: 'Group', description: 'Visual grouping container for child blocks. Cannot be nested.', category: 'display', hasValue: false, commonlyUsed: true },
+  { controlName: ControlName.PdfSummary, displayName: 'PDF Generator', description: 'Generates a PDF from a DocX template with journey data. Shows a download link.', category: 'utility', hasValue: false, commonlyUsed: false },
+]
