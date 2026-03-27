@@ -129,10 +129,21 @@ export class JourneyClient {
    * ```
    */
   async createJourney(journey: Record<string, unknown>): Promise<JourneyRaw> {
-    // v1 endpoint is deprecated/broken; use v2
-    const res = await this.apiClient.createJourneyV2(null, journey as never)
-    const data = res.data as any
-    return (data?.createdJourney ?? data) as JourneyRaw
+    // v1 creates the automation mapping properly (required for builder to load).
+    // v2 creates the journey but with a broken automation — only used as fallback.
+    try {
+      const res = await this.apiClient.createJourney(null, journey as never)
+      const data = res.data as any
+      return (data?.createdJourney ?? data) as JourneyRaw
+    } catch (v1Err: any) {
+      if (v1Err?.response?.status === 500) {
+        // v1 fails with API tokens — fall back to v2
+        const res = await this.apiClient.createJourneyV2(null, journey as never)
+        const data = res.data as any
+        return (data?.createdJourney ?? data) as JourneyRaw
+      }
+      throw v1Err
+    }
   }
 
   /**

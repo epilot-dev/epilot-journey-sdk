@@ -7,6 +7,8 @@
     "access": "public"
   },
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build": "tsup src/index.ts --dts",
     "release": "standard-version && npm publish",
     "prepublishOnly": "yarn build",
@@ -20,7 +22,8 @@
     "@playwright/test": "^1.58.2",
     "standard-version": "^9.5.0",
     "tsup": "^7.0.0",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
   },
   "peerDependencies": {
     "@material-ui/core": "4.*"

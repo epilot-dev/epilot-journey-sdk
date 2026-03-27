@@ -168,7 +168,7 @@ const journey = createJourney({
           label: 'Supporting Documents',
           options: {
             maxQuantity: 3,
-            supportedTypes: ['PDF', 'Image'],
+            supportedTypes: 'PDF, Image',  // comma-separated string, NOT array
           },
         }),
 

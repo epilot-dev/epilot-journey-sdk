@@ -461,6 +461,54 @@ export function createConsents(opts: CreateBlockOptions & { options?: Record<str
 }
 
 /**
+ * Creates an availability check block.
+ *
+ * Supports postal code validation or product availability service modes,
+ * with optional Google Maps integration for address picking.
+ *
+ * @example
+ * ```ts
+ * const check = createAvailabilityCheck({
+ *   name: 'AvailabilityCheck',
+ *   label: 'Check Availability',
+ *   required: true,
+ *   options: {
+ *     countryCode: 'DE',
+ *     availabilityMode: 'postalCode',
+ *     enableAutoComplete: true,
+ *     enableFreeText: false,
+ *     googleMapsIntegrationOptions: { isGoogleMapsEnabled: true, isRepositioningAllowed: true },
+ *     fields: { zipCode: { required: true, label: 'Postal Code' } },
+ *   },
+ * })
+ * ```
+ */
+export function createAvailabilityCheck(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  return createBlock(ControlName.AvailabilityCheck, {
+    ...opts,
+    showPaper: opts.showPaper ?? true,
+  })
+}
+
+/**
+ * Creates a PV Rooftop Planner (map) block.
+ *
+ * Displays an interactive Google Maps interface for solar panel roof planning.
+ *
+ * @example
+ * ```ts
+ * const map = createPVRoofPlanner({
+ *   name: 'RoofPlanner',
+ *   label: 'Plan your solar installation',
+ *   options: { panelLifetimeYears: 25 },
+ * })
+ * ```
+ */
+export function createPVRoofPlanner(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  return createBlock(ControlName.PVRoofPlanner, opts)
+}
+
+/**
  * Creates a file upload block.
  *
  * @example
@@ -473,7 +521,12 @@ export function createConsents(opts: CreateBlockOptions & { options?: Record<str
  * ```
  */
 export function createFileUpload(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
-  return createBlock(ControlName.FileUpload, opts)
+  const options = { ...opts.options } as Record<string, unknown>
+  // transformUp calls supportedTypes?.split(',') — must be a comma-separated string, not array
+  if (Array.isArray(options.supportedTypes)) {
+    options.supportedTypes = (options.supportedTypes as string[]).join(', ')
+  }
+  return createBlock(ControlName.FileUpload, { ...opts, options })
 }
 
 /**
@@ -932,6 +985,11 @@ export function createJourney(opts: CreateJourneyOptions): Record<string, unknow
     organizationId: opts.organizationId,
     name: opts.name,
     steps: opts.steps,
+    // Required by v1 API — empty defaults
+    rules: [],
+    contextSchema: [],
+    logics: [],
+    logicsV4: {},
   }
 
   if (opts.settings) {
