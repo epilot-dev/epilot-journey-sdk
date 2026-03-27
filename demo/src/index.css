@@ -98,7 +98,7 @@
     @apply flex-col;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, #0a1628 0%, #0f1d36 40%, #0a1229 100%);
+    background: linear-gradient(360deg, #002152 0%, #0f1d36 40%, #0a1229 100%);
   }
   /* subtle noise texture */
   .ai-sidebar::before {
