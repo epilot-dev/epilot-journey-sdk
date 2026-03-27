@@ -129,9 +129,10 @@ export class JourneyClient {
    * ```
    */
   async createJourney(journey: Record<string, unknown>): Promise<JourneyRaw> {
-    const res = await this.apiClient.createJourney(null, journey as never)
-    const data = res.data as { createdJourney?: JourneyRaw }
-    return data.createdJourney as JourneyRaw
+    // v1 endpoint is deprecated/broken; use v2
+    const res = await this.apiClient.createJourneyV2(null, journey as never)
+    const data = res.data as any
+    return (data?.createdJourney ?? data) as JourneyRaw
   }
 
   /**

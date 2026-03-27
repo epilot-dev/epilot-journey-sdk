@@ -373,44 +373,55 @@ export interface CommonBlockOptions {
 export interface PersonalInformationBlockOptions extends CommonBlockOptions {
   customerType?: 'PRIVATE' | 'BUSINESS'
   purposeLabels?: string[]
+  title?: string
   fields?: {
-    salutation?: { display: boolean; required?: boolean; options?: string[] }
-    title?: { display: boolean; required?: boolean }
-    firstName?: { display: boolean; required?: boolean }
-    lastName?: { display: boolean; required?: boolean }
-    email?: { display: boolean; required?: boolean }
-    telephone?: { display: boolean; required?: boolean }
-    birthDate?: { display: boolean; required?: boolean }
-    companyName?: { display: boolean; required?: boolean }
-    registryCourt?: { display: boolean; required?: boolean }
-    registerNumber?: { display: boolean; required?: boolean }
+    salutation?: { required?: boolean; genderType?: string }
+    title?: { required?: boolean }
+    firstName?: { required?: boolean }
+    lastName?: { required?: boolean }
+    email?: { required?: boolean }
+    telephone?: { required?: boolean }
+    birthDate?: { required?: boolean }
+    companyName?: { required?: boolean }
+    registryCourt?: { required?: boolean }
+    registerNumber?: { required?: boolean }
   }
 }
 
 export interface ContactBlockOptions extends CommonBlockOptions {
   purpose?: string[]
+  title?: string
   fields?: {
-    salutation?: { display: boolean; required?: boolean; options?: string[] }
-    title?: { display: boolean; required?: boolean }
-    firstName?: { display: boolean; required?: boolean }
-    lastName?: { display: boolean; required?: boolean }
-    email?: { display: boolean; required?: boolean }
-    confirmationEmail?: { display: boolean; required?: boolean }
-    telephone?: { display: boolean; required?: boolean }
-    birthDate?: { display: boolean; required?: boolean }
+    salutation?: { required?: boolean; genderType?: string }
+    title?: { required?: boolean }
+    firstName?: { required?: boolean }
+    lastName?: { required?: boolean }
+    email?: { required?: boolean }
+    confirmationEmail?: { required?: boolean }
+    telephone?: { required?: boolean }
+    birthDate?: { required?: boolean }
   }
 }
 
 export interface AddressBlockOptions extends CommonBlockOptions {
+  title?: string
   fields?: {
-    zipCity?: { display: boolean; required?: boolean }
-    suburb?: { display: boolean; required?: boolean }
-    streetName?: { display: boolean; required?: boolean }
-    houseNumber?: { display: boolean; required?: boolean }
-    extention?: { display: boolean; required?: boolean }
+    zipCity?: { required?: boolean }
+    suburb?: { required?: boolean }
+    streetName?: { required?: boolean }
+    houseNumber?: { required?: boolean }
+    extention?: { required?: boolean }
   }
-  autocomplete?: { enabled: boolean; countryCode?: string; allowFreeText?: boolean }
-  mapIntegration?: { enabled: boolean; repositionAllowed: boolean }
+  countryAddressSettings?: {
+    countryCode?: string
+    enableAutoComplete?: boolean
+    enableFreeText?: boolean
+  }
+  acceptSuggestedOnly?: boolean
+  isDelivery?: boolean
+  isBilling?: boolean
+  related_pi?: string
+  labels?: string[]
 }
 
 export interface TextInputBlockOptions extends CommonBlockOptions {
@@ -477,11 +488,14 @@ export interface FileUploadBlockOptions extends CommonBlockOptions {
 }
 
 export interface PaymentBlockOptions extends CommonBlockOptions {
-  preselectedMethod?: 'BankTransfer' | 'SEPA'
+  initialType?: 'BankTransfer' | 'SEPA'
+  payment?: boolean
+  title?: string
   implementations?: Array<{
+    show?: boolean
     type: 'BankTransfer' | 'SEPA'
     label: string | null
-    settings?: { accountNumberValidationURL?: string }
+    componentProps?: Record<string, unknown>
   }>
 }
 

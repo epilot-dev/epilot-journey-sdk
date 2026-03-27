@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  /* ── Cards ── */
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6;
+  }
+
+  /* ── Forms ── */
+  .input-field {
+    @apply w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-white
+           focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all;
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply px-5 py-2.5 bg-primary-600 text-white rounded-xl text-sm font-semibold
+           hover:bg-primary-700 active:bg-primary-800 transition-all shadow-sm hover:shadow-md;
+  }
+  .btn-secondary {
+    @apply px-5 py-2.5 bg-white text-gray-700 rounded-xl text-sm font-semibold
+           hover:bg-gray-50 transition-all border border-gray-200 shadow-sm;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+
+  /* ── Section Typography ── */
+  .section-title {
+    @apply text-3xl font-extrabold text-gray-900 mb-2 tracking-tight;
+  }
+  .section-desc {
+    @apply text-gray-500 mb-8 text-base leading-relaxed max-w-2xl;
+  }
+
+  /* ── Stat pill ── */
+  .stat-pill {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold;
+  }
+
+  /* ── Gradient backgrounds ── */
+  .gradient-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+  }
+
+  /* ── Gradient text ── */
+  .gradient-text {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(135deg, #2563eb 0%, #3b82f6 40%, #6366f1 100%);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SIDEBAR — Light theme
+     ═══════════════════════════════════════════════════════════════ */
+
+  .ai-sidebar {
+    @apply bg-white border-r border-gray-100 flex-col;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Brand area ── */
+  .sb-brand {
+    @apply p-5 border-b border-gray-100;
+  }
+
+  .sb-logo {
+    @apply w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  }
+
+  .sb-title {
+    @apply text-base font-extrabold text-gray-900 tracking-tight;
+  }
+
+  .sb-subtitle {
+    @apply text-gray-400 text-[10px] font-medium uppercase tracking-widest;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* Blink cursor */
+  .sb-cursor {
+    display: inline-block;
+    width: 5px;
+    height: 11px;
+    border-radius: 1px;
+    @apply bg-primary-400;
+    animation: sb-blink 1s step-end infinite;
+  }
+  @keyframes sb-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ── Stat chips ── */
+  .sb-chip {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold
+           bg-primary-50 text-primary-700 border border-primary-100;
+  }
+  .sb-chip strong {
+    @apply font-extrabold;
+  }
+
+  /* ── Nav group labels ── */
+  .sb-group {
+    @apply px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sb-group::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    @apply bg-gray-100;
+  }
+
+  /* ── Nav items ── */
+  .sb-nav-item {
+    @apply w-full text-left px-3 py-2.5 rounded-xl text-sm flex items-center gap-3
+           text-gray-500 transition-all duration-200;
+    border: 1px solid transparent;
+    position: relative;
+  }
+  .sb-nav-item:hover {
+    @apply bg-gray-50 text-gray-700;
+  }
+
+  /* Active nav — matches pricing playground exactly */
+  .sb-nav-item.active {
+    @apply bg-primary-50 text-primary-700 font-semibold shadow-sm;
+  }
+  .sb-nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    @apply bg-primary-500;
+  }
+
+  /* Active dot */
+  .sb-dot {
+    @apply w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0 transition-all;
+  }
+  .sb-nav-item.active .sb-dot {
+    @apply bg-primary-500;
+  }
+  .sb-nav-item:hover .sb-dot {
+    @apply bg-gray-400;
+  }
+
+  .sb-nav-icon {
+    @apply text-base w-5 text-center leading-none;
+  }
+
+  /* ── Footer ── */
+  .sb-footer {
+    @apply p-4 border-t border-gray-100;
+  }
+
+  .sb-status-line {
+    @apply flex items-center gap-2 text-xs text-gray-400;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  }
+
+  /* Agent pulse dot */
+  .agent-dot {
+    @apply w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0;
+    box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
+    animation: agent-pulse 2s ease-in-out infinite;
+  }
+  @keyframes agent-pulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(52,211,153,0.6); }
+    50% { box-shadow: 0 0 10px rgba(52,211,153,0.9), 0 0 16px rgba(52,211,153,0.3); }
+  }
+
+  .sb-version {
+    @apply font-mono text-[10px] font-semibold px-2 py-0.5 rounded-md
+           bg-gray-50 border border-gray-200 text-gray-400;
+  }
+
+  .sb-credit {
+    @apply text-[10px] text-gray-300 mt-1.5;
+  }
+  .sb-credit a {
+    @apply text-primary-500 hover:text-primary-600 font-medium transition-colors;
+  }
+}

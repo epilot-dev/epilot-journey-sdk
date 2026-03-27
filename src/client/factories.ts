@@ -10,43 +10,38 @@
 import { ControlName } from './blockTypes.js'
 import type {
   ControlNameValue,
-  CommonBlockOptions,
-  PersonalInformationBlockOptions,
-  ContactBlockOptions,
-  AddressBlockOptions,
-  TextInputBlockOptions,
-  NumberInputBlockOptions,
-  SingleChoiceBlockOptions,
-  MultipleChoiceBlockOptions,
-  DatePickerBlockOptions,
-  ProductBlockOptions,
-  ConsentsBlockOptions,
-  FileUploadBlockOptions,
-  PaymentBlockOptions,
-  CustomBlockOptions,
 } from './blockTypes.js'
 import type { UISchemaElement, StepConfig } from './types.js'
 
 // ─── ID Generation ───────────────────────────────────────────────
 
-let _counter = 0
+function uuid(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0
+    const v = c === 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
+}
 
-function generateId(): string {
-  _counter++
-  const ts = Date.now().toString(36)
-  const rand = Math.random().toString(36).slice(2, 8)
-  return `${ts}-${rand}-${_counter}`
+function stepId(name: string): string {
+  return name
+}
+
+function variablePath(stepName: string, blockName: string): string {
+  return `${stepName.replace(/[^a-zA-Z0-9]/g, '_')}_${blockName.replace(/[^a-zA-Z0-9]/g, '_')}`
 }
 
 // ─── Block Creation ──────────────────────────────────────────────
 
 export interface CreateBlockOptions {
-  /** Block name used as property key in the step schema */
+  /** Block name used as property key in the step schema (can be human-readable, e.g. 'Contact Info') */
   name: string
   /** Display label shown to end users */
   label?: string
   /** Whether this block is required */
   required?: boolean
+  /** Whether to render with a card/paper background */
+  showPaper?: boolean
   /** Block-specific options (varies by type) */
   options?: Record<string, unknown>
 }
@@ -54,13 +49,13 @@ export interface CreateBlockOptions {
 /**
  * Creates a UI schema element for a given block type.
  *
- * This produces a valid v3 `uischema` element that can be added to a step.
- * The `scope` is auto-generated from the block name as `#/properties/{name}`.
+ * Produces a valid v3 `uischema` element matching the real Journey API format.
+ * Each element gets a UUID `id` and the scope uses the block name as-is.
  *
  * @example
  * ```ts
  * const emailBlock = createBlock(ControlName.Control, {
- *   name: 'email',
+ *   name: 'Email',
  *   label: 'Email Address',
  *   required: true,
  *   options: { placeholder: 'you@example.com' },
@@ -73,19 +68,26 @@ export function createBlock(
 ): UISchemaElement {
   const scope = `#/properties/${opts.name}`
   const element: UISchemaElement = {
+    id: uuid(),
     type,
     scope,
-    label: opts.label ?? opts.name,
   }
 
-  const options: Record<string, unknown> = { ...opts.options }
-  if (opts.required !== undefined) {
-    options.required = opts.required
+  if (opts.label) {
+    element.label = opts.label
   }
 
-  if (Object.keys(options).length > 0) {
-    element.options = options
+  const options: Record<string, unknown> = {
+    showPaper: opts.showPaper ?? false,
+    ...opts.options,
   }
+
+  // Propagate required into options so createStep can pick it up for the schema
+  if (opts.required) {
+    options.required = true
+  }
+
+  element.options = options
 
   return element
 }
@@ -95,41 +97,69 @@ export function createBlock(
 /**
  * Creates a text input block.
  *
+ * In the v3 format, text inputs use the generic `Control` type.
+ * The schema type at the scope path determines the rendering.
+ *
  * @example
  * ```ts
  * const notes = createTextInput({
- *   name: 'notes',
+ *   name: 'Notes',
  *   label: 'Additional Notes',
  *   options: { multiline: true, placeholder: 'Enter any additional information...' },
  * })
  * ```
  */
-export function createTextInput(opts: CreateBlockOptions & { options?: TextInputBlockOptions }): UISchemaElement {
+export function createTextInput(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
   return createBlock(ControlName.Control, opts)
 }
 
 /**
  * Creates a number input block.
  *
+ * Options must be nested under `fields.numberInput` to match the v3 format
+ * expected by the journey renderer's `transformUp`.
+ *
  * @example
  * ```ts
  * const consumption = createNumberInput({
- *   name: 'consumption',
+ *   name: 'Consumption',
  *   label: 'Annual Consumption',
  *   required: true,
- *   options: {
- *     unit: { show: true, label: 'kWh' },
- *     range: { min: 0, max: 100000 },
- *   },
+ *   unit: { show: true, label: 'kWh' },
+ *   range: { min: 0, max: 100000 },
  * })
  * ```
  */
-export function createNumberInput(opts: CreateBlockOptions & { options?: NumberInputBlockOptions }): UISchemaElement {
-  return createBlock(ControlName.NumberInput, opts)
+export function createNumberInput(opts: CreateBlockOptions & {
+  unit?: { show: boolean; label: string }
+  range?: { min: number; max: number }
+  format?: { show?: boolean; validate?: boolean; decimalPlaces?: number; digitsBeforeDecimalPoint?: number }
+  suggestions?: Array<{ label: string; value: string }>
+}): UISchemaElement {
+  const { unit, range, format, suggestions, ...rest } = opts
+  return createBlock(ControlName.NumberInput, {
+    ...rest,
+    options: {
+      ...rest.options,
+      fields: {
+        numberInput: {
+          ...(unit && { unit }),
+          ...(range && { range }),
+          ...(format && { format }),
+          label: rest.label ?? rest.name,
+        },
+      },
+      ...(suggestions && { suggestions }),
+    },
+  })
 }
 
 /**
  * Creates a single-choice selection block.
+ *
+ * The v3 wire format uses parallel arrays (`options`, `optionsLabels`,
+ * `optionsIcons`) rather than a single `choices` array. This factory
+ * accepts a friendlier `choices` array and converts it automatically.
  *
  * @example
  * ```ts
@@ -147,15 +177,42 @@ export function createNumberInput(opts: CreateBlockOptions & { options?: NumberI
  * })
  * ```
  */
-export function createSingleChoice(opts: CreateBlockOptions & { options?: SingleChoiceBlockOptions }): UISchemaElement {
+export function createSingleChoice(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  const { choices, ...restOptions } = (opts.options ?? {}) as Record<string, unknown>
+
+  const choicesArr = choices as Array<{ label: string; value: string; icon?: string | { name: string } }> | undefined
+  const wireOptions: Record<string, unknown> = { ...restOptions }
+
+  if (choicesArr?.length) {
+    wireOptions.options = choicesArr.map((c) => c.value)
+    wireOptions.optionsLabels = choicesArr.map((c) => c.label)
+    const icons = choicesArr.map((c) =>
+      c.icon ? (typeof c.icon === 'string' ? { name: c.icon } : c.icon) : undefined,
+    )
+    if (icons.some(Boolean)) {
+      wireOptions.optionsIcons = icons
+    }
+  }
+
+  // transformUp requires type='Control'. Testers match via isEnumControl (schema.enum) + the mode flag:
+  //   EnumButtonControlTester: optionIs('button', true)
+  //   RadioTester:             optionIs('radio', true)
+  // The schema enum values are injected by createStep based on options.options.
+  const uiType = (wireOptions.uiType ?? 'button') as string
+  const modeFlag = uiType === 'radio' ? { radio: true } : { button: true }
+
   return createBlock(ControlName.Control, {
     ...opts,
-    options: { ...opts.options },
+    options: { ...wireOptions, ...modeFlag },
   })
 }
 
 /**
  * Creates a multiple-choice selection block.
+ *
+ * The v3 wire format uses parallel arrays (`options`, `optionsLabels`,
+ * `optionsIcons`) rather than a single `choices` array. This factory
+ * accepts a friendlier `choices` array and converts it automatically.
  *
  * @example
  * ```ts
@@ -173,8 +230,28 @@ export function createSingleChoice(opts: CreateBlockOptions & { options?: Single
  * })
  * ```
  */
-export function createMultipleChoice(opts: CreateBlockOptions & { options?: MultipleChoiceBlockOptions }): UISchemaElement {
-  return createBlock(ControlName.MultiChoice, opts)
+export function createMultipleChoice(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  const { choices, ...restOptions } = (opts.options ?? {}) as Record<string, unknown>
+
+  // Convert friendly choices array to v3 parallel arrays format
+  const choicesArr = choices as Array<{ label: string; value: string; icon?: string | { name: string } }> | undefined
+  const wireOptions: Record<string, unknown> = { ...restOptions }
+
+  if (choicesArr?.length) {
+    wireOptions.options = choicesArr.map((c) => c.value)
+    wireOptions.optionsLabels = choicesArr.map((c) => c.label)
+    const icons = choicesArr.map((c) =>
+      c.icon ? (typeof c.icon === 'string' ? { name: c.icon } : c.icon) : undefined,
+    )
+    if (icons.some(Boolean)) {
+      wireOptions.optionsIcons = icons
+    }
+  }
+
+  return createBlock(ControlName.MultiChoice, {
+    ...opts,
+    options: wireOptions,
+  })
 }
 
 /**
@@ -188,8 +265,18 @@ export function createMultipleChoice(opts: CreateBlockOptions & { options?: Mult
  * })
  * ```
  */
-export function createBinaryInput(opts: CreateBlockOptions): UISchemaElement {
-  return createBlock(ControlName.Boolean, opts)
+export function createBinaryInput(opts: CreateBlockOptions & { toggle?: boolean }): UISchemaElement {
+  // transformUp dispatches type:'Control' with boolean schema → upBinaryInput.
+  // BooleanControl type is not in the upHandlerMap and would throw.
+  return createBlock(ControlName.Control, {
+    ...opts,
+    options: {
+      ...opts.options,
+      // Mark as binary so createStep generates boolean schema (not string)
+      _binaryInput: true,
+      ...(opts.toggle !== undefined && { toggle: opts.toggle }),
+    },
+  })
 }
 
 /**
@@ -205,33 +292,57 @@ export function createBinaryInput(opts: CreateBlockOptions): UISchemaElement {
  * })
  * ```
  */
-export function createDatePicker(opts: CreateBlockOptions & { options?: DatePickerBlockOptions }): UISchemaElement {
-  return createBlock(ControlName.DatePicker, opts)
+export function createDatePicker(opts: CreateBlockOptions & {
+  options?: Record<string, unknown>
+  showTime?: boolean
+  disablePast?: boolean
+}): UISchemaElement {
+  const { showTime, disablePast, ...rest } = opts
+  return createBlock(ControlName.DatePicker, {
+    ...rest,
+    options: {
+      ...rest.options,
+      showTime: showTime ?? false,
+      fields: (rest.options as any)?.fields ?? {
+        startDate: {
+          label: rest.label ?? rest.name,
+          ...(disablePast && { limits: { disablePast: true } }),
+        },
+      },
+    },
+  })
 }
 
 /**
  * Creates a personal information block.
  *
+ * Fields listed in `fields` are displayed; omit a field to hide it.
+ * Set `{ required: true }` on each field that must be filled.
+ *
  * @example
  * ```ts
  * const personalInfo = createPersonalInformation({
- *   name: 'personalInfo',
- *   label: 'Your Details',
+ *   name: 'Contact Info',
  *   required: true,
  *   options: {
  *     customerType: 'PRIVATE',
+ *     purposeLabels: ['customer'],
+ *     title: 'Your Details',
  *     fields: {
- *       firstName: { display: true, required: true },
- *       lastName: { display: true, required: true },
- *       email: { display: true, required: true },
- *       telephone: { display: true, required: false },
+ *       firstName: { required: true },
+ *       lastName: { required: true },
+ *       email: { required: true },
+ *       telephone: {},
  *     },
  *   },
  * })
  * ```
  */
-export function createPersonalInformation(opts: CreateBlockOptions & { options?: PersonalInformationBlockOptions }): UISchemaElement {
-  return createBlock(ControlName.PersonalInformation, opts)
+export function createPersonalInformation(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  return createBlock(ControlName.PersonalInformation, {
+    ...opts,
+    showPaper: opts.showPaper ?? true,
+  })
 }
 
 /**
@@ -240,46 +351,56 @@ export function createPersonalInformation(opts: CreateBlockOptions & { options?:
  * @example
  * ```ts
  * const contact = createContact({
- *   name: 'contact',
- *   label: 'Contact Information',
+ *   name: 'Contact',
  *   required: true,
  *   options: {
  *     purpose: ['customer'],
+ *     title: 'Contact Information',
  *     fields: {
- *       firstName: { display: true, required: true },
- *       lastName: { display: true, required: true },
- *       email: { display: true, required: true },
+ *       firstName: { required: true },
+ *       lastName: { required: true },
+ *       email: { required: true },
  *     },
  *   },
  * })
  * ```
  */
-export function createContact(opts: CreateBlockOptions & { options?: ContactBlockOptions }): UISchemaElement {
-  return createBlock(ControlName.Contact, opts)
+export function createContact(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  return createBlock(ControlName.Contact, {
+    ...opts,
+    showPaper: opts.showPaper ?? true,
+  })
 }
 
 /**
  * Creates an address block.
  *
+ * Fields listed in `fields` are displayed; omit a field to hide it.
+ *
  * @example
  * ```ts
  * const address = createAddress({
- *   name: 'address',
- *   label: 'Delivery Address',
+ *   name: 'Address',
  *   required: true,
  *   options: {
- *     autocomplete: { enabled: true, countryCode: 'DE' },
+ *     title: 'Delivery Address',
+ *     countryAddressSettings: { countryCode: 'DE', enableAutoComplete: true, enableFreeText: false },
+ *     acceptSuggestedOnly: true,
  *     fields: {
- *       zipCity: { display: true, required: true },
- *       streetName: { display: true, required: true },
- *       houseNumber: { display: true, required: true },
+ *       zipCity: { required: true },
+ *       streetName: { required: true },
+ *       houseNumber: { required: true },
+ *       extention: {},
  *     },
  *   },
  * })
  * ```
  */
-export function createAddress(opts: CreateBlockOptions & { options?: AddressBlockOptions }): UISchemaElement {
-  return createBlock(ControlName.Address, opts)
+export function createAddress(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  return createBlock(ControlName.Address, {
+    ...opts,
+    showPaper: opts.showPaper ?? true,
+  })
 }
 
 /**
@@ -303,7 +424,7 @@ export function createAddress(opts: CreateBlockOptions & { options?: AddressBloc
  * })
  * ```
  */
-export function createProductSelection(opts: CreateBlockOptions & { options?: ProductBlockOptions }): UISchemaElement {
+export function createProductSelection(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
   return createBlock(ControlName.ProductSelection, opts)
 }
 
@@ -335,7 +456,7 @@ export function createProductSelection(opts: CreateBlockOptions & { options?: Pr
  * })
  * ```
  */
-export function createConsents(opts: CreateBlockOptions & { options?: ConsentsBlockOptions }): UISchemaElement {
+export function createConsents(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
   return createBlock(ControlName.Consents, opts)
 }
 
@@ -351,7 +472,7 @@ export function createConsents(opts: CreateBlockOptions & { options?: ConsentsBl
  * })
  * ```
  */
-export function createFileUpload(opts: CreateBlockOptions & { options?: FileUploadBlockOptions }): UISchemaElement {
+export function createFileUpload(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
   return createBlock(ControlName.FileUpload, opts)
 }
 
@@ -373,29 +494,48 @@ export function createFileUpload(opts: CreateBlockOptions & { options?: FileUplo
  * })
  * ```
  */
-export function createPaymentMethod(opts: CreateBlockOptions & { options?: PaymentBlockOptions }): UISchemaElement {
-  return createBlock(ControlName.Payment, opts)
+export function createPaymentMethod(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  return createBlock(ControlName.Payment, {
+    ...opts,
+    showPaper: opts.showPaper ?? true,
+  })
 }
 
 /**
  * Creates a paragraph (rich text) block.
  *
- * @param name - Property name
- * @param text - Rich text content (will be base64-encoded if not already)
+ * Text is base64-encoded as required by the journey renderer.
+ *
+ * @param name - Property name (e.g. 'Intro Text')
+ * @param text - HTML content (will be base64-encoded)
  * @param label - Optional label
  */
 export function createParagraph(name: string, text: string, label?: string): UISchemaElement {
-  let encodedText: string
-  try {
-    encodedText = btoa(unescape(encodeURIComponent(text)))
-  } catch {
-    encodedText = text
+  // The journey renderer decodes paragraph text as UTF-16LE base64.
+  // Text should be plain text (no HTML). The builder's WYSIWYG/Lexical
+  // editor handles formatting — raw HTML tags are shown as literal text.
+  const plainText = text
+    .replace(/<[^>]+>/g, '') // strip HTML tags
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .trim()
+
+  const utf16leBytes: number[] = []
+  for (let i = 0; i < plainText.length; i++) {
+    const code = plainText.charCodeAt(i)
+    utf16leBytes.push(code & 0xff, (code >> 8) & 0xff)
   }
-  return createBlock(ControlName.Paragraph, {
-    name,
-    label: label ?? '',
-    options: { text: encodedText },
-  })
+  const encodedText = btoa(String.fromCharCode(...utf16leBytes))
+
+  // Real v3 format: Label blocks have `text` at top level, not in options
+  return {
+    type: ControlName.Paragraph,
+    scope: `#/properties/${name}`,
+    text: encodedText,
+  }
 }
 
 /**
@@ -424,24 +564,54 @@ export function createImage(name: string, url: string, opts?: { altText?: string
 /**
  * Creates an action bar (navigation) block.
  *
+ * Matches the real v3 format: `ctaButton` for the primary action,
+ * `consents` array for inline consent checkboxes.
+ *
+ * @param name - Block name (e.g. 'Next', 'Action bar')
+ * @param opts - CTA button config and optional consents
+ *
  * @example
  * ```ts
- * const actionBar = createActionBar('actionBar', {
- *   next: { display: true, label: 'Continue', action: 'navigate-only' },
- *   back: { display: true, label: 'Back' },
- * })
+ * // Simple "Continue" button
+ * createActionBar('Next', { label: 'Continue' })
+ *
+ * // Submit button (triggers submission + navigates)
+ * createActionBar('Action bar', { label: 'Submit', actionType: 'SubmitAndGoNext' })
  * ```
  */
 export function createActionBar(name: string, opts?: {
-  next?: { display: boolean; label?: string; action?: 'navigate-only' | 'submit-and-navigate' }
-  back?: { display: boolean; label?: string }
+  label?: string
+  actionType?: 'GoNext' | 'SubmitAndGoNext'
+  backLabel?: string
+  showBack?: boolean
+  consents?: Array<{
+    name: string
+    isRequired: boolean
+    isVisible: boolean
+    text: string | null
+  }>
 }): UISchemaElement {
+  const defaultConsents = [
+    { name: 'first_consent', isRequired: false, isVisible: false, text: null },
+    { name: 'second_consent', isRequired: false, isVisible: false, text: null },
+    { name: 'third_consent', isRequired: false, isVisible: false, text: null },
+    { name: 'fourth_consent', isRequired: false, isVisible: false, text: null },
+  ]
   return createBlock(ControlName.ActionBar, {
     name,
-    label: '',
     options: {
-      next: opts?.next ?? { display: true, label: 'Next', action: 'navigate-only' },
-      back: opts?.back ?? { display: true, label: 'Back' },
+      showPaper: false,
+      consents: opts?.consents ?? defaultConsents,
+      ctaButton: {
+        actionType: opts?.actionType ?? 'GoNext',
+        isVisible: true,
+        label: opts?.label ?? 'Next',
+      },
+      goBackButton: {
+        actionType: 'GoBack' as const,
+        label: opts?.backLabel ?? 'Back',
+        isVisible: opts?.showBack ?? false,
+      },
     },
   })
 }
@@ -449,28 +619,31 @@ export function createActionBar(name: string, opts?: {
 /**
  * Creates a success/confirmation message block.
  *
+ * Matches the real v3 format: `title`, `text`, `icon`, `showCloseButton`, `closeButtonText`.
+ *
  * @example
  * ```ts
- * const success = createSuccessMessage('success', {
- *   messageTitle: 'Thank you!',
- *   messageBody: 'Your request has been submitted successfully.',
+ * createSuccessMessage('Thank you', {
+ *   title: 'Thank you!',
+ *   text: 'Your request has been submitted successfully.',
  *   closeButtonText: 'Back to Homepage',
  * })
  * ```
  */
 export function createSuccessMessage(name: string, opts?: {
-  messageTitle?: string
-  messageBody?: string
+  title?: string
+  text?: string
+  icon?: string
   closeButtonText?: string
 }): UISchemaElement {
   return createBlock(ControlName.ConfirmationMessage, {
     name,
-    label: '',
     options: {
-      messageTitle: opts?.messageTitle ?? 'Success',
-      messageBody: opts?.messageBody ?? 'Your submission has been received.',
+      title: opts?.title ?? 'Success',
+      text: opts?.text ?? 'Your submission has been received.',
+      icon: opts?.icon ?? 'check-circle-fill',
       showCloseButton: !!opts?.closeButtonText,
-      closeButtonText: opts?.closeButtonText,
+      closeButtonText: opts?.closeButtonText ?? '',
     },
   })
 }
@@ -478,10 +651,15 @@ export function createSuccessMessage(name: string, opts?: {
 /**
  * Creates a summary block.
  */
-export function createSummary(name: string, label?: string): UISchemaElement {
+export function createSummary(name: string, opts?: { subTitle?: string }): UISchemaElement {
   return createBlock(ControlName.Summary, {
     name,
-    label: label ?? 'Summary',
+    showPaper: true,
+    options: {
+      blocksInSummary: {},
+      subTitle: opts?.subTitle ?? '',
+      fields: [],
+    },
   })
 }
 
@@ -489,41 +667,48 @@ export function createSummary(name: string, label?: string): UISchemaElement {
  * Creates a shopping cart block.
  */
 export function createShoppingCart(name: string, opts?: {
-  title?: string
-  footnote?: string
-  showComponents?: boolean
+  cartTitle?: string
+  cartFootnote?: string
 }): UISchemaElement {
   return createBlock(ControlName.ShoppingCart, {
     name,
-    label: opts?.title ?? 'Shopping Cart',
     options: {
-      title: opts?.title ?? 'Shopping Cart',
-      footnote: opts?.footnote ?? '',
-      price: { showComponents: opts?.showComponents ?? true, showTrailingDecimalZeros: true, showUnitaryAverage: false },
-      product: { expandedItemDetails: false, enableProductDetails: true },
-      promotions: { enabled: false },
+      cartTitle: opts?.cartTitle ?? 'Shopping Cart',
+      cartFootnote: opts?.cartFootnote ?? '',
     },
   })
 }
 
 // ─── Step Creation ───────────────────────────────────────────────
 
+/** Layout types used in real journey configs */
+export type StepLayoutType =
+  | 'MainLinearLayout'
+  | 'MainContentCartLayout'
+  | 'GridLayout'
+
 export interface CreateStepOptions {
-  /** Human-readable step name */
+  /** Human-readable step name (also used as stepId) */
   name: string
-  /** Blocks to include in this step */
+  /** Blocks to include in the main content area */
   blocks: UISchemaElement[]
+  /** Sidebar blocks (e.g. shopping cart) — only for MainContentCartLayout */
+  sidebarBlocks?: UISchemaElement[]
+  /** Layout type. Defaults to MainLinearLayout */
+  layout?: StepLayoutType
   /** Step title displayed to end users */
   title?: string | null
   /** Step subtitle */
   subTitle?: string | null
   /** Whether to show step name */
   showStepName?: boolean
+  /** Whether to show step subtitle */
+  showStepSubtitle?: boolean
   /** Whether to show stepper navigation */
   showStepper?: boolean
   /** Whether to show stepper labels */
   showStepperLabels?: boolean
-  /** Whether to hide the next button */
+  /** Whether to hide the next button (true when using ActionBarControl) */
   hideNextButton?: boolean
 }
 
@@ -545,43 +730,117 @@ export interface CreateStepOptions {
  * ```
  */
 export function createStep(opts: CreateStepOptions): StepConfig {
+  const allBlocks = [...opts.blocks, ...(opts.sidebarBlocks ?? [])]
   const properties: Record<string, unknown> = {}
   const required: string[] = []
 
-  for (const block of opts.blocks) {
+  // Block types that store array values (multi-choice)
+  const arrayTypes: Set<string> = new Set([
+    ControlName.MultiChoice,
+  ])
+  // BooleanControl type has no upHandler — binary inputs use type:'Control' with boolean schema
+  // Detected via _binaryInput marker set by createBinaryInput factory
+
+  for (const block of allBlocks) {
     if (block.scope) {
       const propName = block.scope.replace('#/properties/', '')
-      properties[propName] = { type: 'object' }
+      let schemaType = 'object'
+      if (arrayTypes.has(block.type)) {
+        schemaType = 'array'
+      } else if (block.type === ControlName.Control || block.type === ControlName.TextField) {
+        const opts = block.options as Record<string, unknown> | undefined
+
+        if (opts?._binaryInput === true) {
+          // Binary input (switch/checkbox): schema boolean → transformUp routes to upBinaryInput
+          properties[propName] = { type: 'boolean' }
+        } else {
+          // Single-choice: needs enum[] in schema so EnumButtonControlTester (isEnumControl) matches
+          // and transformUp doesn't fall through to text input path (it checks !schema.enum)
+          const enumValues = opts?.options as string[] | undefined
+          const isChoiceBlock = Array.isArray(enumValues) && (opts?.button === true || opts?.radio === true)
+          if (isChoiceBlock) {
+            properties[propName] = { type: 'string', enum: enumValues }
+          } else {
+            // Plain text input — TextFieldTester (schemaTypeIs('string')) matches
+            properties[propName] = { type: 'string' }
+          }
+        }
+        if (block.options?.required) {
+          required.push(propName)
+        }
+        continue
+      }
+      properties[propName] = { type: schemaType }
       if (block.options?.required) {
         required.push(propName)
       }
     }
   }
 
+  // Display-only block types that don't produce submission data
+  const displayOnlyTypes: Set<string> = new Set([
+    ControlName.Paragraph,
+    ControlName.Image,
+    ControlName.ActionBar,
+    ControlName.Hyperlink,
+    ControlName.ConfirmationMessage,
+    ControlName.Summary,
+    ControlName.ShoppingCart,
+    ControlName.PdfSummary,
+    ControlName.GroupLayout,
+  ])
+
+  // Add variablePath to stateful blocks only
+  for (const block of allBlocks) {
+    if (block.scope && block.options && !block.options.variablePath && !displayOnlyTypes.has(block.type)) {
+      const propName = block.scope.replace('#/properties/', '')
+      block.options.variablePath = variablePath(opts.name, propName)
+    }
+  }
+
   const schema: Record<string, unknown> = {
     type: 'object',
     properties,
-  }
-  if (required.length > 0) {
-    schema.required = required
+    required,
   }
 
+  const layoutType = opts.layout ?? (opts.sidebarBlocks?.length ? 'MainContentCartLayout' : 'MainLinearLayout')
+
+  let elements: unknown
+  if (layoutType === 'MainContentCartLayout') {
+    // MainContentCartLayout expects [[main blocks], [sidebar blocks], [], []]
+    elements = [
+      opts.blocks,
+      opts.sidebarBlocks ?? [],
+      [],
+      [],
+    ]
+  } else {
+    elements = opts.blocks
+  }
+
+  const layoutOptions = layoutType === 'MainContentCartLayout'
+    ? { spacing: 4 }
+    : { scale: 3 }
+
   const uischema: UISchemaElement = {
-    type: 'VerticalLayout',
-    elements: opts.blocks,
+    type: layoutType,
+    options: layoutOptions,
+    elements: elements as UISchemaElement[],
   }
 
   return {
     name: opts.name,
-    stepId: generateId(),
+    stepId: stepId(opts.name),
     schema,
     uischema,
-    title: opts.title,
-    subTitle: opts.subTitle,
-    showStepName: opts.showStepName,
-    showStepper: opts.showStepper,
-    showStepperLabels: opts.showStepperLabels,
-    hideNextButton: opts.hideNextButton,
+    title: opts.title ?? opts.name,
+    subTitle: opts.subTitle ?? null,
+    showStepName: opts.showStepName ?? true,
+    showStepSubtitle: opts.showStepSubtitle ?? false,
+    showStepper: opts.showStepper ?? true,
+    showStepperLabels: opts.showStepperLabels ?? true,
+    hideNextButton: opts.hideNextButton ?? true,
   }
 }
 
