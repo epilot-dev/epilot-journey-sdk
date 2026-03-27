@@ -41,7 +41,7 @@ export const NAV: NavEntry[] = [
     group: 'For AI Agents',
     items: [
       { id: 'agent-guide', label: 'Agent Guide', icon: '🤖' },
-      { id: 'example-journey', label: 'Full Example', icon: '📝' },
+      { id: 'example-journey', label: 'Examples', icon: '📝' },
     ],
   },
 ];
