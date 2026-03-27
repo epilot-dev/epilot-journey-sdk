@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface CodeBlockProps {
   code: string;
@@ -99,18 +99,20 @@ function tokenize(code: string): Token[] {
 }
 
 const tokenColors: Record<Token['type'], string> = {
-  keyword: 'text-purple-400',
-  string: 'text-green-400',
-  number: 'text-orange-300',
+  keyword: 'text-violet-400',
+  string: 'text-emerald-400',
+  number: 'text-amber-300',
   comment: 'text-gray-500 italic',
   property: 'text-sky-300',
-  punctuation: 'text-gray-400',
+  punctuation: 'text-gray-500',
   operator: 'text-pink-400',
   builtin: 'text-yellow-300',
-  plain: 'text-gray-100',
+  plain: 'text-gray-200',
 };
 
 export function CodeBlock({ code, title, language = 'typescript' }: CodeBlockProps) {
+  const [copied, setCopied] = useState(false);
+
   const highlighted = useMemo(() => {
     if (language === 'bash') {
       return code.split('\n').map((line, i) => {
@@ -120,27 +122,51 @@ export function CodeBlock({ code, title, language = 'typescript' }: CodeBlockPro
         return <div key={i}>{line}</div>;
       });
     }
-    if (language === 'json') {
-      const tokens = tokenize(code);
-      return tokens.map((token, i) => (
-        <span key={i} className={tokenColors[token.type]}>{token.value}</span>
-      ));
-    }
     const tokens = tokenize(code);
     return tokens.map((token, i) => (
       <span key={i} className={tokenColors[token.type]}>{token.value}</span>
     ));
   }, [code, language]);
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="rounded-lg overflow-hidden border border-gray-200">
+    <div className="rounded-xl overflow-hidden" style={{
+      border: '1px solid rgba(99, 102, 241, 0.1)',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+    }}>
       {title && (
-        <div className="bg-gray-800 px-4 py-2 text-xs text-gray-400 font-mono flex items-center justify-between">
-          <span>{title}</span>
-          {language && <span className="text-gray-500 text-[10px] uppercase">{language}</span>}
+        <div className="flex items-center justify-between px-4 py-2" style={{
+          background: 'linear-gradient(135deg, #1a1a2e 0%, #16162a 100%)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+        }}>
+          <div className="flex items-center gap-3">
+            <div className="flex gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+              <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+              <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+            </div>
+            <span className="text-[11px] text-gray-400 font-mono">{title}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {language && <span className="text-gray-600 text-[10px] uppercase font-mono">{language}</span>}
+            <button
+              onClick={handleCopy}
+              className="text-gray-500 hover:text-gray-300 transition-colors text-[11px] font-mono px-2 py-0.5 rounded hover:bg-white/5"
+            >
+              {copied ? 'copied!' : 'copy'}
+            </button>
+          </div>
         </div>
       )}
-      <pre className="bg-gray-900 text-gray-100 p-4 text-xs overflow-x-auto font-mono leading-relaxed whitespace-pre">
+      <pre className="p-4 text-[13px] overflow-x-auto font-mono leading-relaxed whitespace-pre" style={{
+        background: 'linear-gradient(180deg, #0f0f1a 0%, #111122 100%)',
+        color: '#e2e8f0',
+      }}>
         {highlighted}
       </pre>
     </div>

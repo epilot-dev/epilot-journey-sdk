@@ -14,11 +14,7 @@ export function BlockCard({ block, onClick }: BlockCardProps) {
       onClick={() => onClick(block)}
       className="text-left group w-full"
     >
-      <div
-        className={`bg-white rounded-2xl border transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col gap-3 h-full relative ${
-          block.commonlyUsed ? 'border-gray-100' : 'border-gray-100'
-        }`}
-      >
+      <div className="card-interactive flex flex-col gap-3 h-full relative">
         {block.commonlyUsed && (
           <div className="absolute top-3 right-3 text-amber-400 text-xs" title="Commonly used">★</div>
         )}
@@ -47,7 +43,7 @@ export function BlockCard({ block, onClick }: BlockCardProps) {
             </span>
           )}
           {block.factory && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-100">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-50 text-primary-600 border border-primary-100">
               factory fn
             </span>
           )}
