@@ -8,10 +8,10 @@ interface OverviewSectionProps {
 }
 
 const STATS = [
-  { label: 'Block Types', value: String(BLOCK_CATALOG.length) },
-  { label: 'Categories', value: String(CATEGORIES.length) },
-  { label: 'Factory Fns', value: String(FACTORY_FUNCTIONS.length) },
-  { label: 'Status', value: 'Alpha' },
+  { label: 'Block Types', value: String(BLOCK_CATALOG.length), color: 'text-blue-600' },
+  { label: 'Categories', value: String(CATEGORIES.length), color: 'text-emerald-600' },
+  { label: 'Factory Fns', value: String(FACTORY_FUNCTIONS.length), color: 'text-amber-600' },
+  { label: 'Status', value: 'Alpha', color: 'text-violet-600' },
 ];
 
 const INSTALL_CODE = `npm install @epilot/epilot-journey-sdk`;
@@ -106,7 +106,7 @@ export function OverviewSection({ onNavigate }: OverviewSectionProps) {
   return (
     <div>
       {/* Hero */}
-      <div className="relative mb-12">
+      <div className="relative mb-12 -mx-8 -mt-8 px-8 pt-8 pb-6" style={{ background: 'linear-gradient(to bottom, #fafbff 80%, transparent 100%)' }}>
         {/* Background glow */}
         <div className="hero-glow bg-primary-500" style={{ top: -100, right: -100 }} />
         <div className="hero-glow bg-violet-500" style={{ top: 0, left: -150 }} />
@@ -132,11 +132,11 @@ export function OverviewSection({ onNavigate }: OverviewSectionProps) {
           </p>
 
           {/* Stats row */}
-          <div className="flex gap-6 mb-2">
+          <div className="flex flex-wrap gap-3 mb-2">
             {STATS.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl font-extrabold text-gray-900">{stat.value}</div>
-                <div className="text-[11px] font-medium text-gray-400 uppercase tracking-wider">{stat.label}</div>
+              <div key={stat.label} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/70 border border-gray-200/60 text-sm">
+                <span className={`font-extrabold ${stat.color}`}>{stat.value}</span>
+                <span className="text-gray-400">{stat.label}</span>
               </div>
             ))}
           </div>
