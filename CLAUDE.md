@@ -93,6 +93,8 @@ const created = await client.createJourney(journey)
 6. **Choices use parallel arrays** – `createSingleChoice`/`createMultipleChoice` handle this. Never construct raw `options[]`/`optionsLabels[]`.
 7. **Paragraph text is base64 UTF-16LE** – `createParagraph()` handles encoding. Never set `text` manually.
 8. **Set `runtimeEntities`** – `['ORDER']` for purchases, `['OPPORTUNITY']` for leads.
+9. **SEPA payment `componentProps` auto-filled** – the `createPaymentMethod` factory auto-adds `componentProps.apiBaseUrl` for SEPA implementations. Override if you need a custom IBAN validation endpoint.
+10. **Dev API URL** – for org 739224 (dev), use `apiUrl: 'https://journey-config.dev.sls.epilot.io'`. Cognito tokens from dev portal won't work against prod API.
 
 ## JourneyClient API
 

@@ -548,8 +548,27 @@ export function createFileUpload(opts: CreateBlockOptions & { options?: Record<s
  * ```
  */
 export function createPaymentMethod(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  const options = { ...opts.options } as Record<string, unknown>
+
+  // Ensure SEPA implementations have required componentProps.
+  // Without apiBaseUrl the renderer crashes on the v3→v4 transform.
+  if (Array.isArray(options.implementations)) {
+    options.implementations = (options.implementations as Array<Record<string, unknown>>).map((impl) => {
+      if ((impl.type === 'SEPA' || impl.type === 'payment_sepa') && !impl.componentProps) {
+        return {
+          ...impl,
+          componentProps: {
+            apiBaseUrl: 'https://iban.dev.sls.epilot.io/v1/iban?iban=',
+          },
+        }
+      }
+      return impl
+    })
+  }
+
   return createBlock(ControlName.Payment, {
     ...opts,
+    options,
     showPaper: opts.showPaper ?? true,
   })
 }
