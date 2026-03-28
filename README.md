@@ -129,6 +129,24 @@ const block = findBlock(steps, { stepIndex: 0, blockName: '#/properties/email' }
 const updated = updateBlock(steps, ref, { label: 'New Label' })
 ```
 
+### Export Journey to SDK Code
+
+Convert any journey's wire format JSON into clean, readable factory code:
+
+```ts
+import { JourneyClient, exportJourneyCode } from '@epilot/epilot-journey-sdk'
+
+const client = new JourneyClient({ auth: token })
+const journey = await client.getJourney('journey-id')
+const code = exportJourneyCode(journey)
+console.log(code) // → clean TypeScript with createJourney/createStep/create* calls
+```
+
+Or via CLI:
+```bash
+npx tsx examples/export-journey.ts <JOURNEY_ID>
+```
+
 ## Examples
 
 Runnable scripts in `examples/`:
@@ -139,6 +157,7 @@ Runnable scripts in `examples/`:
 | `create-product-journey.ts` | 6-step solar journey with availability check, roof planner, cart sidebar |
 | `create-shopping-cart-journey.ts` | Product selection with `MainContentCartLayout` |
 | `create-edge-case-journey.ts` | All block types: NumberInput, DatePicker, BinaryInput, Contact, Address, FileUpload, Consents, Products |
+| `export-journey.ts` | Export any journey's JSON to readable SDK factory code |
 
 ```bash
 # Authenticate first
@@ -147,6 +166,32 @@ epilot auth login
 # Run any example
 npx tsx examples/create-sales-inquiry.ts
 ```
+
+## MCP Server (AI Agents)
+
+The `mcp/` directory contains an MCP server that exposes journey management as tools for AI agents. Works with Claude Code, Claude Desktop, and any MCP-compatible client.
+
+```bash
+cd mcp && npm install
+```
+
+Add to Claude Code settings (`~/.claude/settings.json`):
+
+```json
+{
+  "mcpServers": {
+    "epilot-journeys": {
+      "command": "npx",
+      "args": ["tsx", "/path/to/epilot-journey-sdk/mcp/index.ts"],
+      "env": { "EPILOT_TOKEN": "<token>" }
+    }
+  }
+}
+```
+
+**Available tools:** `create_journey`, `get_journey`, `search_journeys`, `delete_journey`, `list_block_types`
+
+See [mcp/README.md](mcp/README.md) for full documentation.
 
 ## Other Topics
 
@@ -167,4 +212,5 @@ src/
     parse.ts        – parseBlockValue, mergeBlockValue
 examples/           – Runnable journey creation scripts
 demo/               – Interactive playground (Vite + React + Tailwind)
+mcp/                – MCP server for AI agent integration
 ```

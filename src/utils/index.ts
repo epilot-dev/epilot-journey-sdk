@@ -7,3 +7,4 @@ export {
   addBlock,
   removeBlock,
 } from './blocks.js'
+export { exportJourneyCode } from './export.js'

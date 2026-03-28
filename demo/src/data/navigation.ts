@@ -8,6 +8,7 @@ export type SectionId =
   | 'client-api'
   | 'factories'
   | 'agent-guide'
+  | 'mcp-server'
   | 'example-journey';
 
 export interface SectionItem {
@@ -41,6 +42,7 @@ export const NAV: NavEntry[] = [
     group: 'For AI Agents',
     items: [
       { id: 'agent-guide', label: 'Agent Guide', icon: '🤖' },
+      { id: 'mcp-server', label: 'MCP Server', icon: '🔌' },
       { id: 'example-journey', label: 'Examples', icon: '📝' },
     ],
   },

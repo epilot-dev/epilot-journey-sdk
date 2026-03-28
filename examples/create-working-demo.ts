@@ -13,7 +13,7 @@ import {
   createConsents, createSummary,
   createParagraph, createActionBar, createSuccessMessage,
   JourneyClient,
-} from '../src/index.js'
+} from '@epilot/epilot-journey-sdk'
 
 const API_TOKEN = process.env.EPILOT_TOKEN || execSync('epilot auth token', { encoding: 'utf-8' }).trim()
 const ORG_ID = process.env.EPILOT_ORG_ID || '739224'

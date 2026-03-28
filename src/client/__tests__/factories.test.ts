@@ -410,13 +410,13 @@ describe('createJourney', () => {
     expect((journey.settings as any).designId).toBe('design-abc')
   })
 
-  it('omits settings when not provided', () => {
+  it('defaults designId to empty string when settings not provided', () => {
     const journey = createJourney({
       organizationId: 'org-1',
       name: 'Test',
       steps: [],
     })
 
-    expect(journey.settings).toBeUndefined()
+    expect((journey.settings as any).designId).toBe('')
   })
 })

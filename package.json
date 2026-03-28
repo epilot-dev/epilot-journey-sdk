@@ -1,6 +1,6 @@
 {
   "name": "@epilot/epilot-journey-sdk",
-  "version": "3.0.0",
+  "version": "2.0.0-alpha.0",
   "author": "Mohannad Mamo",
   "license": "MIT",
   "publishConfig": {
@@ -30,7 +30,9 @@
   },
   "main": "dist/index.js",
   "files": [
-    "dist/**"
+    "dist/**",
+    "CLAUDE.md",
+    "WIRE_FORMAT_REFERENCE.md"
   ],
   "tsup": {
     "entry": [

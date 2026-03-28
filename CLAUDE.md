@@ -57,31 +57,40 @@ const created = await client.createJourney(journey)
 
 ## Factory Functions (always use these)
 
-| Factory | Block Type | Notes |
-|---------|-----------|-------|
-| `createTextInput()` | Control | Plain text, multiline option |
-| `createNumberInput()` | NumberInputControl | Unit, range, format nested under `fields.numberInput` |
-| `createSingleChoice()` | Control | Pass `choices[]` – auto-converts to parallel arrays wire format |
-| `createMultipleChoice()` | MultichoiceControl | Same `choices[]` conversion as single choice |
-| `createBinaryInput()` | Control | Toggle/checkbox – uses `_binaryInput` marker |
-| `createDatePicker()` | DatePickerControl | `disablePast`, `showTime` options |
-| `createPersonalInformation()` | PersonalInformationControl | `customerType: 'PRIVATE' \| 'BUSINESS'`, field-level required |
-| `createContact()` | ContactControl | Similar to PI but contact-specific fields |
-| `createAddress()` | AddressControl | `countryAddressSettings` for autocomplete |
-| `createProductSelection()` | ProductSelectionControl | `products[]` with productId/priceId pairs |
-| `createShoppingCart()` | ShopCartControl | Always in `sidebarBlocks` with `MainContentCartLayout` |
-| `createConsents()` | ConsentsControl | `items` keyed by consent ID with topics |
-| `createFileUpload()` | UploadPanelControl | Array `supportedTypes` auto-joined to comma string |
-| `createPaymentMethod()` | PaymentControl | SEPA + BankTransfer implementations |
-| `createPVRoofPlanner()` | PVRoofPlannerControl | Solar panel roof planner |
-| `createAvailabilityCheck()` | AvailabilityCheckControl | Postal code or address-based service check |
-| `createParagraph()` | Label | Text auto-encoded as UTF-16LE base64. Top-level `text`, not in options |
-| `createImage()` | ImageControl | URL, altText, width (100%/50%/30%) |
-| `createActionBar()` | ActionBarControl | `GoNext` or `SubmitAndGoNext`. 4 consent slots |
-| `createSuccessMessage()` | ConfirmationMessageControl | Title, text, optional close button |
-| `createSummary()` | SummaryControl | Review block showing collected data |
-| `createStep()` | — | Auto-generates schema from blocks, sets `variablePath` |
-| `createJourney()` | — | Wraps steps with required v1 API fields |
+**Two signature patterns:**
+- **Options object** – `createTextInput({ name, label?, required?, options? })` – name goes inside the object
+- **Positional** – `createParagraph(name, text)`, `createActionBar(name, opts?)`, `createSuccessMessage(name, opts?)`, `createImage(name, url, opts?)`, `createSummary(name, opts?)`, `createShoppingCart(name, opts?)`
+
+**Choices go inside `options.choices`**, not top-level:
+```ts
+createSingleChoice({ name: 'x', options: { choices: [{ label: 'A', value: 'a' }] } })
+```
+
+| Factory | Signature | Notes |
+|---------|----------|-------|
+| `createTextInput(opts)` | `{ name, label?, options?: { multiline?, placeholder? } }` | Plain text or textarea |
+| `createNumberInput(opts)` | `{ name, label?, unit?, range?, suggestions? }` | Unit/range at top level, nested auto |
+| `createSingleChoice(opts)` | `{ name, label?, options: { uiType?, choices[] } }` | uiType: `'button'`/`'radio'`/`'dropdown'` |
+| `createMultipleChoice(opts)` | `{ name, label?, options: { uiType?, choices[], maxSelection? } }` | uiType: `'checkbox'`/`'button'` |
+| `createBinaryInput(opts)` | `{ name, label?, toggle?: boolean }` | toggle=true → switch, false → checkbox |
+| `createDatePicker(opts)` | `{ name, label?, showTime?, disablePast? }` | Time/past at top level |
+| `createPersonalInformation(opts)` | `{ name, options?: { customerType?, fields? } }` | **Defaults fields** if omitted |
+| `createContact(opts)` | `{ name, options?: { purpose?, fields? } }` | Contact-specific fields |
+| `createAddress(opts)` | `{ name, options?: { fields?, countryAddressSettings? } }` | **Defaults fields + DE autocomplete** |
+| `createProductSelection(opts)` | `{ name, options: { products[], catalog?, selectionType? } }` | productId/priceId pairs |
+| `createShoppingCart(name, opts?)` | Positional name | Always in `sidebarBlocks` |
+| `createConsents(opts)` | `{ name, options: { items: { [id]: { required, topics[], text, order } } } }` | Items keyed by ID |
+| `createFileUpload(opts)` | `{ name, options?: { maxQuantity?, supportedTypes? } }` | Array supportedTypes auto-joined |
+| `createPaymentMethod(opts)` | `{ name, options: { implementations[] } }` | SEPA componentProps auto-filled |
+| `createPVRoofPlanner(opts)` | `{ name, options?: { panelLifetimeYears? } }` | Solar roof planner |
+| `createAvailabilityCheck(opts)` | `{ name, options: { countryCode, fields } }` | Postal code or address check |
+| `createParagraph(name, text)` | **Positional**: name, text string | Auto base64 UTF-16LE encoded |
+| `createImage(name, url, opts?)` | **Positional**: name, url, `{ altText?, width? }` | width: `'100%'`/`'50%'`/`'30%'` |
+| `createActionBar(name, opts?)` | **Positional**: name, `{ label?, actionType?, consents? }` | `'GoNext'` or `'SubmitAndGoNext'` |
+| `createSuccessMessage(name, opts?)` | **Positional**: name, `{ title?, text?, closeButtonText? }` | On its own final step |
+| `createSummary(name, opts?)` | **Positional**: name, `{ subTitle? }` | Review block |
+| `createStep(opts)` | `{ name, blocks[], sidebarBlocks?, layout? }` | Auto-generates schema |
+| `createJourney(opts)` | `{ organizationId, name, steps[], settings? }` | **Defaults `designId: ''`** if omitted |
 
 ## Critical Rules
 
@@ -158,4 +167,33 @@ src/
   index.ts          – Public API exports
 examples/           – Runnable journey creation scripts
 demo/               – Interactive playground (Vite + React + Tailwind)
+mcp/                – MCP server for AI agent integration (see mcp/README.md)
 ```
+
+## MCP Server
+
+The `mcp/` directory provides an MCP server with tools for AI agents:
+
+Journey-level: `create_journey`, `get_journey`, `search_journeys`, `delete_journey`, `patch_journey`
+Block-level: `get_blocks`, `patch_block`, `add_block`, `remove_block`, `list_block_types`
+Export: `export_journey_code` – converts journey JSON into clean SDK factory code
+
+Resources: `epilot://docs/claude-md`, `epilot://docs/wire-format`, `epilot://blocks/catalog`
+
+Setup: add to `~/.claude/settings.json` under `mcpServers` with `EPILOT_TOKEN` env var.
+
+## Exporting Journeys to SDK Code
+
+Convert any journey's wire format JSON into readable factory code:
+
+```ts
+import { JourneyClient, exportJourneyCode } from '@epilot/epilot-journey-sdk'
+
+const client = new JourneyClient({ auth: token, apiUrl: 'https://journey-config.dev.sls.epilot.io' })
+const journey = await client.getJourney('journey-id')
+const code = exportJourneyCode(journey)
+// → clean TypeScript with createJourney/createStep/create* calls
+```
+
+Or via CLI: `npx tsx examples/export-journey.ts <JOURNEY_ID>`
+Or via MCP: agent calls `export_journey_code(journeyId)`

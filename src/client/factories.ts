@@ -339,8 +339,22 @@ export function createDatePicker(opts: CreateBlockOptions & {
  * ```
  */
 export function createPersonalInformation(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  const options = { ...opts.options } as Record<string, unknown>
+
+  // Default fields if not provided – without fields the renderer crashes
+  if (!options.fields) {
+    options.fields = {
+      salutation: { required: false },
+      firstName: { required: true },
+      lastName: { required: true },
+      email: { required: true },
+      telephone: { required: false },
+    }
+  }
+
   return createBlock(ControlName.PersonalInformation, {
     ...opts,
+    options,
     showPaper: opts.showPaper ?? true,
   })
 }
@@ -397,8 +411,29 @@ export function createContact(opts: CreateBlockOptions & { options?: Record<stri
  * ```
  */
 export function createAddress(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement {
+  const options = { ...opts.options } as Record<string, unknown>
+
+  // Default fields if not provided – without fields the renderer crashes
+  if (!options.fields) {
+    options.fields = {
+      zipCity: { required: true },
+      streetName: { required: true },
+      houseNumber: { required: true },
+    }
+  }
+
+  // Default country settings
+  if (!options.countryAddressSettings) {
+    options.countryAddressSettings = {
+      countryCode: 'DE',
+      enableAutoComplete: true,
+      enableFreeText: false,
+    }
+  }
+
   return createBlock(ControlName.Address, {
     ...opts,
+    options,
     showPaper: opts.showPaper ?? true,
   })
 }
@@ -1011,9 +1046,9 @@ export function createJourney(opts: CreateJourneyOptions): Record<string, unknow
     logicsV4: {},
   }
 
-  if (opts.settings) {
-    payload.settings = opts.settings
-  }
+  // settings.designId is required by the API – default to empty string
+  const settings = { designId: '', ...opts.settings }
+  payload.settings = settings
 
   if (opts.design) {
     payload.design = opts.design

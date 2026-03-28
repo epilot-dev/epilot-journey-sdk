@@ -6,6 +6,7 @@ import { CatalogSection } from './sections/CatalogSection';
 import { FactoriesSection } from './sections/FactoriesSection';
 import { ClientApiSection } from './sections/ClientApiSection';
 import { AgentGuideSection } from './sections/AgentGuideSection';
+import { McpServerSection } from './sections/McpServerSection';
 import { ExampleJourneySection } from './sections/ExampleJourneySection';
 
 const SECTION_COMPONENTS: Record<SectionId, React.ComponentType<any>> = {
@@ -14,6 +15,7 @@ const SECTION_COMPONENTS: Record<SectionId, React.ComponentType<any>> = {
   factories: FactoriesSection,
   'client-api': ClientApiSection,
   'agent-guide': AgentGuideSection,
+  'mcp-server': McpServerSection,
   'example-journey': ExampleJourneySection,
 };
 
