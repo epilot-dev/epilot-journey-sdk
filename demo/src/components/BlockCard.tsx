@@ -35,7 +35,7 @@ export function BlockCard({ block, onClick }: BlockCardProps) {
           <CategoryBadge category={block.category} />
           {block.hasValue ? (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
-              has value
+              submits data
             </span>
           ) : (
             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-gray-50 text-gray-400 border border-gray-100">

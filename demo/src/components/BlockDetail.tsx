@@ -76,8 +76,8 @@ export function BlockDetail({ block, onClose }: BlockDetailProps) {
                 <InfoRow label="Control Name" value={block.controlName} mono />
                 <InfoRow label="Category" value={<CategoryBadge category={block.category} size="md" />} />
                 <InfoRow
-                  label="Has Value"
-                  value={block.hasValue ? 'Yes – submits data' : 'Display / navigation only'}
+                  label="Submits Data"
+                  value={block.hasValue ? 'Yes – included in form submission' : 'No – display / navigation only'}
                 />
                 <InfoRow
                   label="Commonly Used"
