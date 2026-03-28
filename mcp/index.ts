@@ -431,7 +431,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return {
           content: [{
             type: 'text',
-            text: JSON.stringify(journey, null, 2).slice(0, 50000),
+            text: (() => {
+              const full = JSON.stringify(journey, null, 2)
+              if (full.length > 50000) return full.slice(0, 50000) + '\n\n[TRUNCATED — full response is ' + full.length + ' chars. Use export_journey_code for a readable view.]'
+              return full
+            })(),
           }],
         }
       }

@@ -9,7 +9,7 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "tsup src/index.ts",
+    "build": "tsup src/index.ts --dts",
     "release": "standard-version && npm publish",
     "prepublishOnly": "yarn build",
     "postrelease": "git push && git push --tags"

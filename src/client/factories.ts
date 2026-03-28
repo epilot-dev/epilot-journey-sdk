@@ -16,15 +16,15 @@ import type { UISchemaElement, StepConfig } from './types.js'
 // ─── ID Generation ───────────────────────────────────────────────
 
 function uuid(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID()
+  }
+  // Fallback for environments without crypto.randomUUID
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0
     const v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
-}
-
-function stepId(name: string): string {
-  return name
 }
 
 function variablePath(stepName: string, blockName: string): string {
@@ -897,13 +897,18 @@ export function createStep(opts: CreateStepOptions): StepConfig {
     ControlName.GroupLayout,
   ])
 
-  // Add variablePath to stateful blocks only
-  for (const block of allBlocks) {
+  // Add variablePath to stateful blocks only (clone to avoid mutating inputs)
+  const processedBlocks = allBlocks.map((block) => {
     if (block.scope && block.options && !block.options.variablePath && !displayOnlyTypes.has(block.type)) {
       const propName = block.scope.replace('#/properties/', '')
-      block.options.variablePath = variablePath(opts.name, propName)
+      return { ...block, options: { ...block.options, variablePath: variablePath(opts.name, propName) } }
     }
-  }
+    return block
+  })
+  // Split back into main and sidebar
+  const mainCount = opts.blocks.length
+  const processedMain = processedBlocks.slice(0, mainCount)
+  const processedSidebar = processedBlocks.slice(mainCount)
 
   const schema: Record<string, unknown> = {
     type: 'object',
@@ -917,13 +922,13 @@ export function createStep(opts: CreateStepOptions): StepConfig {
   if (layoutType === 'MainContentCartLayout') {
     // MainContentCartLayout expects [[main blocks], [sidebar blocks], [], []]
     elements = [
-      opts.blocks,
-      opts.sidebarBlocks ?? [],
+      processedMain,
+      processedSidebar,
       [],
       [],
     ]
   } else {
-    elements = opts.blocks
+    elements = processedMain
   }
 
   const layoutOptions = layoutType === 'MainContentCartLayout'
@@ -938,7 +943,7 @@ export function createStep(opts: CreateStepOptions): StepConfig {
 
   return {
     name: opts.name,
-    stepId: stepId(opts.name),
+    stepId: opts.name,
     schema,
     uischema,
     title: opts.title ?? opts.name,

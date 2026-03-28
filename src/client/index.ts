@@ -97,14 +97,14 @@ export class JourneyClient {
    * results.forEach(j => console.log(j.journey_name))
    * ```
    */
-  async searchJourneys(options?: SearchOptions): Promise<unknown[]> {
+  async searchJourneys(options?: SearchOptions): Promise<JourneyRaw[]> {
     const res = await this.apiClient.searchJourneys(null, {
       q: options?.query ?? '*',
       from: options?.from ?? 0,
       size: options?.size ?? 25,
       sort: options?.sort ?? '_created_at:desc',
     })
-    const data = res.data as { results?: unknown[] }
+    const data = res.data as unknown as { results?: JourneyRaw[] }
     return data.results ?? []
   }
 
@@ -136,8 +136,9 @@ export class JourneyClient {
       const data = res.data as any
       return (data?.createdJourney ?? data) as JourneyRaw
     } catch (v1Err: any) {
-      if (v1Err?.response?.status === 500) {
-        // v1 fails with API tokens — fall back to v2
+      const status = v1Err?.response?.status
+      if (status === 401 || status === 403 || status === 500) {
+        // v1 endpoint requires Cognito token — fall back to v2 for API token auth
         const res = await this.apiClient.createJourneyV2(null, journey as never)
         const data = res.data as any
         return (data?.createdJourney ?? data) as JourneyRaw
