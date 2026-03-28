@@ -117,6 +117,10 @@ client.getBlocks(journey)         // all blocks across all steps
 client.getStepBlocks(journey, 0)  // blocks in step 0
 ```
 
+## Wire Format Reference
+
+See `WIRE_FORMAT_REFERENCE.md` for exhaustive documentation of every block type's settings and their exact wire format representation. Derived from the journey-builder's transform handlers in `journey-logic-commons`.
+
 ## Block Catalog
 
 All 35+ block types are in `ControlName` and `BLOCK_CATALOG`. Use `ControlName.X` for type constants:
