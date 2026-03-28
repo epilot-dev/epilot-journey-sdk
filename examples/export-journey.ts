@@ -10,7 +10,7 @@
  * Auth: uses EPILOT_TOKEN env var or `epilot auth token`.
  */
 import { execSync } from 'child_process'
-import { JourneyClient, exportJourneyCode } from '@epilot/epilot-journey-sdk'
+import { JourneyClient, exportJourneyCode } from '../src/index.js' // Use '@epilot/epilot-journey-sdk' when running as a standalone script outside this repo
 
 const JOURNEY_ID = process.argv[2]
 if (!JOURNEY_ID) {
