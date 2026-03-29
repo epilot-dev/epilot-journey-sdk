@@ -1,29 +1,38 @@
 {
   "name": "@epilot/epilot-journey-sdk",
-  "version": "1.0.7",
+  "version": "2.0.0-alpha.0",
   "author": "Mohannad Mamo",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build": "tsup src/index.ts --dts",
     "release": "standard-version && npm publish",
     "prepublishOnly": "yarn build",
     "postrelease": "git push && git push --tags"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@epilot/journey-client": "^0.5.1"
+  },
   "devDependencies": {
     "@material-ui/core": "4.*",
+    "@playwright/test": "^1.58.2",
     "standard-version": "^9.5.0",
-    "tsup": "^7.0.0"
+    "tsup": "^7.0.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
   },
   "peerDependencies": {
     "@material-ui/core": "4.*"
   },
   "main": "dist/index.js",
   "files": [
-    "dist/**"
+    "dist/**",
+    "CLAUDE.md",
+    "WIRE_FORMAT_REFERENCE.md"
   ],
   "tsup": {
     "entry": [
@@ -35,6 +44,9 @@
       "esm"
     ],
     "clean": true,
-    "external": []
+    "external": [
+      "@epilot/journey-client",
+      "openapi-client-axios"
+    ]
   }
 }
