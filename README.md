@@ -1,4 +1,4 @@
-# epilot Journeys Toolkit
+# 🧰 epilot Journeys Toolkit
 
 [![npm version](https://badge.fury.io/js/@epilot%2Fepilot-journey-sdk.svg)](https://www.npmjs.com/package/@epilot/epilot-journey-sdk)
 
