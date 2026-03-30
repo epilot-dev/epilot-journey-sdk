@@ -1,8 +1,8 @@
-# epilot Journey SDK
+# epilot Journeys Toolkit
 
 [![npm version](https://badge.fury.io/js/@epilot%2Fepilot-journey-sdk.svg)](https://www.npmjs.com/package/@epilot/epilot-journey-sdk)
 
-Type-safe SDK for creating, inspecting, and modifying [epilot journeys](https://docs.epilot.io/docs/journeys/journey-builder) programmatically. Built for AI agents and developers.
+Type-safe SDK for creating, inspecting, custom blocks, data injection and modifying [epilot journeys](https://docs.epilot.io/docs/journeys/journey-builder) programmatically. Built for AI agents and developers.
 
 **[Interactive Playground](https://docs.epilot.io/journey-sdk-playground/index.html)** – browse block catalog, factory functions, client API, and runnable examples.
 
