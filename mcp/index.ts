@@ -43,9 +43,9 @@ import {
   createFileUpload, createPaymentMethod, createConsents,
   createParagraph, createImage, createActionBar,
   createSuccessMessage, createSummary, createBlock,
-  ControlName, BLOCK_CATALOG,
+  BLOCK_CATALOG,
   exportJourneyCode,
-} from '@epilot/epilot-journey-sdk'
+} from '../dist/index'
 
 // ─── Config ──────────────────────────────────────────────────────
 

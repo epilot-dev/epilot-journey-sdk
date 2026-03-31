@@ -321,6 +321,20 @@ export function McpServerSection() {
         </p>
       </div>
 
+      <div style={{ position: 'relative', paddingBottom: '57.81584582441114%', height: 0 }}>
+        <iframe
+          src="https://www.loom.com/embed/051f7e9baa074e9a9a1edf158369ac4d"
+          frameBorder="0"
+          webkitallowfullscreen
+          mozallowfullscreen
+          allowFullScreen
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+        ></iframe>
+      </div>
+
+      <br />
+      <br />
+
       {/* Tools */}
       <h2 className="text-xl font-bold text-gray-900 mb-4">Available Tools</h2>
       <div className="grid grid-cols-1 gap-3 mb-12">

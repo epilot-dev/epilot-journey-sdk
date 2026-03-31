@@ -53,3 +53,7 @@ cdk.out
 .yalc
 yalc.lock
 .playwright-mcp/
+
+.local*
+.claude
+.playwright-mcp
