@@ -325,10 +325,9 @@ export function McpServerSection() {
         <iframe
           src="https://www.loom.com/embed/051f7e9baa074e9a9a1edf158369ac4d"
           frameBorder="0"
-          webkitallowfullscreen
-          mozallowfullscreen
           allowFullScreen
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+          {...{ webkitallowfullscreen: '', mozallowfullscreen: '' } as any}
         ></iframe>
       </div>
 
