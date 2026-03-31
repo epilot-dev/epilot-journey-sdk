@@ -23,7 +23,10 @@ const allSections = flattenNav(NAV);
 const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState<SectionId>('overview');
+  const [activeSection, setActiveSection] = useState<SectionId>(() => {
+    const hash = window.location.hash.replace('#', '') as SectionId;
+    return allSections.some((s) => s.id === hash) ? hash : 'overview';
+  });
   const [sidebarOpen, setSidebarOpen] = useState(() => !isMobile());
 
   useEffect(() => {
@@ -37,7 +40,19 @@ export default function App() {
 
   const navigate = useCallback((id: SectionId) => {
     setActiveSection(id);
+    window.history.pushState(null, '', `#${id}`);
     if (isMobile()) setSidebarOpen(false);
+  }, []);
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const hash = window.location.hash.replace('#', '') as SectionId;
+      if (allSections.some((s) => s.id === hash)) {
+        setActiveSection(hash);
+      }
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
   const activeItem = allSections.find((s) => s.id === activeSection);
