@@ -34,42 +34,44 @@ export function ClientApiSection() {
         </p>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {/* Left: method list */}
-        <div className="w-60 flex-shrink-0">
-          {groups.map(({ group, methods }) => (
-            <div key={group} className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 px-1">
-                {GROUP_ICONS[group]} {GROUP_LABELS[group]}
-              </p>
-              <div className="space-y-0.5">
-                {methods.map((m) => (
-                  <button
-                    key={m.name}
-                    onClick={() => setSelected(m)}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center gap-2 ${
-                      selected.name === m.name
-                        ? 'bg-primary-50 text-primary-700 font-semibold'
-                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
-                    }`}
-                  >
-                    <span className="font-mono truncate">{m.name}</span>
-                    {m.alpha && (
-                      <span className="flex-shrink-0 text-[9px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 rounded px-1 py-px">
-                        alpha
-                      </span>
-                    )}
-                  </button>
-                ))}
+        <div className="md:w-60 flex-shrink-0">
+          <div className="flex md:flex-col gap-1 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
+            {groups.map(({ group, methods }) => (
+              <div key={group} className="mb-3 md:mb-5 flex-shrink-0">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 px-1 whitespace-nowrap">
+                  {GROUP_ICONS[group]} {GROUP_LABELS[group]}
+                </p>
+                <div className="flex md:flex-col gap-0.5">
+                  {methods.map((m) => (
+                    <button
+                      key={m.name}
+                      onClick={() => setSelected(m)}
+                      className={`text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center gap-2 whitespace-nowrap md:whitespace-normal md:w-full ${
+                        selected.name === m.name
+                          ? 'bg-primary-50 text-primary-700 font-semibold'
+                          : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                      }`}
+                    >
+                      <span className="font-mono truncate">{m.name}</span>
+                      {m.alpha && (
+                        <span className="flex-shrink-0 text-[9px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 rounded px-1 py-px">
+                          alpha
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Right: detail */}
         <div className="flex-1 min-w-0 space-y-5">
           <div className="card">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
               <span className="text-lg">{GROUP_ICONS[selected.group]}</span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{GROUP_LABELS[selected.group]}</span>
               {selected.alpha && (
@@ -78,7 +80,7 @@ export function ClientApiSection() {
                 </span>
               )}
             </div>
-            <h2 className="font-bold text-gray-900 text-lg mb-2 font-mono">{selected.name}</h2>
+            <h2 className="font-bold text-gray-900 text-base sm:text-lg mb-2 font-mono break-all sm:break-normal">{selected.name}</h2>
             <p className="text-sm text-gray-600 mb-4 leading-relaxed">{selected.description}</p>
             <div className="flex items-start gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2 text-xs text-emerald-700 mb-4">
               <span>↩</span>

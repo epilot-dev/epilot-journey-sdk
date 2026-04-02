@@ -24,41 +24,43 @@ export function FactoriesSection() {
         </p>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {/* Left: function list */}
-        <div className="w-56 flex-shrink-0">
-          {Object.entries(groups).map(([groupName, fns]) => (
-            <div key={groupName} className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 px-1">{groupName}</p>
-              <div className="space-y-0.5">
-                {fns.map((fn) => (
-                  <button
-                    key={fn.name}
-                    onClick={() => setSelected(fn)}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center gap-2 ${
-                      selected.name === fn.name
-                        ? 'bg-primary-50 text-primary-700 font-semibold'
-                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
-                    }`}
-                  >
-                    <span className="font-mono truncate">{fn.name}</span>
-                    {fn.alpha && (
-                      <span className="flex-shrink-0 text-[9px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 rounded px-1 py-px">
-                        alpha
-                      </span>
-                    )}
-                  </button>
-                ))}
+        <div className="md:w-56 flex-shrink-0">
+          <div className="flex md:flex-col gap-1 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
+            {Object.entries(groups).map(([groupName, fns]) => (
+              <div key={groupName} className="mb-3 md:mb-5 flex-shrink-0">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 px-1 whitespace-nowrap">{groupName}</p>
+                <div className="flex md:flex-col gap-0.5">
+                  {fns.map((fn) => (
+                    <button
+                      key={fn.name}
+                      onClick={() => setSelected(fn)}
+                      className={`text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center gap-2 whitespace-nowrap md:whitespace-normal md:w-full ${
+                        selected.name === fn.name
+                          ? 'bg-primary-50 text-primary-700 font-semibold'
+                          : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                      }`}
+                    >
+                      <span className="font-mono truncate">{fn.name}</span>
+                      {fn.alpha && (
+                        <span className="flex-shrink-0 text-[9px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 rounded px-1 py-px">
+                          alpha
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Right: detail */}
         <div className="flex-1 min-w-0 space-y-5">
           <div className="card">
             <div className="flex items-center gap-2 mb-4 flex-wrap">
-              <span className="font-mono text-sm text-primary-700 font-bold">{selected.name}</span>
+              <span className="font-mono text-sm text-primary-700 font-bold break-all sm:break-normal">{selected.name}</span>
               <span className="text-gray-300">→</span>
               <span className="text-xs text-amber-700 font-medium bg-amber-50 border border-amber-100 rounded-md px-2 py-0.5">{selected.producesType}</span>
               {selected.alpha && (
