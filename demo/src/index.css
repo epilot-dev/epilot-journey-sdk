@@ -275,7 +275,7 @@
      TOP BAR — frosted glass
      ═══════════════════════════════════════════════════════════════ */
   .topbar {
-    @apply sticky top-0 z-10 px-6 py-3 flex items-center gap-4;
+    @apply sticky top-0 z-10 px-3 sm:px-6 py-2 sm:py-3 flex items-center gap-2 sm:gap-4;
     background: rgba(250, 251, 255, 0.7);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
