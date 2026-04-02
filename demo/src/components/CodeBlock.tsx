@@ -163,7 +163,7 @@ export function CodeBlock({ code, title, language = 'typescript' }: CodeBlockPro
           </div>
         </div>
       )}
-      <pre className="p-4 text-[13px] overflow-x-auto font-mono leading-relaxed whitespace-pre" style={{
+      <pre className="p-3 sm:p-4 text-[11px] sm:text-[13px] overflow-x-auto font-mono leading-relaxed whitespace-pre" style={{
         background: 'linear-gradient(180deg, #0f0f1a 0%, #111122 100%)',
         color: '#e2e8f0',
       }}>

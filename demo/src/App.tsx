@@ -60,9 +60,17 @@ export default function App() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-surface-50">
+      {/* ── Mobile overlay ── */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* ── Sidebar ── */}
       <aside
-        className={`ai-sidebar ${sidebarOpen ? 'w-72' : 'w-0 overflow-hidden'} flex-shrink-0 flex flex-col transition-all duration-300`}
+        className={`ai-sidebar ${sidebarOpen ? 'w-72' : 'w-0 overflow-hidden'} flex-shrink-0 flex flex-col transition-all duration-300 max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-40`}
       >
         {/* Brand */}
         <div className="sb-brand">
@@ -173,7 +181,7 @@ export default function App() {
         <div className="topbar">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-xl hover:bg-gray-100 text-gray-400 transition-colors"
+            className="p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 text-gray-400 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -215,7 +223,7 @@ export default function App() {
             </a>
           </div>
         </div>
-        <div className="p-8 max-w-7xl mx-auto">
+        <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
           <ActiveComponent onNavigate={navigate} />
         </div>
       </main>
