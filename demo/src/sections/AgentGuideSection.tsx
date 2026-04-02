@@ -21,23 +21,25 @@ export function AgentGuideSection() {
 
       {/* Rules */}
       <h2 className="text-xl font-bold text-gray-900 mb-4">Rules & Gotchas</h2>
-      <div className="flex gap-6 mb-14">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 mb-8 sm:mb-14">
         {/* Rule list */}
-        <div className="w-64 flex-shrink-0 space-y-1">
-          {AGENT_RULES.map((rule, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveRule(rule)}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-sm transition-all ${
-                activeRule.title === rule.title
-                  ? 'bg-primary-50 text-primary-700 font-semibold border border-primary-200'
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
-              }`}
-            >
-              <span className="text-gray-300 text-xs font-mono mr-2">{String(i + 1).padStart(2, '0')}</span>
-              {rule.title}
-            </button>
-          ))}
+        <div className="md:w-64 flex-shrink-0">
+          <div className="flex md:flex-col gap-1 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
+            {AGENT_RULES.map((rule, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveRule(rule)}
+                className={`text-left px-3 py-2.5 rounded-xl text-sm transition-all whitespace-nowrap md:whitespace-normal md:w-full ${
+                  activeRule.title === rule.title
+                    ? 'bg-primary-50 text-primary-700 font-semibold border border-primary-200'
+                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                }`}
+              >
+                <span className="text-gray-300 text-xs font-mono mr-2">{String(i + 1).padStart(2, '0')}</span>
+                {rule.title}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Rule detail */}
@@ -71,8 +73,8 @@ export function AgentGuideSection() {
 
       {/* Wire format quick reference */}
       <h2 className="text-xl font-bold text-gray-900 mb-1">Wire Format Quick Reference</h2>
-      <p className="text-sm text-gray-400 mb-5">Key fields in every v3 uischema element and what they mean</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-14">
+      <p className="text-sm text-gray-400 mb-4 sm:mb-5">Key fields in every v3 uischema element and what they mean</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8 sm:mb-14">
         {WIRE_FORMAT_NOTES.map((note) => (
           <div key={note.field} className="bg-white border border-gray-100 rounded-xl p-4">
             <p className="font-mono text-sm text-primary-700 font-semibold mb-1">{note.field}</p>
