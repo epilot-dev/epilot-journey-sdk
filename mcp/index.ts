@@ -45,7 +45,7 @@ import {
   createSuccessMessage, createSummary, createBlock,
   BLOCK_CATALOG,
   exportJourneyCode,
-} from '../dist/index'
+} from '../src/index.js'
 
 // ─── Config ──────────────────────────────────────────────────────
 

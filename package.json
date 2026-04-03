@@ -20,6 +20,7 @@
   "devDependencies": {
     "@material-ui/core": "4.*",
     "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
     "standard-version": "^9.5.0",
     "tsup": "^7.0.0",
     "typescript": "^6.0.2",
