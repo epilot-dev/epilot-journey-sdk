@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { NAV, flattenNav, isGroup, type SectionId } from './data/navigation';
 import { BLOCK_CATALOG } from './data/blocks';
+import { FACTORY_COUNT, SDK_VERSION } from './data/constants';
 import { OverviewSection } from './sections/OverviewSection';
 import { CatalogSection } from './sections/CatalogSection';
 import { FactoriesSection } from './sections/FactoriesSection';
@@ -104,7 +105,7 @@ export default function App() {
 
           <div className="flex items-center gap-2 mt-2">
             <span className="sb-chip"><strong>{BLOCK_CATALOG.length}</strong> Blocks</span>
-            <span className="sb-chip"><strong>19</strong> Factories</span>
+            <span className="sb-chip"><strong>{FACTORY_COUNT}</strong> Factories</span>
           </div>
         </div>
 
@@ -156,7 +157,7 @@ export default function App() {
         <div className="sb-footer">
           <div className="sb-status-line">
             <span className="agent-dot" />
-            <span className="sb-version">v1.0.7</span>
+            <span className="sb-version">{SDK_VERSION}</span>
             <span style={{ opacity: 0.5 }}>ready</span>
           </div>
           <div className="sb-credit">

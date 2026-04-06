@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { CATEGORY_COLORS, type BlockEntry } from '../data/blocks';
 import { CategoryBadge } from './CategoryBadge';
 import { CodeBlock } from './CodeBlock';
@@ -21,16 +21,48 @@ const TABS: { id: Tab; label: string }[] = [
 export function BlockDetail({ block, onClose }: BlockDetailProps) {
   const [tab, setTab] = useState<Tab>('overview');
   const colors = CATEGORY_COLORS[block.category];
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Escape to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  // Focus trap
+  useEffect(() => {
+    dialogRef.current?.focus();
+  }, []);
+
+  // Click backdrop to close
+  const handleBackdropClick = useCallback((e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) onClose();
+  }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{
-      background: 'rgba(0, 0, 0, 0.5)',
-      backdropFilter: 'blur(8px)',
-      WebkitBackdropFilter: 'blur(8px)',
-    }}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden" style={{
-        boxShadow: '0 24px 48px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-      }}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${block.displayName} details`}
+      onClick={handleBackdropClick}
+      style={{
+        background: 'rgba(0, 0, 0, 0.5)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+      }}
+    >
+      <div
+        ref={dialogRef}
+        tabIndex={-1}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden outline-none"
+        style={{
+          boxShadow: '0 24px 48px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+        }}
+      >
 
         {/* Header */}
         <div className="flex items-start gap-4 p-5 border-b border-gray-100">

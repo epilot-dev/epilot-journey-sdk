@@ -293,7 +293,7 @@ export const BLOCK_CATALOG: BlockEntry[] = [
     hasValue: true,
     commonlyUsed: true,
     icon: '📡',
-    factory: null,
+    factory: 'createAvailabilityCheck',
     valueType: `interface AvailabilityValue {
   countryCode?: string
   city?: string
@@ -312,15 +312,15 @@ export const BLOCK_CATALOG: BlockEntry[] = [
     zipCity?: { required?: boolean }
   }
 }`,
-    codeExample: `const block = createBlock('AvailabilityCheckControl', {
+    codeExample: `const block = createAvailabilityCheck({
   name: 'availability',
   required: true,
   options: {
-    countryAddressSettings: {
-      countryCode: 'DE',
-      enableAutoComplete: true,
-    },
-    fields: { zipCity: { required: true } },
+    countryCode: 'DE',
+    availabilityMode: 'postalCode',
+    enableAutoComplete: true,
+    enableFreeText: false,
+    fields: { zipCode: { required: true, label: 'Postal Code' } },
   },
 })`,
     wireExample: `{
@@ -1459,7 +1459,7 @@ const submit = createActionBar('Action bar', {
     hasValue: true,
     commonlyUsed: false,
     icon: '☀️',
-    factory: null,
+    factory: 'createPVRoofPlanner',
     valueType: `interface PVRooftopValue {
   coordinates: string | undefined
   maxArrayAreaMeters2?: number
@@ -1470,10 +1470,10 @@ const submit = createActionBar('Action bar', {
   maxArrayPanelsCount?: number
 }`,
     optionsType: `{ required?: boolean }`,
-    codeExample: `const block = createBlock('PVRoofPlannerControl', {
+    codeExample: `const block = createPVRoofPlanner({
   name: 'roofPlanner',
   label: 'Plan Your Solar Installation',
-  required: true,
+  options: { panelLifetimeYears: 25 },
 })`,
     wireExample: `{
   "type": "PVRoofPlannerControl",

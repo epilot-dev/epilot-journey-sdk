@@ -511,6 +511,42 @@ const submit = createActionBar('Action bar', {
 })`,
   },
   {
+    name: 'createAvailabilityCheck',
+    alpha: true,
+    producesType: 'AvailabilityCheckControl',
+    description: 'Creates an availability check block. Supports postal code or address-based service validation with optional Google Maps integration.',
+    signature: `createAvailabilityCheck(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement`,
+    example: `const block = createAvailabilityCheck({
+  name: 'availCheck',
+  label: 'Check Availability',
+  required: true,
+  options: {
+    countryCode: 'DE',
+    availabilityMode: 'postalCode',
+    enableAutoComplete: true,
+    enableFreeText: false,
+    googleMapsIntegrationOptions: {
+      isGoogleMapsEnabled: true,
+      isRepositioningAllowed: true,
+    },
+    fields: { zipCode: { required: true, label: 'Postal Code' } },
+  },
+})`,
+    note: 'Defaults showPaper to true. Supports postalCode and file availability modes.',
+  },
+  {
+    name: 'createPVRoofPlanner',
+    alpha: true,
+    producesType: 'PVRoofPlannerControl',
+    description: 'Creates a PV rooftop planner block for solar panel roof planning with Google Maps.',
+    signature: `createPVRoofPlanner(opts: CreateBlockOptions & { options?: Record<string, unknown> }): UISchemaElement`,
+    example: `const block = createPVRoofPlanner({
+  name: 'roofPlanner',
+  label: 'Plan Your Solar Installation',
+  options: { panelLifetimeYears: 25 },
+})`,
+  },
+  {
     name: 'createStep',
     alpha: true,
     producesType: 'StepConfig',

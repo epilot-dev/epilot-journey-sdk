@@ -1,6 +1,7 @@
 import type { SectionId } from '../data/navigation';
 import { BLOCK_CATALOG, CATEGORIES, CATEGORY_ICONS, CATEGORY_LABELS } from '../data/blocks';
 import { FACTORY_FUNCTIONS } from '../data/client-api';
+import { FACTORY_COUNT } from '../data/constants';
 import { CodeBlock } from '../components/CodeBlock';
 
 interface OverviewSectionProps {
@@ -14,7 +15,9 @@ const STATS = [
   { label: 'Status', value: 'Alpha', color: 'text-violet-600' },
 ];
 
-const INSTALL_CODE = `npm install @epilot/epilot-journey-sdk`;
+import { SDK_NPM } from '../data/constants';
+
+const INSTALL_CODE = `npm install ${SDK_NPM}`;
 
 const QUICKSTART_CODE = `import {
   JourneyClient,
@@ -64,7 +67,7 @@ const AGENT_CAPABILITIES = [
   {
     icon: '🏭',
     title: 'Factory Functions',
-    desc: '19 typed factories that auto-produce valid API wire format',
+    desc: `${FACTORY_COUNT} typed factories that auto-produce valid API wire format`,
     nav: 'factories' as SectionId,
     accent: 'from-blue-500 to-indigo-600',
   },
