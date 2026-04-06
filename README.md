@@ -15,6 +15,14 @@ Be aware that some of the features are still experimental.
   </p>
 </details>
 
+
+## Topics in this SDK (v1)
+
+* [Custom Block for epilot Journeys](custom-block.md): How to build your own blocks.
+
+* [Journey Embed Script](embed-script.md): How to embed epilot Journey with advanced options such as data injection.
+
+
 ## v2 Alpha – Journey Toolkit
 
 > **Branch:** [`v2-alpha`](https://github.com/epilot-dev/epilot-journey-sdk/tree/v2-alpha)
@@ -82,12 +90,3 @@ await client.createJourney(journey)
 ```
 
 See the [v2-alpha branch](https://github.com/epilot-dev/epilot-journey-sdk/tree/v2-alpha) for full documentation, MCP server setup, and examples.
-
----
-
-## Topics in this SDK (v1)
-
-* [Custom Block for epilot Journeys](custom-block.md): How to build your own blocks.
-
-* [Journey Embed Script](embed-script.md): How to embed epilot Journey with advanced options such as data injection.
-
