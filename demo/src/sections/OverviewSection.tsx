@@ -112,13 +112,28 @@ export function OverviewSection({ onNavigate }: OverviewSectionProps) {
         <div className="hero-glow bg-violet-500 hidden sm:block" style={{ top: 0, left: -150 }} />
 
         <div className="relative">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 sm:mb-6" style={{
-            background: 'rgba(99, 102, 241, 0.08)',
-            border: '1px solid rgba(99, 102, 241, 0.15)',
-            color: '#6366f1',
-          }}>
-            <span className="agent-dot" />
-            epilot Journey SDK
+          <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold" style={{
+              background: 'rgba(99, 102, 241, 0.08)',
+              border: '1px solid rgba(99, 102, 241, 0.15)',
+              color: '#6366f1',
+            }}>
+              <span className="agent-dot" />
+              epilot Journey SDK
+            </div>
+            <a
+              href="https://github.com/epilot-dev/epilot-journey-sdk/tree/v2-alpha"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider hover:opacity-80 transition-opacity"
+              style={{
+                background: 'rgba(251, 191, 36, 0.12)',
+                border: '1px solid rgba(251, 191, 36, 0.3)',
+                color: '#d97706',
+              }}
+            >
+              v2-alpha
+            </a>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 sm:mb-5 tracking-tight leading-[1.1]">
@@ -126,10 +141,22 @@ export function OverviewSection({ onNavigate }: OverviewSectionProps) {
             <br />
             <span className="gradient-text">Programmatically.</span>
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-xl leading-relaxed mb-6 sm:mb-8">
+          <p className="text-base sm:text-lg text-gray-500 max-w-xl leading-relaxed mb-4">
             A type-safe SDK for AI agents and developers to create, inspect, and modify epilot journeys. Every block
             type documented. Every wire format quirk handled.
           </p>
+
+          <div className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8 text-sm text-gray-500">
+            <span>
+              <strong className="text-gray-700">Agentic SDK</strong> is under{' '}
+              <a href="https://github.com/epilot-dev/epilot-journey-sdk/tree/v2-alpha" target="_blank" rel="noopener noreferrer" className="text-amber-600 font-semibold hover:underline">v2-alpha</a>
+            </span>
+            <span style={{ opacity: 0.3 }}>&middot;</span>
+            <span>
+              <a href="https://github.com/epilot-dev/epilot-journey-sdk" target="_blank" rel="noopener noreferrer" className="text-primary-600 font-semibold hover:underline">v1 (main)</a> holds the{' '}
+              <strong className="text-gray-700">Journey Embed SDK</strong>
+            </span>
+          </div>
 
           {/* Stats row */}
           <div className="flex flex-wrap gap-3 mb-2">

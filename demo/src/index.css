@@ -166,6 +166,19 @@
     }
   }
 
+  /* ── Alpha chip ── */
+  .sb-alpha-chip {
+    @apply ml-auto text-[8px] font-bold uppercase tracking-wider px-1.5 rounded;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    line-height: 1.3;
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    cursor: default;
+    flex-shrink: 0;
+  }
+
   /* ── Stat chips ── */
   .sb-chip {
     @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold;

@@ -7,11 +7,13 @@ import { FactoriesSection } from './sections/FactoriesSection';
 import { ClientApiSection } from './sections/ClientApiSection';
 import { AgentGuideSection } from './sections/AgentGuideSection';
 import { McpServerSection } from './sections/McpServerSection';
+import { EmbedSdkSection } from './sections/EmbedSdkSection';
 import { ExampleJourneySection } from './sections/ExampleJourneySection';
 
 const SECTION_COMPONENTS: Record<SectionId, React.ComponentType<any>> = {
   overview: OverviewSection,
   catalog: CatalogSection,
+  'embed-sdk': EmbedSdkSection,
   factories: FactoriesSection,
   'client-api': ClientApiSection,
   'agent-guide': AgentGuideSection,
@@ -123,6 +125,9 @@ export default function App() {
                         <span className="sb-dot" />
                         <span className="sb-nav-icon">{item.icon}</span>
                         <span>{item.label}</span>
+                        {item.alpha && (
+                          <span className="sb-alpha-chip" title="Available on the v2-alpha SDK">alpha</span>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -139,6 +144,9 @@ export default function App() {
                 <span className="sb-dot" />
                 <span className="sb-nav-icon">{entry.icon}</span>
                 <span>{entry.label}</span>
+                {entry.alpha && (
+                  <span className="sb-alpha-chip" title="Available on the v2-alpha SDK">alpha</span>
+                )}
               </button>
             );
           })}

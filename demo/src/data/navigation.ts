@@ -5,6 +5,7 @@
 export type SectionId =
   | 'overview'
   | 'catalog'
+  | 'embed-sdk'
   | 'client-api'
   | 'factories'
   | 'agent-guide'
@@ -15,6 +16,7 @@ export interface SectionItem {
   id: SectionId;
   label: string;
   icon: string;
+  alpha?: boolean;
 }
 
 export interface SectionGroup {
@@ -34,16 +36,17 @@ export const NAV: NavEntry[] = [
   {
     group: 'SDK Reference',
     items: [
-      { id: 'factories', label: 'Factory Functions', icon: '🏭' },
-      { id: 'client-api', label: 'JourneyClient API', icon: '⚡' },
+      { id: 'embed-sdk', label: 'Embed SDK', icon: '📦' },
+      { id: 'factories', label: 'Factory Functions', icon: '🏭', alpha: true },
+      { id: 'client-api', label: 'JourneyClient API', icon: '⚡', alpha: true },
     ],
   },
   {
     group: 'For AI Agents',
     items: [
-      { id: 'agent-guide', label: 'Agent Guide', icon: '🤖' },
-      { id: 'mcp-server', label: 'MCP Server', icon: '🔌' },
-      { id: 'example-journey', label: 'Examples', icon: '📝' },
+      { id: 'agent-guide', label: 'Agent Guide', icon: '🤖', alpha: true },
+      { id: 'mcp-server', label: 'MCP Server', icon: '🔌', alpha: true },
+      { id: 'example-journey', label: 'Examples', icon: '📝', alpha: true },
     ],
   },
 ];
